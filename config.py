@@ -38,7 +38,7 @@ COUPANG_PARTNERS_ACTIVE = False
 SCHEDULE_TIMES = ["09:00", "13:00", "19:00"]
 
 # 한 번 실행 시 포스팅할 최대 상품 수
-MAX_PRODUCTS_PER_RUN = 3
+MAX_PRODUCTS_PER_RUN = 1
 
 # 쿠팡 스크래핑 대상 URL
 COUPANG_URLS = {

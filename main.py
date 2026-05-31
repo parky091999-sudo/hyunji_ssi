@@ -102,7 +102,7 @@ async def run_pipeline():
     """전체 파이프라인 1회 실행"""
     import random as _random
     # 포스팅 시간 랜덤화 — 매일 같은 시간 패턴 방지 (0~25분 랜덤 대기)
-    delay_min = _random.randint(0, 25)
+    delay_min = _random.randint(0, 120)  # 9:00~11:00 KST 사이 랜덤 포스팅
     if delay_min > 0:
         logger.info(f"랜덤 딜레이: {delay_min}분 대기 중...")
         await asyncio.sleep(delay_min * 60)

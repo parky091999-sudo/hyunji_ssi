@@ -284,15 +284,22 @@ async def post_all_products(contents: list[dict]) -> tuple[list[str], list[str]]
     story_thread_urls: list[str] = []
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)
+        browser = await p.chromium.launch(
+            headless=False,
+            args=["--disable-blink-features=AutomationControlled"],
+        )
         context = await browser.new_context(
             user_agent=(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/124.0.0.0 Safari/537.36"
+                "Chrome/125.0.0.0 Safari/537.36"
             ),
             viewport={"width": 1280, "height": 800},
             locale="ko-KR",
+        )
+        # navigator.webdriver 탐지 차단
+        await context.add_init_script(
+            "Object.defineProperty(navigator,'webdriver',{get:()=>undefined})"
         )
 
         try:

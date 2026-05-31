@@ -100,6 +100,13 @@ logger = logging.getLogger("main")
 
 async def run_pipeline():
     """전체 파이프라인 1회 실행"""
+    import random as _random
+    # 포스팅 시간 랜덤화 — 매일 같은 시간 패턴 방지 (0~25분 랜덤 대기)
+    delay_min = _random.randint(0, 25)
+    if delay_min > 0:
+        logger.info(f"랜덤 딜레이: {delay_min}분 대기 중...")
+        await asyncio.sleep(delay_min * 60)
+
     logger.info("=" * 50)
     logger.info(f"파이프라인 시작: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info("=" * 50)

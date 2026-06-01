@@ -173,15 +173,21 @@ async def run_pipeline():
         logger.info(f"  → {len(posted_urls)}개 포스팅 완료")
         posting_ok = len(posted_urls) > 0
 
-        # 포스팅 성공 시 피드 상태 "posted"로 업데이트
+        # 포스팅 성공 시 피드 상태 + threads_url 업데이트
         if posting_ok:
             existing = load_feed_posts()
             codes = {e["product_code"] for e in feed_entries}
+            url_map = {
+                contents[i].get("product_code", ""): info.get("post_url")
+                for i, info in enumerate(story_post_infos)
+            }
             for entry in existing:
                 if entry["product_code"] in codes and entry["status"] == "generated":
-                    # 타임스탬프 기준 최근 항목만 업데이트
                     if entry.get("timestamp", "") >= feed_entries[0].get("timestamp", ""):
                         entry["status"] = "posted"
+                        post_url = url_map.get(entry["product_code"])
+                        if post_url:
+                            entry["threads_url"] = post_url
             save_feed_posts(existing)
     except Exception as e:
         logger.error(f"포스팅 오류: {e} — 페이지 업데이트는 계속 진행")

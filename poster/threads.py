@@ -123,7 +123,8 @@ def post_thread_api(post_text: str, image_url: str | None = None) -> dict | None
     post_id = publish_container(container_id)
     logger.info(f"  게시 완료 (post_id: {post_id})")
 
-    # 4단계: URL 조회
+    # 4단계: URL 조회 (게시 직후 바로 조회하면 색인 전이라 실패 — 5초 대기)
+    time.sleep(5)
     post_url = get_post_url(post_id)
     if post_url:
         logger.info(f"  게시 URL: {post_url}")

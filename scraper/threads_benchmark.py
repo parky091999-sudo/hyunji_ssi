@@ -70,19 +70,24 @@ def _save_queue(queue: list):
 
 def _fetch_posts(username: str) -> list[str]:
     """
-    Threads 프로필 페이지에서 게시글 텍스트 추출.
-    Next.js __NEXT_DATA__ JSON 파싱 → 텍스트 필드 재귀 탐색.
-    실패 시 빈 리스트 반환.
+    Playwright로 Threads 프로필 페이지 렌더링 후 게시글 텍스트 추출.
+    Threads는 클라이언트 사이드 렌더링이라 requests로는 내용 없음.
     """
     url = f"https://www.threads.net/@{username}"
     try:
-        resp = requests.get(url, headers=_HEADERS, timeout=15)
-        if resp.status_code != 200:
-            logger.debug(f"  @{username}: HTTP {resp.status_code}")
-            return []
-        html = resp.text
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--no-sandbox", "--disable-dev-shm-usage"],
+            )
+            page = browser.new_page(user_agent=_HEADERS["User-Agent"])
+            page.goto(url, wait_until="domcontentloaded", timeout=20000)
+            page.wait_for_timeout(3000)  # JS 렌더링 대기
+            html = page.content()
+            browser.close()
 
-        # ① __NEXT_DATA__ JSON 블록 파싱 (Next.js SSR 데이터)
+        # ① __NEXT_DATA__ JSON 블록 파싱
         m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.DOTALL)
         if m:
             try:
@@ -93,15 +98,21 @@ def _fetch_posts(username: str) -> list[str]:
             except (json.JSONDecodeError, ValueError):
                 pass
 
-        # ② og:description (프로필 설명이라도 활용)
+        # ② 렌더링된 HTML에서 텍스트 직접 추출
+        # Threads 게시글은 <span dir="auto"> 등에 들어있음
+        spans = re.findall(r'<span[^>]*dir="auto"[^>]*>([^<]{15,300})</span>', html)
+        if spans:
+            return spans[:MAX_POSTS_PER_ACCOUNT]
+
+        # ③ og:description 폴백
         og = re.findall(r'<meta\s+property="og:description"\s+content="([^"]{10,})"', html)
         if og:
             return og[:1]
 
-        logger.info(f"  @{username}: 게시글 파싱 실패 (Threads JS 렌더링 필요)")
+        logger.info(f"  @{username}: 게시글 파싱 실패")
         return []
-    except requests.RequestException as e:
-        logger.warning(f"  @{username}: 요청 오류 — {e}")
+    except Exception as e:
+        logger.warning(f"  @{username}: Playwright 오류 — {e}")
         return []
 
 

@@ -85,6 +85,11 @@ def _extract_coupang_urls(text: str) -> list[str]:
     return urls
 
 
+def _is_coupang_url(url: str) -> bool:
+    """쿠팡 파트너스 또는 쿠팡 직링크인지 확인"""
+    return "coupang.com" in url
+
+
 def _follow_to_coupang(url: str) -> str | None:
     """어떤 링크든 최종 쿠팡 상품 URL로 추적"""
     if re.search(r"coupang\.com/vp/products/\d+", url):
@@ -363,6 +368,15 @@ async def run():
                     existing_pids.add(pid)
                     candidates.insert(0, c)
                     total_added += 1
+
+    # 쿠팡 URL이 아닌 항목 최종 필터링
+    before = len(candidates)
+    candidates = [
+        c for c in candidates
+        if _is_coupang_url(c.get("product", {}).get("product_url", ""))
+    ]
+    if len(candidates) < before:
+        logger.info(f"  비쿠팡 상품 {before - len(candidates)}개 제거됨")
 
     candidates = candidates[:MAX_TOTAL]
 

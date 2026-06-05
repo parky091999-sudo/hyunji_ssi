@@ -1,5 +1,5 @@
 {
-  "next_code": 6,
+  "next_code": 5,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -28,13 +28,6 @@
       "name": "산리오 헬로키티 미니 물 정수기 디스펜서 2L 핑크",
       "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8645052268&ctag=8645052268&lptag=P8645052268&itemId=27727944467&vendorItemId=94689248135&spec=10305199",
       "image_url": "https://shopping-phinf.pstatic.net/main_5880827/58808274258.jpg",
-      "posted": true
-    },
-    "https://smartstore.naver.com/main/products/11868845859": {
-      "code": "005",
-      "name": "오닉스 북스 GO7 (페이지후속) 7인치 흑백 이북리더기",
-      "url": "https://smartstore.naver.com/main/products/11868845859",
-      "image_url": "https://shopping-phinf.pstatic.net/main_8941335/89413356453.1.jpg",
       "posted": true
     }
   }

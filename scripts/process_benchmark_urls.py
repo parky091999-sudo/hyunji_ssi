@@ -1,9 +1,9 @@
 """
 컬렉션 URL 처리 스크립트
-- admin.html에서 inpock 프로필/컬렉션 페이지 URL을 받아
-  페이지 안의 모든 상품을 수집 → data/manual_candidates.json 에 추가
-- 개별 쿠팡 상품 URL도 처리 (직접 입력용)
+- inpock 등 JS 렌더링 페이지: Playwright로 렌더링 + 네트워크 응답 캡처
+- 개별 쿠팡/파트너스 URL: requests로 처리
 """
+import asyncio
 import json
 import logging
 import os
@@ -18,8 +18,8 @@ from config import DATA_DIR, LOG_DIR, NAVER_CLIENT_ID
 
 PENDING_URLS_PATH = os.path.join(DATA_DIR, "pending_benchmark_urls.json")
 CANDIDATES_PATH   = os.path.join(DATA_DIR, "manual_candidates.json")
-MAX_PER_PAGE      = 30   # 컬렉션 1개당 최대 수집 상품 수
-MAX_TOTAL         = 100  # manual_candidates.json 최대 보관 수
+MAX_PER_PAGE      = 30
+MAX_TOTAL         = 100
 
 KST = timezone(timedelta(hours=9))
 
@@ -45,7 +45,6 @@ _HEADERS = {
         "Chrome/124.0.0.0 Safari/537.36"
     ),
     "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 }
 
 
@@ -64,7 +63,7 @@ def _save_json(path, data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def _get(url, timeout=15) -> requests.Response | None:
+def _get(url, timeout=15):
     try:
         return requests.get(url, headers=_HEADERS, timeout=timeout, verify=False, allow_redirects=True)
     except Exception as e:
@@ -72,40 +71,34 @@ def _get(url, timeout=15) -> requests.Response | None:
         return None
 
 
-def _follow_to_coupang(url: str) -> str | None:
-    """어떤 링크든 최종 쿠팡 상품 URL로 추적. 실패 시 None."""
-    if re.search(r"coupang\.com/vp/products/\d+", url):
-        return url
-    resp = _get(url, timeout=10)
-    if not resp:
-        return None
-    final = resp.url
-    html  = resp.text
-    # 최종 URL
-    m = re.search(r"(https?://(?:www\.)?coupang\.com/vp/products/\d+)", final)
-    if m:
-        return m.group(1)
-    # HTML 내 직접 URL
-    m2 = re.search(r"(https?://(?:www\.)?coupang\.com/vp/products/\d+)", html)
-    if m2:
-        return m2.group(1)
-    # link.coupang.com → 한번 더 따라가기
-    m3 = re.search(r'"(https://link\.coupang\.com/[^"]+)"', html)
-    if m3:
-        r2 = _get(m3.group(1), timeout=8)
-        if r2:
-            m4 = re.search(r"(https?://(?:www\.)?coupang\.com/vp/products/\d+)", r2.url)
-            if m4:
-                return m4.group(1)
-    return None
-
-
 def _product_id(url: str) -> str | None:
     m = re.search(r"/products/(\d+)", url)
     return m.group(1) if m else None
 
 
-# ── 네이버 상품 정보 보충 ─────────────────────────────────────────────────────
+def _extract_coupang_urls(text: str) -> list[str]:
+    """텍스트에서 쿠팡 관련 URL 모두 추출"""
+    urls = []
+    urls += re.findall(r'https://link\.coupang\.com/[A-Za-z0-9/_\-?=&%.]+', text)
+    urls += re.findall(r'https?://(?:www\.)?coupang\.com/vp/products/\d+[^\s"\'<>&]*', text)
+    return urls
+
+
+def _follow_to_coupang(url: str) -> str | None:
+    """어떤 링크든 최종 쿠팡 상품 URL로 추적"""
+    if re.search(r"coupang\.com/vp/products/\d+", url):
+        return re.search(r"(https?://(?:www\.)?coupang\.com/vp/products/\d+)", url).group(1)
+    resp = _get(url, timeout=10)
+    if not resp:
+        return None
+    for src in [resp.url, resp.text]:
+        m = re.search(r"(https?://(?:www\.)?coupang\.com/vp/products/\d+)", src)
+        if m:
+            return m.group(1)
+    return None
+
+
+# ── 네이버 정보 보충 ──────────────────────────────────────────────────────────
 
 def _naver_enrich(name: str) -> dict:
     if not NAVER_CLIENT_ID:
@@ -136,22 +129,19 @@ def _naver_enrich(name: str) -> dict:
     return {}
 
 
-# ── 쿠팡 상품 정보 수집 ───────────────────────────────────────────────────────
+# ── 쿠팡 상품 정보 ────────────────────────────────────────────────────────────
 
 def _fetch_coupang_product(product_url: str) -> dict | None:
-    """쿠팡 상품 페이지에서 이름·이미지 수집"""
     resp = _get(product_url)
     if not resp or resp.status_code != 200:
         return None
     html = resp.text
-    # 상품명
     name = ""
     m = re.search(r'<title[^>]*>([^<]+)</title>', html, re.I)
     if m:
         name = re.sub(r'\s*[-|]\s*(쿠팡|Coupang).*$', '', m.group(1), flags=re.I).strip()
     if not name:
         return None
-    # og:image
     img = ""
     m2 = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\'](https?://[^"\']+)', html)
     if m2:
@@ -159,57 +149,103 @@ def _fetch_coupang_product(product_url: str) -> dict | None:
     return {"name": name, "image_url": img, "product_url": product_url}
 
 
-# ── inpock 컬렉션 스크래퍼 ───────────────────────────────────────────────────
+# ── Playwright 기반 inpock 스크래퍼 ──────────────────────────────────────────
 
-def _scrape_inpock(page_url: str, source_label: str) -> list[dict]:
+async def _scrape_with_playwright(page_url: str) -> list[str]:
     """
-    inpock 컬렉션/프로필 페이지에서 상품 목록 수집
-    반환: candidate dict 리스트
+    Playwright로 페이지를 렌더링하고 네트워크 응답에서 쿠팡 URL 추출
+    JS 렌더링 SPA(inpock 등)에 사용
     """
-    logger.info(f"inpock 페이지 수집: {page_url}")
-    resp = _get(page_url)
-    if not resp:
-        return []
-    html = resp.text
+    from playwright.async_api import async_playwright
 
-    affiliate_links: list[str] = []
-    seen_links: set[str] = set()
+    collected_urls: list[str] = []
+    collected_texts: list[str] = []
 
-    # 1. __NEXT_DATA__ JSON 파싱 (Next.js 기반 inpock)
-    m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.DOTALL)
-    if m:
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True, args=["--no-sandbox"])
+        context = await browser.new_context(
+            user_agent=_HEADERS["User-Agent"],
+            locale="ko-KR",
+        )
+        page = await context.new_page()
+
+        # 네트워크 응답 캡처
+        async def on_response(response):
+            url = response.url
+            if any(kw in url for kw in ["coupang", "inpock", "api"]):
+                try:
+                    body = await response.text()
+                    collected_texts.append(body)
+                except Exception:
+                    pass
+
+        page.on("response", on_response)
+
         try:
-            data = json.loads(m.group(1))
-            raw = json.dumps(data)
-            # JSON 안의 모든 link.coupang.com URL
-            found = re.findall(r'https://link\.coupang\.com/[A-Za-z0-9/_\-?=&%]+', raw)
-            affiliate_links.extend(found)
-            logger.info(f"  __NEXT_DATA__ 에서 파트너스 링크 {len(found)}개 발견")
+            await page.goto(page_url, wait_until="networkidle", timeout=30000)
+            # 스크롤해서 lazy-load 항목 로드
+            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            await page.wait_for_timeout(2000)
+            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            await page.wait_for_timeout(1000)
+            # 최종 HTML도 추가
+            html = await page.content()
+            collected_texts.append(html)
         except Exception as e:
-            logger.warning(f"  __NEXT_DATA__ 파싱 실패: {e}")
+            logger.warning(f"  Playwright 페이지 로드 실패: {e}")
+        finally:
+            await browser.close()
 
-    # 2. HTML 원문에서 link.coupang.com 직접 추출
-    found2 = re.findall(r'https://link\.coupang\.com/[A-Za-z0-9/_\-?=&%]+', html)
-    affiliate_links.extend(found2)
+    # 수집된 모든 텍스트에서 URL 추출
+    seen = set()
+    for text in collected_texts:
+        for u in _extract_coupang_urls(text):
+            key = u[:80]
+            if key not in seen:
+                seen.add(key)
+                collected_urls.append(u)
 
-    # 3. 직접 coupang.com/vp/products URL
-    direct = re.findall(r'https?://(?:www\.)?coupang\.com/vp/products/\d+[^\s"\'<>&]*', html)
-    affiliate_links.extend(direct)
+    logger.info(f"  Playwright 수집: {len(collected_urls)}개 링크")
+    return collected_urls
+
+
+# ── 컬렉션 페이지 처리 ────────────────────────────────────────────────────────
+
+async def _scrape_collection(page_url: str, source_label: str) -> list[dict]:
+    """컬렉션/프로필 페이지에서 상품 목록 수집"""
+    logger.info(f"[컬렉션] {page_url} → @{source_label}")
+
+    # 1단계: requests로 빠르게 시도
+    raw_urls: list[str] = []
+    resp = _get(page_url)
+    if resp:
+        raw_urls = _extract_coupang_urls(resp.text)
+        logger.info(f"  requests: {len(raw_urls)}개 링크")
+
+    # 2단계: JS 렌더링 필요하면 Playwright 사용
+    if len(raw_urls) < 3:
+        logger.info(f"  JS 렌더링 필요 → Playwright 시도")
+        raw_urls = await _scrape_with_playwright(page_url)
+
+    if not raw_urls:
+        logger.warning(f"  링크 없음 — 건너뜀")
+        return []
 
     # 중복 제거
-    unique_links = []
-    for lnk in affiliate_links:
-        key = lnk[:80]
-        if key not in seen_links:
-            seen_links.add(key)
-            unique_links.append(lnk)
+    seen_keys: set[str] = set()
+    unique_urls = []
+    for u in raw_urls:
+        key = u[:80]
+        if key not in seen_keys:
+            seen_keys.add(key)
+            unique_urls.append(u)
 
-    logger.info(f"  총 {len(unique_links)}개 링크 발견 → 최대 {MAX_PER_PAGE}개 처리")
+    logger.info(f"  고유 링크 {len(unique_urls)}개 → 쿠팡 URL 변환 시작")
 
-    candidates = []
+    candidates: list[dict] = []
     seen_pids: set[str] = set()
 
-    for lnk in unique_links[:MAX_PER_PAGE * 2]:  # 여유분 처리
+    for lnk in unique_urls:
         if len(candidates) >= MAX_PER_PAGE:
             break
 
@@ -222,14 +258,11 @@ def _scrape_inpock(page_url: str, source_label: str) -> list[dict]:
             continue
         seen_pids.add(pid)
 
-        # 상품 정보 수집
         product_info = _fetch_coupang_product(coupang_url)
         if not product_info:
             continue
 
-        # 네이버 가격/카테고리 보충
         extra = _naver_enrich(product_info["name"])
-
         product = {
             "name":          product_info["name"],
             "product_url":   coupang_url,
@@ -239,7 +272,6 @@ def _scrape_inpock(page_url: str, source_label: str) -> list[dict]:
             "category_hint": extra.get("category_hint", ""),
             "source":        "collection_scrape",
         }
-
         candidates.append({
             "product":        product,
             "source_account": source_label,
@@ -251,74 +283,53 @@ def _scrape_inpock(page_url: str, source_label: str) -> list[dict]:
     return candidates
 
 
-# ── 개별 상품 URL 처리 (직접 입력용) ─────────────────────────────────────────
+# ── 개별 상품 URL 처리 ────────────────────────────────────────────────────────
 
 def _process_single_url(url: str) -> dict | None:
-    """단일 상품 URL 처리 → candidate dict"""
     coupang_url = _follow_to_coupang(url)
     if not coupang_url:
-        logger.warning(f"  쿠팡 URL 변환 실패: {url[:60]}")
         return None
-
     product_info = _fetch_coupang_product(coupang_url)
     if not product_info:
-        logger.warning(f"  상품 정보 수집 실패: {coupang_url[:60]}")
         return None
-
     extra = _naver_enrich(product_info["name"])
-    product = {
-        "name":          product_info["name"],
-        "product_url":   coupang_url,
-        "image_url":     product_info.get("image_url", ""),
-        "price":         extra.get("price", ""),
-        "brand":         extra.get("brand", ""),
-        "category_hint": extra.get("category_hint", ""),
-        "source":        "direct_url",
-    }
     return {
-        "product":        product,
+        "product": {
+            "name":          product_info["name"],
+            "product_url":   coupang_url,
+            "image_url":     product_info.get("image_url", ""),
+            "price":         extra.get("price", ""),
+            "brand":         extra.get("brand", ""),
+            "category_hint": extra.get("category_hint", ""),
+            "source":        "direct_url",
+        },
         "source_account": "직접입력",
         "added_at":       datetime.now(KST).isoformat(),
     }
 
 
-# ── 메인 ──────────────────────────────────────────────────────────────────────
+# ── 메인 ─────────────────────────────────────────────────────────────────────
 
-def run():
+async def run():
     logger.info("=" * 50)
     logger.info(f"URL 처리 시작: {datetime.now(KST).strftime('%Y-%m-%d %H:%M KST')}")
     logger.info("=" * 50)
 
     pending = _load_json(PENDING_URLS_PATH, {"urls": []})
-    urls = pending.get("urls", [])
+    urls = [u.strip() for u in pending.get("urls", []) if u.strip()]
     if not urls:
         logger.info("처리할 URL 없음")
         return
 
-    logger.info(f"{len(urls)}개 URL 입력됨")
+    logger.info(f"{len(urls)}개 URL 처리 시작")
 
-    existing = _load_json(CANDIDATES_PATH, {"scanned_at": "", "candidates": []})
-    candidates: list[dict] = existing.get("candidates", [])
-    existing_pids = set()
-    for c in candidates:
-        pid = _product_id(c.get("product", {}).get("product_url", ""))
-        if pid:
-            existing_pids.add(pid)
+    existing   = _load_json(CANDIDATES_PATH, {"scanned_at": "", "candidates": []})
+    candidates = existing.get("candidates", [])
+    existing_pids = {_product_id(c.get("product", {}).get("product_url", "")) for c in candidates} - {None}
 
     total_added = 0
 
     for url in urls:
-        url = url.strip()
-        if not url:
-            continue
-
-        # inpock 또는 다른 컬렉션 페이지인지 판단
-        is_collection = (
-            "inpock.co.kr" in url
-            or "linktr.ee" in url
-            or "lnk.bio" in url
-        )
-        # 직접 쿠팡/파트너스 상품 URL이면 단일 처리
         is_single = (
             re.search(r"coupang\.com/vp/products/\d+", url)
             or "link.coupang.com" in url
@@ -333,12 +344,10 @@ def run():
                     existing_pids.add(pid)
                     candidates.insert(0, c)
                     total_added += 1
-                    logger.info(f"  추가: {c['product']['name'][:40]}")
         else:
             # 컬렉션/프로필 페이지
-            label = url.split("/")[-1] or url.split("/")[-2]  # URL 마지막 세그먼트를 출처로
-            logger.info(f"[컬렉션] {url[:60]} → @{label}")
-            new_items = _scrape_inpock(url, f"@{label}")
+            label = [s for s in url.rstrip("/").split("/") if s][-1]
+            new_items = await _scrape_collection(url, label)
             for c in new_items:
                 pid = _product_id(c["product"]["product_url"])
                 if pid and pid not in existing_pids:
@@ -346,20 +355,15 @@ def run():
                     candidates.insert(0, c)
                     total_added += 1
 
-    # 최대 MAX_TOTAL개 유지
     candidates = candidates[:MAX_TOTAL]
 
-    result = {
+    _save_json(CANDIDATES_PATH, {
         "scanned_at": existing.get("scanned_at", ""),
         "updated_at": datetime.now(KST).isoformat(),
         "candidates": candidates,
-    }
-    _save_json(CANDIDATES_PATH, result)
-
-    # pending 초기화
+    })
     _save_json(PENDING_URLS_PATH, {
-        "urls": [],
-        "submitted_at": "",
+        "urls": [], "submitted_at": "",
         "processed_at": datetime.now(KST).isoformat(),
     })
 
@@ -367,4 +371,4 @@ def run():
 
 
 if __name__ == "__main__":
-    run()
+    asyncio.run(run())

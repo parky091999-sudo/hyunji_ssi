@@ -171,6 +171,52 @@ body {
 .toast.show { opacity: 1; }
 .scan-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .scan-meta { font-size: 11px; color: #555; }
+/* ── 수동관리 2컬럼 ── */
+.queue-item-sm {
+  background: #141414; border: 1px solid #222; border-radius: 8px;
+  padding: 8px 9px; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 7px; cursor: pointer;
+  transition: border-color .15s;
+}
+.queue-item-sm:hover { border-color: #444; }
+.queue-item-sm.active { border-color: #f8c93a; background: #1a1500; }
+.qi-order { font-size: 13px; font-weight: 800; color: #f8c93a; width: 16px; text-align: center; flex-shrink: 0; }
+.qi-img   { width: 36px; height: 36px; object-fit: cover; border-radius: 5px; flex-shrink: 0; background: #1e1e1e; }
+.qi-info  { flex: 1; min-width: 0; }
+.qi-name  { font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.qi-meta  { font-size: 10px; color: #555; margin-top: 1px; }
+.qi-del   { background: none; border: none; color: #444; cursor: pointer; font-size: 13px; flex-shrink: 0; padding: 2px 3px; line-height: 1; }
+.qi-del:hover { color: #e74c3c; }
+.ci-item {
+  background: #141414; border: 1px solid #222; border-radius: 8px;
+  padding: 8px 9px; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 7px; cursor: pointer; transition: border-color .15s;
+}
+.ci-item:hover { border-color: #444; }
+.ci-item.checked { border-color: #f8c93a55; background: #1a1500; }
+.ci-item.previewing { border-color: #f8c93a; }
+.ci-img  { width: 40px; height: 40px; object-fit: cover; border-radius: 5px; flex-shrink: 0; background: #1e1e1e; }
+.ci-info { flex: 1; min-width: 0; }
+.ci-name { font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ci-meta { font-size: 10px; color: #555; margin-top: 1px; }
+.ci-box  { width: 18px; height: 18px; border: 2px solid #444; border-radius: 4px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 10px; transition: all .15s; }
+.ci-item.checked .ci-box { border-color: #f8c93a; background: #f8c93a; color: #000; }
+/* ── URL 입력 ── */
+#url-input-section textarea {
+  width: 100%; height: 72px; background: #0d0d0d; border: 1px solid #2a2a2a;
+  border-radius: 8px; color: #ccc; font-size: 12px; padding: 9px 11px;
+  resize: none; font-family: inherit; margin-bottom: 8px; display: block;
+}
+#url-input-section textarea:focus { border-color: #f8c93a44; outline: none; }
+/* ── 프리뷰 패널 ── */
+#manual-preview-panel { border-top: 1px solid #1e1e1e; margin-top: 4px; }
+#preview-post-text {
+  width: 100%; min-height: 160px; background: #0d0d0d; border: 1px solid #2a2a2a;
+  border-radius: 8px; color: #bbb; font-size: 13px; padding: 11px 12px;
+  resize: vertical; font-family: inherit; line-height: 1.6; margin-bottom: 8px; display: block;
+}
+#preview-post-text:focus { border-color: #f8c93a44; outline: none; }
 /* ── 후보 카드 편집 영역 ── */
 .card-text-edit {
   width: 100%; min-height: 120px; max-height: 260px;
@@ -240,24 +286,73 @@ body {
 
 <!-- ── 탭2: 수동관리 ── -->
 <div id="tab-manual" class="tab-panel">
-  <div class="section">
-    <div class="section-title">포스팅 큐 (낮 12시 순서대로)</div>
-    <div id="manual-queue-list"><div class="loading">불러오는 중...</div></div>
-  </div>
-  <div class="section" style="margin-top:24px">
-    <div class="scan-bar">
-      <div class="section-title" style="margin-bottom:0">벤치마크 후보</div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="scan-meta" id="scan-date"></span>
-        <button class="btn btn-outline btn-sm" onclick="triggerScan()">새로고침</button>
+
+  <!-- URL 등록 (접이식) -->
+  <div class="section" style="padding-top:14px;padding-bottom:0">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div class="section-title" style="margin-bottom:0">쿠팡 URL 등록</div>
+      <button class="btn btn-outline btn-sm" onclick="toggleUrlSection()" style="font-size:11px;padding:3px 9px">접기/펼치기</button>
+    </div>
+    <div id="url-input-section">
+      <textarea id="url-paste-input" placeholder="쿠팡 상품 URL을 한 줄에 하나씩 붙여넣기&#10;https://www.coupang.com/vp/products/..."></textarea>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px">
+        <button class="btn btn-gold btn-sm" onclick="submitUrls()">상품 정보 가져오기</button>
+        <span style="font-size:11px;color:#555">처리 후 벤치마크 후보에 추가 (3~5분)</span>
       </div>
     </div>
-    <div id="check-selected-bar" style="display:none;margin-bottom:12px">
-      <button class="btn btn-gold btn-sm" onclick="addCheckedToQueue()">선택한 상품 큐에 추가</button>
-      <span id="check-count" style="font-size:12px;color:#888;margin-left:8px"></span>
-    </div>
-    <div id="benchmark-candidates"><div class="loading">불러오는 중...</div></div>
   </div>
+
+  <!-- 2컬럼: 큐(좌) + 후보(우) -->
+  <div class="section" style="padding-top:14px">
+    <div style="display:flex;gap:10px;align-items:flex-start">
+
+      <!-- 왼쪽: 포스팅 큐 -->
+      <div style="flex:0 0 46%;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div class="section-title" style="margin-bottom:0">포스팅 큐</div>
+          <span id="queue-count" style="font-size:11px;color:#555"></span>
+        </div>
+        <div id="manual-queue-list"><div class="loading" style="font-size:12px;padding:12px 0">불러오는 중...</div></div>
+      </div>
+
+      <!-- 오른쪽: 벤치마크 후보 -->
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div class="section-title" style="margin-bottom:0">후보 목록</div>
+          <div style="display:flex;gap:5px;align-items:center">
+            <span class="scan-meta" id="scan-date" style="font-size:10px"></span>
+            <button class="btn btn-outline btn-sm" onclick="triggerScan()" style="font-size:10px;padding:3px 7px" title="벤치마크 재스캔">↺</button>
+          </div>
+        </div>
+        <div id="check-selected-bar" style="display:none;margin-bottom:8px">
+          <button class="btn btn-gold btn-sm" onclick="addCheckedToQueue()" style="font-size:11px;padding:4px 10px">+ 큐에 추가</button>
+          <span id="check-count" style="font-size:11px;color:#888;margin-left:6px"></span>
+        </div>
+        <div id="benchmark-candidates" style="max-height:440px;overflow-y:auto;padding-right:2px">
+          <div class="loading" style="font-size:12px;padding:12px 0">불러오는 중...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 프리뷰 패널 (클릭 시 표시) -->
+  <div id="manual-preview-panel" style="display:none">
+    <div class="section" style="padding-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div class="section-title" style="margin-bottom:0">포스팅 미리보기 / 편집</div>
+        <button class="btn btn-outline btn-sm" onclick="closePreview()" style="font-size:11px">✕ 닫기</button>
+      </div>
+      <div id="preview-product-info" style="display:flex;gap:12px;margin-bottom:12px;align-items:flex-start"></div>
+      <textarea id="preview-post-text" placeholder="항목을 선택하면 포스팅 본문이 표시됩니다..."></textarea>
+      <div style="font-size:11px;color:#444;margin-bottom:10px">✏ 직접 수정 가능 · 자동포스팅과 동일하게 저장 시 AI가 다듬습니다</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-gold btn-sm" onclick="savePreviewText()">저장</button>
+        <button class="btn btn-outline btn-sm" onclick="movePreviewToQueue()">큐에 추가</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ── 탭3: 이력 ── -->
@@ -333,11 +428,9 @@ async function ghGet(path) {
 }
 async function ghPut(path, content, message) {
   const sha = _shas[path];
-  const body = JSON.stringify({
-    message,
-    content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
-    sha,
-  });
+  const bodyObj = { message, content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))) };
+  if (sha) bodyObj.sha = sha;
+  const body = JSON.stringify(bodyObj);
   const r = await fetch(`${BASE}/contents/${path}`, {
     method: "PUT",
     headers: {
@@ -537,32 +630,31 @@ async function loadManualQueue() {
   const el = document.getElementById("manual-queue-list");
   try {
     const queue = await ghGet("data/manual_queue.json");
+    const cnt = document.getElementById("queue-count");
+    if (cnt) cnt.textContent = queue.length ? `${queue.length}개` : "";
     if (!queue.length) {
-      el.innerHTML = `<div class="empty-msg">수동 큐가 비어 있습니다<br><small style="color:#444">아래 벤치마크 후보에서 상품을 선택해 추가하세요</small></div>`;
+      el.innerHTML = `<div class="empty-msg" style="font-size:12px;padding:14px 0">비어 있음<br><small style="color:#444">후보 목록에서 선택하세요</small></div>`;
       return;
     }
     el.innerHTML = queue.map((item, i) => renderQueueItem(item, i, queue.length)).join("");
   } catch (e) {
-    el.innerHTML = `<div class="empty-msg">불러오기 실패: ${e.message}</div>`;
+    el.innerHTML = `<div class="empty-msg" style="font-size:12px">불러오기 실패</div>`;
   }
 }
 
 function renderQueueItem(item, i, total) {
   const p = item.product || {};
   const img = item.image_url || p.image_url || "";
+  const edited = item.edited ? " ✏" : "";
   return `
-  <div class="queue-item" id="qi-${i}">
-    <div class="queue-order">${i+1}</div>
-    ${img ? `<img class="queue-img" src="${img}" onerror="this.style.display='none'">` : '<div class="queue-img"></div>'}
-    <div class="queue-info">
-      <div class="queue-name">${esc(p.name || "(이름 없음)")}</div>
-      <div class="queue-meta">${p.price || ""} ${p.price && item.source_account ? "·" : ""} ${item.source_account ? "@"+item.source_account : ""}</div>
+  <div class="queue-item-sm" id="qi-${i}" onclick="showPreview('queue',${i})">
+    <div class="qi-order">${i+1}</div>
+    ${img ? `<img class="qi-img" src="${img}" onerror="this.style.display='none'">` : '<div class="qi-img"></div>'}
+    <div class="qi-info">
+      <div class="qi-name">${esc(p.name || "(이름 없음)")}${edited}</div>
+      <div class="qi-meta">${p.price || ""}</div>
     </div>
-    <div class="queue-controls">
-      <button class="move-btn" onclick="moveQueue(${i},-1)" ${i===0?"disabled":""}>▲</button>
-      <button class="move-btn" onclick="moveQueue(${i},1)"  ${i===total-1?"disabled":""}>▼</button>
-    </div>
-    <button class="btn btn-danger btn-sm" onclick="removeFromQueue(${i})">✕</button>
+    <button class="qi-del" onclick="event.stopPropagation();removeFromQueue(${i})" title="삭제">✕</button>
   </div>`;
 }
 
@@ -584,6 +676,7 @@ async function removeFromQueue(idx) {
   q.splice(idx, 1);
   try {
     await ghPut("data/manual_queue.json", q, `admin: 큐에서 삭제`);
+    if (_previewSource === "queue" && _previewIdx === idx) closePreview();
     await loadManualQueue();
     showToast("삭제했습니다");
   } catch(e) { showToast("오류: "+e.message); }
@@ -612,27 +705,31 @@ async function loadBenchmarkCandidates() {
 function renderCheckItem(c, i) {
   const p = c.product || {};
   const img = p.image_url || "";
-  const checked = _checkedCandidates.has(i) ? "checked" : "";
+  const chk = _checkedCandidates.has(i) ? "checked" : "";
   return `
-  <div class="candidate-check-item ${checked}" id="ci-${i}" onclick="toggleCheck(${i})">
-    ${img ? `<img class="check-img" src="${img}" onerror="this.style.display='none'">` : '<div class="check-img"></div>'}
-    <div class="check-info">
-      <div class="check-name">${esc(p.name || "(이름 없음)")}</div>
-      <div class="check-meta">${p.price || ""} ${c.source_account ? "· @"+c.source_account : ""}</div>
+  <div class="ci-item ${chk}" id="ci-${i}" onclick="toggleCheckAndPreview(${i})">
+    ${img ? `<img class="ci-img" src="${img}" onerror="this.style.display='none'">` : '<div class="ci-img"></div>'}
+    <div class="ci-info">
+      <div class="ci-name">${esc(p.name || "(이름 없음)")}</div>
+      <div class="ci-meta">${p.price || ""}${c.source_account ? " · @"+c.source_account : ""}</div>
     </div>
-    <div class="check-box">${_checkedCandidates.has(i) ? "✓" : ""}</div>
+    <div class="ci-box">${_checkedCandidates.has(i) ? "✓" : ""}</div>
   </div>`;
 }
 
-function toggleCheck(i) {
+function toggleCheckAndPreview(i) {
   if (_checkedCandidates.has(i)) _checkedCandidates.delete(i);
   else _checkedCandidates.add(i);
   const el = document.getElementById(`ci-${i}`);
-  const box = el.querySelector(".check-box");
+  const box = el.querySelector(".ci-box");
   if (_checkedCandidates.has(i)) { el.classList.add("checked"); box.textContent = "✓"; }
   else { el.classList.remove("checked"); box.textContent = ""; }
   updateCheckBar();
+  showPreview("candidate", i);
 }
+
+// keep old name as alias (addCheckedToQueue may call it indirectly)
+const toggleCheck = toggleCheckAndPreview;
 
 function updateCheckBar() {
   const bar = document.getElementById("check-selected-bar");
@@ -737,6 +834,141 @@ function filterHistory(type, btn) {
   btn.classList.add("active-filter");
   const feed = _data["data/feed_posts.json"];
   if (feed) renderHistory(feed);
+}
+
+// ── 수동관리: URL 등록 ────────────────────────────────────────────────────────
+function toggleUrlSection() {
+  const el = document.getElementById("url-input-section");
+  el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+async function submitUrls() {
+  const raw = document.getElementById("url-paste-input").value.trim();
+  if (!raw) { showToast("URL을 입력하세요"); return; }
+  const urls = raw.split("\n").map(u => u.trim()).filter(u => u.startsWith("http"));
+  if (!urls.length) { showToast("유효한 URL이 없습니다"); return; }
+  const payload = { urls, submitted_at: new Date().toISOString() };
+  try {
+    // 먼저 현재 sha 획득 시도 (파일이 없으면 PUT이 sha 없이 실행)
+    try { await ghGet("data/pending_benchmark_urls.json"); } catch(_) {}
+    await ghPut("data/pending_benchmark_urls.json", payload, `admin: URL ${urls.length}개 등록`);
+    await ghDispatch("process_benchmark_urls.yml");
+    document.getElementById("url-paste-input").value = "";
+    showToast(`${urls.length}개 URL 처리 시작 — 3~5분 후 후보 목록에 반영됩니다`);
+  } catch(e) { showToast("오류: " + e.message); }
+}
+
+// ── 수동관리: 프리뷰 패널 ─────────────────────────────────────────────────────
+let _previewSource = "";   // "queue" | "candidate"
+let _previewIdx    = -1;
+
+function showPreview(source, idx) {
+  _previewSource = source;
+  _previewIdx    = idx;
+
+  let item;
+  if (source === "queue") {
+    item = (_data["data/manual_queue.json"] || [])[idx];
+  } else {
+    item = (_data["data/manual_candidates.json"]?.candidates || [])[idx];
+  }
+  if (!item) return;
+
+  const p   = item.product || {};
+  const img = item.image_url || p.image_url || "";
+  const productUrl = p.product_url || "";
+
+  document.getElementById("preview-product-info").innerHTML = `
+    ${img ? `<img src="${img}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;flex-shrink:0" onerror="this.style.display='none'">` : ""}
+    <div style="flex:1;min-width:0">
+      <div style="font-size:14px;font-weight:700;line-height:1.4;margin-bottom:3px">${esc(p.name || "")}</div>
+      <div style="font-size:11px;color:#666">${p.price || ""}${item.source_account ? " · @"+item.source_account : ""}</div>
+      ${productUrl ? `<a href="${productUrl}" target="_blank" class="product-link" style="margin-top:4px;display:inline-block">🔗 상품 확인 →</a>` : ""}
+      <div style="font-size:10px;color:#444;margin-top:4px">${source === "queue" ? "📌 큐 " + (idx+1) + "번" : "📋 후보 목록"}</div>
+    </div>`;
+
+  const postText = item.post_text || "";
+  const ta = document.getElementById("preview-post-text");
+  ta.value = postText;
+  ta.placeholder = source === "candidate" && !postText
+    ? "큐에 추가하면 자동포스팅 시 AI가 본문을 생성합니다"
+    : "포스팅 본문을 직접 입력하거나 수정하세요";
+
+  const panel = document.getElementById("manual-preview-panel");
+  panel.style.display = "block";
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  // 큐 항목 하이라이트
+  document.querySelectorAll(".queue-item-sm").forEach(e => e.classList.remove("active"));
+  if (source === "queue") {
+    const qel = document.getElementById(`qi-${idx}`);
+    if (qel) qel.classList.add("active");
+  }
+  // 후보 항목 하이라이트
+  document.querySelectorAll(".ci-item").forEach(e => e.classList.remove("previewing"));
+  if (source === "candidate") {
+    const cel = document.getElementById(`ci-${idx}`);
+    if (cel) cel.classList.add("previewing");
+  }
+}
+
+function closePreview() {
+  document.getElementById("manual-preview-panel").style.display = "none";
+  document.querySelectorAll(".queue-item-sm").forEach(e => e.classList.remove("active"));
+  document.querySelectorAll(".ci-item").forEach(e => e.classList.remove("previewing"));
+  _previewSource = "";
+  _previewIdx = -1;
+}
+
+async function savePreviewText() {
+  if (_previewSource !== "queue" || _previewIdx < 0) {
+    showToast("큐 항목을 선택 후 저장하세요"); return;
+  }
+  const text = document.getElementById("preview-post-text").value;
+  const q = [...(_data["data/manual_queue.json"] || [])];
+  if (!q[_previewIdx]) return;
+  const original = q[_previewIdx].post_text || "";
+  q[_previewIdx].post_text = text;
+  q[_previewIdx].edited = text !== original;
+  try {
+    await ghPut("data/manual_queue.json", q, `admin: 큐 ${_previewIdx+1}번 본문 편집`);
+    await loadManualQueue();
+    showToast("저장했습니다");
+  } catch(e) { showToast("오류: " + e.message); }
+}
+
+async function movePreviewToQueue() {
+  if (_previewSource !== "candidate" || _previewIdx < 0) {
+    showToast("후보 목록에서 상품을 클릭하세요"); return;
+  }
+  const candidates = _data["data/manual_candidates.json"]?.candidates || [];
+  const c = candidates[_previewIdx];
+  if (!c) return;
+  const queue = [...(_data["data/manual_queue.json"] || [])];
+  const url = c.product?.product_url || "";
+  if (url && queue.some(q => q.product?.product_url === url)) {
+    showToast("이미 큐에 있는 상품입니다"); return;
+  }
+  const previewText = document.getElementById("preview-post-text").value;
+  queue.push({
+    product: c.product, image_url: c.product?.image_url || "",
+    detail_images: [], post_text: previewText,
+    product_code: "preview", source_account: c.source_account || "",
+    added_at: new Date().toISOString(),
+    edited: !!previewText,
+  });
+  try {
+    await ghPut("data/manual_queue.json", queue, `admin: 후보 큐 추가`);
+    _checkedCandidates.delete(_previewIdx);
+    updateCheckBar();
+    document.getElementById(`ci-${_previewIdx}`)?.classList.remove("checked","previewing");
+    document.getElementById(`ci-${_previewIdx}`)?.querySelector(".ci-box") && (document.getElementById(`ci-${_previewIdx}`).querySelector(".ci-box").textContent = "");
+    await loadManualQueue();
+    // 프리뷰를 큐의 새 항목으로 전환
+    _previewSource = "queue";
+    _previewIdx = queue.length - 1;
+    showToast("큐에 추가했습니다");
+  } catch(e) { showToast("오류: " + e.message); }
 }
 
 // ── 유틸 ─────────────────────────────────────────────────────────────────────

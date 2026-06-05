@@ -49,7 +49,8 @@
         "https://shopping-phinf.pstatic.net/main_6017188/60171886211.jpg"
       ],
       "product_code": "006",
-      "status": "pending"
+      "status": "rejected",
+      "rejection_reason": "흥미 없는 아이템"
     },
     {
       "product": {

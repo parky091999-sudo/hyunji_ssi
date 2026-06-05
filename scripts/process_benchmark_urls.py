@@ -46,19 +46,30 @@ def _save_json(path, data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def _normalize_coupang_url(url: str) -> str:
-    """쿠팡 단축 URL 또는 파트너스 URL을 상품 URL로 정규화"""
+def _resolve_url(url: str) -> str:
+    """단축/파트너스/inpock 등 모든 링크를 최종 쿠팡 상품 URL로 추적"""
     url = url.strip()
-    # 쿠팡 파트너스 링크 (link.coupang.com) → 리다이렉트 따라가기
-    if "link.coupang.com" in url or "coupang.com/vp/products" in url:
+    # 이미 쿠팡 직접 상품 URL이면 바로 반환
+    if re.search(r"coupang\.com/vp/products/\d+", url):
         return url
-    return url
-
-
-def _extract_product_id(url: str) -> str | None:
-    """URL에서 상품 ID 추출"""
-    m = re.search(r"/products/(\d+)", url)
-    return m.group(1) if m else None
+    try:
+        import requests, urllib3
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        resp = requests.get(url, headers=headers, timeout=12, verify=False, allow_redirects=True)
+        final = resp.url
+        # 쿠팡 상품 URL이 포함되어 있으면 그걸 추출
+        m = re.search(r"(https?://(?:www\.)?coupang\.com/vp/products/\d+[^\s\"'&]*)", final)
+        if m:
+            return m.group(1)
+        # HTML 내 쿠팡 URL 탐색 (일부 링크는 JS 리다이렉트)
+        m2 = re.search(r"(https?://(?:www\.)?coupang\.com/vp/products/\d+[^\s\"'&]*)", resp.text)
+        if m2:
+            return m2.group(1)
+        return final   # 그래도 없으면 최종 URL 반환
+    except Exception as e:
+        logger.warning(f"  URL 추적 실패 ({url[:60]}): {e}")
+        return url
 
 
 def _fetch_product_info_naver(name: str) -> dict:
@@ -134,25 +145,29 @@ def _fetch_thumbnail(url: str) -> str:
 
 def process_url(url: str) -> dict | None:
     """URL 1개 처리 → candidate dict 반환"""
-    url = _normalize_coupang_url(url)
     logger.info(f"처리 중: {url[:80]}")
 
-    # 상품명 + 최종 URL
-    title = _fetch_page_title(url)
+    # 단축/파트너스/inpock 등 → 최종 쿠팡 URL 추적
+    resolved = _resolve_url(url)
+    logger.info(f"  → 최종 URL: {resolved[:80]}")
+
+    # 쿠팡이 아닌 URL이 나오면 건너뜀
+    if "coupang.com" not in resolved:
+        logger.warning(f"  쿠팡 URL 아님, 건너뜀")
+        return None
+
+    product_url = resolved
+
+    # 상품명
+    title = _fetch_page_title(resolved)
     if not title:
         logger.warning(f"  상품명 수집 실패, 건너뜀")
         return None
 
     logger.info(f"  상품명: {title[:50]}")
 
-    # 최종 상품 URL (파트너스 링크 → coupang.com 변환 시도)
-    product_url = url
-    m = re.search(r"(https://www\.coupang\.com/vp/products/\d+[^\s\"']*)", url)
-    if m:
-        product_url = m.group(1)
-
     # 썸네일
-    image_url = _fetch_thumbnail(url)
+    image_url = _fetch_thumbnail(resolved)
 
     # 네이버로 가격/브랜드 보충
     extra = _fetch_product_info_naver(title)

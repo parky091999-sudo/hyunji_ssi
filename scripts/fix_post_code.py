@@ -92,7 +92,16 @@ def fix_registry(old_code: str, new_code: str) -> dict | None:
     _save(REGISTRY_PATH, reg)
     logger.info(f"  registry 저장 — next_code={new_next}, 총 {len(products)}개")
 
-    return target_entry[1] if target_entry else None
+    if target_entry:
+        return target_entry[1]
+
+    # old_code가 이미 new_code로 변경된 경우 → new_code로 직접 조회
+    for v in products.values():
+        if v["code"] == new_code:
+            logger.info(f"  old_code [{old_code}] 없음 — new_code [{new_code}] 항목으로 재포스팅")
+            return v
+
+    return None
 
 
 def fix_feed(old_code: str, new_code: str):

@@ -1,5 +1,5 @@
 {
-  "next_code": 9,
+  "next_code": 6,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -30,26 +30,8 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_5880827/58808274258.jpg",
       "posted": true
     },
-    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6582577923&ctag=6582577923&lpt": {
-      "code": "005",
-      "name": "데코아르 스마트 자동센서 스테인레스 휴지통 (20L 전용)",
-      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6582577923&ctag=6582577923&lptag=l050201694728&itemId=40208950176&vendorItemId=92082014509&spec=10305198",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5771787/57717876802.jpg"
-    },
-    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9504628880&ctag=9504628880&lpt": {
-      "code": "006",
-      "name": "멍멍이 자동 발사기 간식 디스펜서 훈련기구",
-      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9504628880&ctag=9504628880&lptag=I28319222530&itemId=28319222530&vendorItemId=95271807404&spec=10305199",
-      "image_url": "https://shopping-phinf.pstatic.net/main_6017188/60171886211.jpg"
-    },
-    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9131851256&ctag=9131851256&lpt": {
-      "code": "007",
-      "name": "자동 아로마 디퓨저 무드등 겸용 블랙골드 아로마 + 3병",
-      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9131851256&ctag=9131851256&lptag=I26870958522&itemId=26870958522&vendorItemId=93840547649&spec=10305199",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5980046/59800461502.jpg"
-    },
     "https://smartstore.naver.com/main/products/11868845859": {
-      "code": "008",
+      "code": "005",
       "name": "오닉스 북스 GO7 (페이지후속) 7인치 흑백 이북리더기",
       "url": "https://smartstore.naver.com/main/products/11868845859",
       "image_url": "https://shopping-phinf.pstatic.net/main_8941335/89413356453.1.jpg",

@@ -77,7 +77,7 @@ async def run():
     image_url   = item.get("image_url") or product.get("image_url", "")
     detail_imgs = item.get("detail_images", [])
 
-    # 코드가 없으면 지금 할당
+    # 코드 할당
     code = item.get("product_code", "")
     if not code or code == "preview":
         from generator.registry import assign_code
@@ -85,10 +85,30 @@ async def run():
             product.get("product_url", ""),
             product.get("name", ""),
             product.get("image_url", ""),
-        )
-        # 코드가 들어간 문구가 없으면 추가
-        if code and "프로필 링크에서" not in post_text:
-            post_text = post_text + f"\n\n제품 정보는 프로필 링크에서 [{code}] 검색 👆"
+        ) or ""
+
+    # post_text가 비어있으면 AI로 자동 생성
+    if not post_text.strip():
+        logger.info("post_text 없음 → AI 자동 생성 중...")
+        try:
+            from generator.content import generate_post
+            content = generate_post(product)
+            if content:
+                post_text   = content.get("post_text_1", "")
+                detail_imgs = detail_imgs or content.get("detail_images", [])
+                image_url   = image_url or content.get("image_url", "")
+                code        = code or content.get("product_code", "")
+                logger.info("  AI 생성 완료")
+        except Exception as e:
+            logger.warning(f"  AI 생성 실패: {e}")
+
+    # 코드 검색 문구 없으면 추가
+    if code and "프로필 링크에서" not in post_text:
+        post_text = post_text + f"\n\n제품 정보는 프로필 링크에서 [{code}] 검색 👆"
+
+    if not post_text.strip():
+        logger.error("포스팅 텍스트 생성 실패 — 종료")
+        return
 
     logger.info(f"포스팅: {product.get('name', '')[:40]} [{code}]")
 

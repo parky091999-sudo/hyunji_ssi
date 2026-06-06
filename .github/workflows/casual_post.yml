@@ -1,0 +1,41 @@
+name: Casual Post (일상글, 3일에 1번)
+
+on:
+  schedule:
+    - cron: '30 1 * * *'   # 01:30 UTC = 10:30 KST
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  casual-post:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run casual post
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID:      ${{ secrets.THREADS_USER_ID }}
+          GROQ_API_KEY:         ${{ secrets.GROQ_API_KEY }}
+        run: python scripts/casual_post.py
+
+      - name: Commit changes
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/last_casual_post.json data/feed_posts.json || true
+          git add data/recent_posts.json || true
+          git diff --staged --quiet || git commit -m "casual: 일상글 포스팅 $(date -u +%Y-%m-%d)"
+          git pull --rebase origin main && git push || true

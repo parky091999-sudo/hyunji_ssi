@@ -14,6 +14,9 @@ on:
         description: '올바른 코드 (예: 5 또는 005)'
         required: true
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   fix:
     runs-on: ubuntu-latest

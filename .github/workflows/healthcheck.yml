@@ -1,27 +1,24 @@
-name: Auto Post (08:05 KST)
+name: Healthcheck & Auto-Recover (17:00 KST)
 
 on:
   schedule:
-    - cron: '5 23 * * *'   # 23:05 UTC = 08:05 KST
+    - cron: '0 8 * * *'   # 08:00 UTC = 17:00 KST
   workflow_dispatch:
-    inputs:
-      skip_delay:
-        description: '랜덤 딜레이 건너뛰기 (테스트용)'
-        required: false
-        default: 'false'
-        type: boolean
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  auto-post:
+  healthcheck:
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Pull latest
+        run: git pull --rebase origin main
 
       - uses: actions/setup-python@v5
         with:
@@ -33,7 +30,7 @@ jobs:
       - name: Install Playwright
         run: playwright install chromium --with-deps
 
-      - name: Run auto post
+      - name: Check and recover if not posted
         env:
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
           THREADS_USER_ID:      ${{ secrets.THREADS_USER_ID }}
@@ -41,14 +38,14 @@ jobs:
           NAVER_CLIENT_SECRET:  ${{ secrets.NAVER_CLIENT_SECRET }}
           YOUTUBE_API_KEY:      ${{ secrets.YOUTUBE_API_KEY }}
           GROQ_API_KEY:         ${{ secrets.GROQ_API_KEY }}
-          SKIP_DELAY:           ${{ github.event.inputs.skip_delay || 'false' }}
-        run: python scripts/auto_post.py
+          SKIP_DELAY:           'true'
+        run: python scripts/healthcheck.py
 
-      - name: Commit changes
+      - name: Commit changes (if any)
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/index.html docs/feed.html || true
           git add data/product_registry.json data/feed_posts.json data/posted_ids.json || true
-          git diff --staged --quiet || git commit -m "auto: daily pipeline $(date -u +%Y-%m-%d)"
-          git pull --rebase origin main && git push
+          git diff --staged --quiet || git commit -m "healthcheck: 누락 포스팅 복구 $(date -u +%Y-%m-%d)"
+          git pull --rebase origin main && git push || true

@@ -11,6 +11,9 @@ on:
         default: 'false'
         type: boolean
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   manual-post:
     runs-on: ubuntu-latest
@@ -45,4 +48,4 @@ jobs:
           git add data/product_registry.json data/feed_posts.json data/posted_ids.json || true
           git add data/manual_queue.json || true
           git diff --staged --quiet || git commit -m "manual: 수동 포스팅 $(date -u +%Y-%m-%d)"
-          git push
+          git pull --rebase origin main && git push

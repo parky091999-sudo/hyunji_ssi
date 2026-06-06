@@ -389,6 +389,10 @@ async def _scrape_collection(page_url: str, source_label: str) -> list[dict]:
         raw_urls = await _scrape_with_playwright(page_url)
 
     if not raw_urls:
+        # 디버깅: 수집된 응답 텍스트 샘플 출력 (inpock URL 포맷 파악용)
+        if "inpock" in page_url and resp:
+            sample = resp.text[:300].replace("\n", " ")
+            logger.info(f"  [debug] inpock HTML 샘플: {sample}")
         logger.warning(f"  링크 없음 — 건너뜀")
         return []
 

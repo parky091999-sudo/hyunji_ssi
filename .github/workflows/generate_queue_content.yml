@@ -1,0 +1,39 @@
+name: Generate Queue Content
+
+on:
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pull latest
+        run: git pull origin main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install groq requests
+
+      - name: Generate content
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python scripts/generate_queue_content.py
+
+      - name: Commit results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/manual_queue.json || true
+          git diff --staged --quiet || git commit -m "auto: 수동 큐 AI 본문 생성 $(date -u +%Y-%m-%d)"
+          git pull --rebase origin main && git push

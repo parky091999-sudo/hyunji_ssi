@@ -1,0 +1,127 @@
+"""
+수동 포스팅 큐 AI 본문 즉시 생성
+post_text가 비어있는 manual_queue 항목에 Groq로 본문 생성
+"""
+import json
+import logging
+import os
+import sys
+from datetime import datetime, timezone, timedelta
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+sys.path.insert(0, ROOT)
+
+from config import DATA_DIR, LOG_DIR, GROQ_API_KEY
+
+QUEUE_PATH = os.path.join(DATA_DIR, "manual_queue.json")
+KST = timezone(timedelta(hours=9))
+
+os.makedirs(LOG_DIR, exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s - %(message)s",
+    handlers=[
+        logging.FileHandler(os.path.join(LOG_DIR, "generate_queue.log"), encoding="utf-8"),
+        logging.StreamHandler(sys.stdout),
+    ],
+)
+logger = logging.getLogger("generate_queue_content")
+
+_POST_SYSTEM = """
+너는 Threads에서 팔로워가 많은 생활용품 큐레이터야.
+"써보니까 좋더라" 하면서 진짜 쓸만한 물건만 콕 집어주는 사람.
+계정 컨셉: "보다가 이게 뭐야 싶은 것들"을 발견해서 소개하는 계정.
+
+출력 형식 (반드시 이 순서, 각 블록은 빈 줄로 구분):
+[훅 1줄 — 스크롤 멈추게 하는 강력한 첫 문장]
+[본문 2~3줄 — 근거·사용법·상황]
+[포인트 2줄 — ✔ 로 시작하는 구체적 활용팁]
+[해시태그 한 줄, 4~5개]
+
+본문 작성 규칙:
+1. 첫 줄(훅)은 무조건 강하게. 공감/발견/후회/호기심 중 하나 느낌으로.
+2. 추측형 절대 금지. 단정·경험·근거형으로.
+3. 상품의 실제 특징·기능을 구체적으로.
+4. 사회적 증거를 자연스럽게 녹여.
+5. ✔ 포인트는 실제 사용 상황을 구체적으로.
+6. 반말, 친근하게. 가격은 언급하지 마.
+7. 이모지는 본문에 1~2개까지만.
+해시태그: 첫 태그 #생활꿀템 고정, 나머지 카테고리·키워드 태그.
+반드시 한국어로만. 텍스트만 출력.
+""".strip()
+
+
+def _generate(product: dict) -> str | None:
+    if not GROQ_API_KEY:
+        return None
+    name  = product.get("name", "")
+    brand = product.get("brand", "")
+    price = product.get("price", "")
+    desc = f"상품명: {name}"
+    if brand:
+        desc += f"\n브랜드: {brand}"
+    if price:
+        desc += f"\n가격대: {price}"
+    prompt = f"{desc}\n\n위 상품에 대한 Threads 포스팅을 작성해줘."
+    try:
+        from groq import Groq
+        client = Groq(api_key=GROQ_API_KEY)
+        resp = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": _POST_SYSTEM},
+                {"role": "user",   "content": prompt},
+            ],
+            max_tokens=500,
+            temperature=0.85,
+        )
+        return resp.choices[0].message.content.strip()
+    except Exception as e:
+        logger.warning(f"  Groq 생성 오류: {e}")
+        return None
+
+
+def run():
+    logger.info("=" * 50)
+    logger.info(f"큐 AI 본문 생성: {datetime.now(KST).strftime('%Y-%m-%d %H:%M KST')}")
+
+    if not os.path.exists(QUEUE_PATH):
+        logger.info("manual_queue.json 없음 — 종료")
+        return
+
+    with open(QUEUE_PATH, encoding="utf-8") as f:
+        queue = json.load(f)
+
+    pending = [i for i, item in enumerate(queue) if not item.get("post_text", "").strip()]
+    logger.info(f"본문 없는 항목: {len(pending)}개")
+
+    if not pending:
+        logger.info("생성 대상 없음")
+        return
+
+    changed = 0
+    for i in pending:
+        item = queue[i]
+        product = item.get("product") or {}
+        name = product.get("name", "")
+        logger.info(f"  생성 중: {name[:40]}")
+        text = _generate(product)
+        if text:
+            queue[i]["post_text"]    = text
+            queue[i]["content_gen_at"] = datetime.now(KST).isoformat()
+            changed += 1
+            logger.info(f"  ✅ 완료")
+        else:
+            logger.warning(f"  생성 실패 — 건너뜀")
+
+    if changed:
+        os.makedirs(DATA_DIR, exist_ok=True)
+        with open(QUEUE_PATH, "w", encoding="utf-8") as f:
+            json.dump(queue, f, ensure_ascii=False, indent=2)
+        logger.info(f"저장 완료: {changed}개 본문 생성됨")
+    else:
+        logger.warning("생성된 본문 없음")
+
+
+if __name__ == "__main__":
+    run()

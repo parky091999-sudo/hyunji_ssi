@@ -20,6 +20,7 @@ from generator.content import generate_post
 
 PENDING_PATH     = os.path.join(DATA_DIR, "pending_post.json")
 POSTED_IDS_PATH  = os.path.join(DATA_DIR, "posted_ids.json")
+REJECTED_PATH    = os.path.join(DATA_DIR, "rejected_products.json")
 CANDIDATES_COUNT = 3
 
 KST = timezone(timedelta(hours=9))
@@ -43,20 +44,32 @@ def _load_posted_ids() -> set[str]:
         return set(json.load(f))
 
 
+def _load_rejected_urls() -> set[str]:
+    if not os.path.exists(REJECTED_PATH):
+        return set()
+    with open(REJECTED_PATH, encoding="utf-8") as f:
+        return set(json.load(f).get("urls", []))
+
+
 def _product_key(product: dict) -> str:
     url = product.get("product_url", "")
     return url[:80] if url else product.get("name", "")[:20]
 
 
-async def _collect_products(need: int, posted_ids: set[str]) -> list[dict]:
+async def _collect_products(need: int, posted_ids: set[str], rejected_urls: set[str] | None = None) -> list[dict]:
+    rejected_urls = rejected_urls or set()
     products = []
+
+    def _is_rejected(p: dict) -> bool:
+        url = p.get("product_url", "")
+        return bool(url and url in rejected_urls)
 
     if YOUTUBE_API_KEY:
         logger.info("YouTube 트렌딩 수집...")
         from scraper.youtube_trending import scrape_trending_products
         yt = scrape_trending_products(max_items=need)
         for p in yt:
-            if _product_key(p) not in posted_ids:
+            if _product_key(p) not in posted_ids and not _is_rejected(p):
                 products.append(p)
         logger.info(f"  → YouTube {len(products)}개")
 
@@ -65,7 +78,7 @@ async def _collect_products(need: int, posted_ids: set[str]) -> list[dict]:
         from scraper.naver_shopping import scrape_deals
         extra = scrape_deals(max_items=need - len(products))
         for p in extra:
-            if _product_key(p) not in posted_ids and p not in products:
+            if _product_key(p) not in posted_ids and p not in products and not _is_rejected(p):
                 products.append(p)
         logger.info(f"  → 누적 {len(products)}개")
 
@@ -75,7 +88,7 @@ async def _collect_products(need: int, posted_ids: set[str]) -> list[dict]:
             from scraper.coupang import scrape_homepage_deals
             extra = await scrape_homepage_deals(max_items=need - len(products))
             for p in extra:
-                if _product_key(p) not in posted_ids and p not in products:
+                if _product_key(p) not in posted_ids and p not in products and not _is_rejected(p):
                     products.append(p)
         except Exception as e:
             logger.warning(f"쿠팡 홈 스크래퍼 실패 (Playwright 미설치 등): {e}")
@@ -85,7 +98,7 @@ async def _collect_products(need: int, posted_ids: set[str]) -> list[dict]:
         from scraper.preset import get_next_preset_product
         while len(products) < need:
             p = get_next_preset_product(posted_ids | {_product_key(x) for x in products})
-            if not p:
+            if not p or _is_rejected(p):
                 break
             products.append(p)
 
@@ -98,9 +111,10 @@ async def run():
     logger.info("=" * 50)
 
     tomorrow = (datetime.now(KST) + timedelta(days=1)).strftime("%Y-%m-%d")
-    posted_ids = _load_posted_ids()
+    posted_ids   = _load_posted_ids()
+    rejected_urls = _load_rejected_urls()
 
-    products = await _collect_products(CANDIDATES_COUNT, posted_ids)
+    products = await _collect_products(CANDIDATES_COUNT, posted_ids, rejected_urls)
     if not products:
         logger.warning("수집 상품 없음 — pending_post.json 업데이트 건너뜀")
         return

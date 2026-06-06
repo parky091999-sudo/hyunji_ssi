@@ -609,6 +609,9 @@ async def run():
     candidates = existing.get("candidates", [])
     existing_pids = {_product_id(c.get("product", {}).get("product_url", "")) for c in candidates} - {None}
 
+    rejected_data = _load_json(os.path.join(DATA_DIR, "rejected_products.json"), {"urls": []})
+    rejected_urls: set[str] = set(rejected_data.get("urls", []))
+
     total_added = 0
 
     for url in urls:
@@ -621,8 +624,9 @@ async def run():
             logger.info(f"[단일] {url[:60]}")
             c = _process_single_url(url)
             if c:
-                pid = _product_id(c["product"]["product_url"])
-                if pid and pid not in existing_pids:
+                prod_url = c["product"].get("product_url", "")
+                pid = _product_id(prod_url)
+                if pid and pid not in existing_pids and prod_url not in rejected_urls:
                     existing_pids.add(pid)
                     candidates.insert(0, c)
                     total_added += 1
@@ -632,7 +636,8 @@ async def run():
             new_items = await _scrape_collection(url, label)
             for c in new_items:
                 pid = _product_id(c["product"]["product_url"])
-                if pid and pid not in existing_pids:
+                url = c["product"].get("product_url", "")
+                if pid and pid not in existing_pids and url not in rejected_urls:
                     existing_pids.add(pid)
                     candidates.insert(0, c)
                     total_added += 1

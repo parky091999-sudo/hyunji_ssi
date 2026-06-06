@@ -606,9 +606,15 @@ async function submitReject() {
   try {
     const pending = _data["data/pending_post.json"];
     if (!pending?.candidates?.[idx]) return;
+    const productUrl = pending.candidates[idx].product?.product_url || "";
     pending.candidates[idx].status           = newStatus;
     pending.candidates[idx].rejection_reason = reason || "(사유 없음)";
     await ghPut("data/pending_post.json", pending, `admin: 후보 ${idx} ${newStatus} — ${(reason||"").slice(0,30)}`);
+
+    // 영구 제외 시 rejected_products.json에 URL 추가
+    if (shouldExclude && productUrl) {
+      await addToRejected(productUrl);
+    }
 
     if (shouldRewrite) {
       try {
@@ -618,11 +624,26 @@ async function submitReject() {
         showToast("✕ 반려됐습니다 (새 후보 수동 선정 필요)");
       }
     } else {
-      showToast(shouldExclude ? "✕ 상품 제외됐습니다" : "✕ 반려됐습니다");
+      showToast(shouldExclude ? "✕ 상품 영구 제외됐습니다" : "✕ 반려됐습니다");
     }
 
     await loadAutoCandidates();
   } catch (e) { showToast("오류: " + e.message); }
+}
+
+// ── 반려 상품 영구 제외 헬퍼 ──────────────────────────────────────────────────
+async function addToRejected(url) {
+  if (!url) return;
+  try {
+    let rejected;
+    try { rejected = await ghGet("data/rejected_products.json"); }
+    catch(_) { rejected = { urls: [], updated_at: "" }; }
+    if (!rejected.urls.includes(url)) {
+      rejected.urls.push(url);
+      rejected.updated_at = new Date().toISOString();
+      await ghPut("data/rejected_products.json", rejected, `admin: 상품 영구 제외`);
+    }
+  } catch(e) { console.error("rejected_products 저장 실패:", e); }
 }
 
 // ── 탭2: 수동 큐 ─────────────────────────────────────────────────────────────
@@ -714,7 +735,33 @@ function renderCheckItem(c, i) {
       <div class="ci-meta">${p.price || ""}${c.source_account ? " · @"+c.source_account : ""}</div>
     </div>
     <div class="ci-box">${_checkedCandidates.has(i) ? "✓" : ""}</div>
+    <button class="qi-del" onclick="event.stopPropagation();rejectCandidate(${i})" title="영구 제외 (다시 안 뜸)">✕</button>
   </div>`;
+}
+
+async function rejectCandidate(i) {
+  const candidatesData = _data["data/manual_candidates.json"];
+  const candidates = candidatesData?.candidates || [];
+  const c = candidates[i];
+  if (!c) return;
+  const name = c.product?.name?.slice(0, 30) || "이 상품";
+  if (!confirm(`"${name}" 를 영구 제외할까요?\n다시는 후보 목록에 표시되지 않습니다.`)) return;
+
+  const url = c.product?.product_url || "";
+
+  // 1. rejected_products.json에 URL 추가
+  if (url) await addToRejected(url);
+
+  // 2. manual_candidates.json에서 해당 항목 삭제
+  try {
+    candidatesData.candidates = candidates.filter((_, idx) => idx !== i);
+    await ghPut("data/manual_candidates.json", candidatesData, `admin: 후보 영구 제외`);
+    _checkedCandidates.delete(i);
+    updateCheckBar();
+    if (_previewSource === "candidate" && _previewIdx === i) closePreview();
+    await loadBenchmarkCandidates();
+    showToast("제외했습니다 (이후 스캔에서도 제외됨)");
+  } catch(e) { showToast("오류: " + e.message); }
 }
 
 function toggleCheckAndPreview(i) {
@@ -744,36 +791,53 @@ function updateCheckBar() {
 
 async function addCheckedToQueue() {
   if (!_checkedCandidates.size) return;
-  const candidates = _data["data/manual_candidates.json"]?.candidates || [];
+  const candidatesData = _data["data/manual_candidates.json"];
+  const candidates = candidatesData?.candidates || [];
   const queue = [...(_data["data/manual_queue.json"] || [])];
 
   const existingUrls = new Set(queue.map(q => q.product?.product_url || ""));
-
-  const toAdd = [..._checkedCandidates].sort((a,b)=>a-b).map(i => candidates[i]).filter(Boolean);
+  const idxsToRemove = new Set();
   let added = 0;
-  for (const c of toAdd) {
+
+  for (const i of [..._checkedCandidates].sort((a,b)=>a-b)) {
+    const c = candidates[i];
+    if (!c) continue;
     const url = c.product?.product_url || "";
     if (url && existingUrls.has(url)) continue;
     existingUrls.add(url);
     queue.push({
-      product:         c.product,
-      image_url:       c.product?.image_url || "",
-      detail_images:   [],
-      post_text:       "",          // 포스팅 시 자동 생성
-      product_code:    "preview",
-      source_account:  c.source_account || "",
-      added_at:        new Date().toISOString(),
+      product:        c.product,
+      image_url:      c.product?.image_url || "",
+      detail_images:  [],
+      post_text:      "",
+      product_code:   "preview",
+      source_account: c.source_account || "",
+      added_at:       new Date().toISOString(),
     });
+    idxsToRemove.add(i);
     added++;
   }
 
+  if (!added) { showToast("추가 가능한 상품이 없습니다"); return; }
+
   try {
     await ghPut("data/manual_queue.json", queue, `admin: 벤치마크 ${added}개 큐 추가`);
+
+    // 후보 목록에서 추가된 항목 삭제
+    candidatesData.candidates = candidates.filter((_, i) => !idxsToRemove.has(i));
+    await ghPut("data/manual_candidates.json", candidatesData, `admin: 후보 ${added}개 큐 이동`);
+
+    // AI 본문 즉시 생성 트리거
+    try {
+      await ghDispatch("generate_queue_content.yml");
+      showToast(`${added}개 추가 · AI 본문 생성 중 (1~2분)`);
+    } catch(_) {
+      showToast(`${added}개 추가됨 (본문은 포스팅 시 생성)`);
+    }
+
     _checkedCandidates.clear();
     updateCheckBar();
-    await loadManualQueue();
-    showToast(`${added}개를 큐에 추가했습니다`);
-    switchTab("manual", document.querySelector('.tab-btn'));
+    await Promise.all([loadManualQueue(), loadBenchmarkCandidates()]);
   } catch(e) { showToast("오류: "+e.message); }
 }
 
@@ -941,7 +1005,8 @@ async function movePreviewToQueue() {
   if (_previewSource !== "candidate" || _previewIdx < 0) {
     showToast("후보 목록에서 상품을 클릭하세요"); return;
   }
-  const candidates = _data["data/manual_candidates.json"]?.candidates || [];
+  const candidatesData = _data["data/manual_candidates.json"];
+  const candidates = candidatesData?.candidates || [];
   const c = candidates[_previewIdx];
   if (!c) return;
   const queue = [...(_data["data/manual_queue.json"] || [])];
@@ -950,24 +1015,38 @@ async function movePreviewToQueue() {
     showToast("이미 큐에 있는 상품입니다"); return;
   }
   const previewText = document.getElementById("preview-post-text").value;
+  const hasText = !!previewText.trim();
   queue.push({
     product: c.product, image_url: c.product?.image_url || "",
     detail_images: [], post_text: previewText,
     product_code: "preview", source_account: c.source_account || "",
     added_at: new Date().toISOString(),
-    edited: !!previewText,
+    edited: hasText,
   });
+  const removedIdx = _previewIdx;
   try {
     await ghPut("data/manual_queue.json", queue, `admin: 후보 큐 추가`);
-    _checkedCandidates.delete(_previewIdx);
+
+    // 후보 목록에서 해당 항목 삭제
+    candidatesData.candidates = candidates.filter((_, i) => i !== removedIdx);
+    await ghPut("data/manual_candidates.json", candidatesData, `admin: 후보 큐 이동`);
+
+    _checkedCandidates.delete(removedIdx);
     updateCheckBar();
-    document.getElementById(`ci-${_previewIdx}`)?.classList.remove("checked","previewing");
-    document.getElementById(`ci-${_previewIdx}`)?.querySelector(".ci-box") && (document.getElementById(`ci-${_previewIdx}`).querySelector(".ci-box").textContent = "");
-    await loadManualQueue();
-    // 프리뷰를 큐의 새 항목으로 전환
-    _previewSource = "queue";
-    _previewIdx = queue.length - 1;
-    showToast("큐에 추가했습니다");
+    closePreview();
+    await Promise.all([loadManualQueue(), loadBenchmarkCandidates()]);
+
+    // 본문이 없으면 AI 즉시 생성
+    if (!hasText) {
+      try {
+        await ghDispatch("generate_queue_content.yml");
+        showToast("큐에 추가 · AI 본문 생성 중 (1~2분)");
+      } catch(_) {
+        showToast("큐에 추가됐습니다");
+      }
+    } else {
+      showToast("큐에 추가됐습니다");
+    }
   } catch(e) { showToast("오류: " + e.message); }
 }
 

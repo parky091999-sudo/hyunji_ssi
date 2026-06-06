@@ -216,6 +216,53 @@ def _fetch_coupang_product(product_url: str) -> dict | None:
     return {"name": name, "image_url": img, "product_url": product_url}
 
 
+def _fetch_coupang_via_naver(product_url: str) -> dict | None:
+    """coupang.com 직접 URL → Naver Shopping API로 상품 정보 조회
+    (GitHub Actions에서 coupang.com 직접 접근 차단 시 대안)
+    """
+    if not NAVER_CLIENT_ID:
+        return None
+
+    # productId 추출 (쿠팡 상품 고유 ID)
+    m = re.search(r"/products/(\d+)", product_url)
+    if not m:
+        return None
+    product_id = m.group(1)
+
+    from config import NAVER_CLIENT_SECRET
+    try:
+        resp = requests.get(
+            "https://openapi.naver.com/v1/search/shop.json",
+            headers={
+                "X-Naver-Client-Id":     NAVER_CLIENT_ID,
+                "X-Naver-Client-Secret": NAVER_CLIENT_SECRET,
+            },
+            params={"query": f"쿠팡 {product_id}", "display": 10, "sort": "sim"},
+            timeout=8, verify=False,
+        )
+        if resp.status_code != 200:
+            return None
+        items = resp.json().get("items", [])
+        for it in items:
+            link = it.get("link", "")
+            if "coupang.com" not in link:
+                continue
+            name = re.sub(r"<[^>]+>", "", it.get("title", "")).strip()
+            if not name:
+                continue
+            lp = int(it.get("lprice", 0) or 0)
+            logger.info(f"  Naver API 우회 조회 성공: {name[:40]}")
+            return {
+                "name":      name,
+                "image_url": it.get("image", ""),
+                "product_url": link,  # Naver가 반환한 coupang 링크 사용
+                "price":     f"{lp:,}원" if lp else "",
+            }
+    except Exception as e:
+        logger.warning(f"  Naver 우회 조회 실패: {e}")
+    return None
+
+
 def _fetch_partner_link_product(partner_url: str) -> dict | None:
     """link.coupang.com 파트너 링크 → pageKey로 네이버 쇼핑 카탈로그에서 상품 정보 조회
     (GitHub Actions에서 coupang.com 직접 접근 차단 우회)
@@ -403,7 +450,12 @@ def _fetch_product_info(coupang_url: str) -> dict | None:
     """파트너 링크 / 직접 URL에 따라 적합한 방법으로 상품 정보 조회"""
     if "link.coupang.com" in coupang_url:
         return _fetch_partner_link_product(coupang_url)
-    return _fetch_coupang_product(coupang_url)
+    # 직접 coupang.com URL: 직접 접근 시도 후 실패 시 Naver API로 우회
+    result = _fetch_coupang_product(coupang_url)
+    if result:
+        return result
+    logger.info(f"  coupang.com 직접 접근 실패 → Naver API 우회 시도")
+    return _fetch_coupang_via_naver(coupang_url)
 
 
 def _process_single_url(url: str) -> dict | None:

@@ -1,6 +1,6 @@
 {
   "for_date": "2026-06-08",
-  "generated_at": "2026-06-07T15:07:21.729687+09:00",
+  "generated_at": "2026-06-07T15:11:52.244017+09:00",
   "candidates": [
     {
       "product": {
@@ -28,6 +28,36 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_5896351/58963512720.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_5896351/58963512720.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "밥도둑세상 국내산간재미 간재미무침 1k 1kg 1개",
+        "price": "24,000원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_5465817/54658171664.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=1950168221&ctag=1950168221&lptag=I3312740152&itemId=3312740152&vendorItemId=70068989986&spec=10305199",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "기타반찬류",
+        "category_hint": "생활",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-07T06:11:35.852092",
+        "youtube_source": {
+          "title": "요즘 꽂혀버린 자취 필수템 3가지",
+          "video_id": "bLxoDc3YocQ",
+          "views": 308432,
+          "keyword": "자취 필수템 추천"
+        }
+      },
+      "post_text": "나 자취하는데 이제 밥도둑 때문에 밥 먹기도 힘들어 🤯\n그래서 이번에 산 간장 때문에 완전 속 편해졌더라\n근데 이 간장은 특별한 이유가 있더라고, 국내산 재미로 만들어져서 그런지 정말 깊은 맛이 나더라고\n리뷰 보니까 거의다 재구매 하는 사람들만 보이더라고\n그래서 이제 나는 간장 있으면 밥도둑한테도 안 질ης는 거 같더라고, 밥도둑도 간장 넣으면 맛있더라고\n✔밥먹을 때✔,✔국물요리할 때✔ 이 간장을 쓰먄 진짜 맛있더라\n\n#생활꿀템 #자취필수템 #간장 #밥도둑탈출 #홈쿡",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5465817/54658171664.jpg",
+      "detail_images": [
+        "https://shopping-phinf.pstatic.net/main_5465817/54658171664.jpg"
       ],
       "product_code": "",
       "status": "pending"

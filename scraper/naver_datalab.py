@@ -18,13 +18,13 @@ DATALAB_URL = "https://openapi.naver.com/v1/datalab/shopping/categories"
 
 # 데이터랩 카테고리 코드 (네이버 공식)
 # 식품은 계정 컨셉(생활꿀템)과 안 맞아서 제외
+# 최대 5개 제한
 CATEGORIES = [
     {"name": "생활/건강",    "param": ["50000009"]},
     {"name": "화장품/미용",  "param": ["50000003"]},
     {"name": "가구/인테리어","param": ["50000005"]},
     {"name": "디지털/가전",  "param": ["50000004"]},
     {"name": "스포츠/레저",  "param": ["50000008"]},
-    {"name": "출산/육아",    "param": ["50000006"]},
 ]
 
 
@@ -69,6 +69,9 @@ def get_trending_categories(top_n: int = 3) -> list[str]:
         logger.info(f"트렌딩 Top {top_n}: {top}")
         return top
 
+    except requests.HTTPError as e:
+        logger.warning(f"데이터랩 API 오류: {e} | {e.response.text[:200] if e.response else ''}")
+        return []
     except Exception as e:
         logger.warning(f"데이터랩 API 오류: {e}")
         return []

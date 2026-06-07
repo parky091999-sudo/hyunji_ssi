@@ -1,5 +1,5 @@
 {
-  "next_code": 8,
+  "next_code": 9,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -61,6 +61,15 @@
       "name": "비즈 목덜이 넥밴드 선풍기 2개   화이트1+1 BZ-FL20",
       "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5954126991&ctag=5954126991&lptag=I19303587546&itemId=19303587546&vendorItemId=92075466958&spec=10305198",
       "image_url": "https://shopping-phinf.pstatic.net/main_5924557/59245572574.1.jpg",
+      "posted": true
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=1950168221&ctag=1950168221&lpt": {
+      "code": "008",
+      "name": "밥도둑세상 국내산간재미 간재미무침 1k 1kg 1개",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=1950168221&ctag=1950168221&lptag=I3312740152&itemId=3312740152&vendorItemId=70068989986&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5465817/54658171664.jpg",
+      "category": "생활",
+      "registered_at": "2026-06-07T22:20:14.665107+09:00",
       "posted": true
     }
   }

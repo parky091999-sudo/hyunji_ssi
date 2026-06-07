@@ -24,7 +24,8 @@
         "https://shopping-phinf.pstatic.net/main_6017188/60171886211.jpg"
       ],
       "product_code": "",
-      "status": "pending"
+      "status": "rejected",
+      "rejection_reason": "(사유 없음)"
     },
     {
       "product": {

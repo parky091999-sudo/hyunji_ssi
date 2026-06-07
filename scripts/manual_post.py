@@ -143,7 +143,7 @@ async def run():
         # 페이지 노출용 posted 플래그
         if code:
             from generator.registry import mark_posted
-            mark_posted(code)
+            mark_posted(code, category=product.get("category_hint", ""))
 
     feed = _load_json(FEED_POSTS_PATH, [])
     feed.insert(0, {

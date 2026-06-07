@@ -50,4 +50,4 @@ jobs:
           git add data/manual_queue.json || true
           git add -u || true
           git diff --staged --quiet || git commit -m "manual: 수동 포스팅 $(date -u +%Y-%m-%d)"
-          git pull --rebase origin main && git push
+          git pull --rebase -X ours origin main && git push

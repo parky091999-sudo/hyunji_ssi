@@ -18,6 +18,23 @@
     --text: #f0f0f0;
     --text2: #777;
     --radius: 16px;
+    --ticker-bg: linear-gradient(90deg, #1a0a00, #2a1000, #1a0a00);
+    --ticker-border: rgba(255,107,53,0.3);
+    --ticker-color: rgba(255,209,102,0.9);
+    --header-bg: rgba(13,13,13,0.9);
+  }
+
+  body.light {
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --surface2: #efefef;
+    --border: #dedede;
+    --text: #111111;
+    --text2: #888888;
+    --ticker-bg: linear-gradient(90deg, #fff3ed, #fff0e6, #fff3ed);
+    --ticker-border: rgba(255,107,53,0.2);
+    --ticker-color: rgba(180,80,20,0.9);
+    --header-bg: rgba(245,245,245,0.95);
   }
 
   body {
@@ -25,12 +42,13 @@
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    transition: background .2s, color .2s;
   }
 
-  /* ── 쿠팡파트너스 티커 ── */
+  /* ── 티커 ── */
   .ticker-wrap {
-    background: linear-gradient(90deg, #1a0a00, #2a1000, #1a0a00);
-    border-bottom: 1px solid rgba(255,107,53,0.3);
+    background: var(--ticker-bg);
+    border-bottom: 1px solid var(--ticker-border);
     overflow: hidden;
     padding: 7px 0;
     position: sticky;
@@ -45,7 +63,7 @@
   .ticker-track:hover { animation-play-state: paused; }
   .ticker-text {
     font-size: 0.72rem;
-    color: rgba(255,209,102,0.9);
+    color: var(--ticker-color);
     white-space: nowrap;
     padding-right: 40px;
     letter-spacing: 0.02em;
@@ -57,7 +75,7 @@
 
   /* ── 헤더 ── */
   header {
-    background: rgba(13,13,13,0.9);
+    background: var(--header-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
@@ -89,7 +107,7 @@
   }
   .header-btns {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     flex-shrink: 0;
   }
   .icon-btn {
@@ -108,10 +126,7 @@
     white-space: nowrap;
     text-decoration: none;
   }
-  .icon-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
   .icon-btn svg { width: 13px; height: 13px; fill: currentColor; }
 
   .search-wrap {
@@ -142,10 +157,38 @@
   #search:focus { border-color: var(--accent); }
   #search::placeholder { color: var(--text2); }
 
-  /* ── 컨트롤 바 (정렬 + 뷰모드) ── */
+  /* ── 카테고리 필터 ── */
+  .cat-wrap {
+    max-width: 640px;
+    margin: 12px auto 0;
+    padding: 0 14px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .cat-pill {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .cat-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .cat-pill.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* ── 컨트롤 바 ── */
   .control-bar {
     max-width: 640px;
-    margin: 13px auto 0;
+    margin: 12px auto 0;
     padding: 0 14px;
     display: flex;
     align-items: center;
@@ -154,7 +197,6 @@
   }
   .count-label { font-size: 0.74rem; color: var(--text2); flex-shrink: 0; }
 
-  /* 정렬 탭 */
   .sort-tabs {
     display: flex;
     gap: 4px;
@@ -174,12 +216,8 @@
     border: none;
     background: transparent;
   }
-  .sort-tab.active {
-    background: var(--accent);
-    color: #fff;
-  }
+  .sort-tab.active { background: var(--accent); color: #fff; }
 
-  /* 뷰 모드 토글 */
   .view-toggle {
     display: flex;
     gap: 4px;
@@ -201,145 +239,10 @@
     transition: all .15s;
     color: var(--text2);
   }
-  .view-btn.active {
-    background: var(--surface);
-    color: var(--accent);
-    border: 1px solid var(--border);
-  }
+  .view-btn.active { background: var(--surface); color: var(--accent); border: 1px solid var(--border); }
   .view-btn svg { width: 14px; height: 14px; fill: currentColor; }
 
-  /* ── 그리드 (카드형) ── */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
-    gap: 12px;
-    padding: 12px 14px 28px;
-    max-width: 640px;
-    margin: 0 auto;
-    transition: all .2s;
-  }
-
-  /* ── 리스트형 ── */
-  .grid.list-view {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  .grid.list-view .card {
-    flex-direction: row;
-    height: 120px;
-  }
-  .grid.list-view .card img {
-    width: 120px;
-    height: 120px;
-    aspect-ratio: 1 / 1;
-    flex-shrink: 0;
-    border-radius: var(--radius) 0 0 var(--radius);
-  }
-  .grid.list-view .card-body {
-    padding: 10px 12px;
-    justify-content: center;
-    gap: 6px;
-  }
-  .grid.list-view .badge-row { margin-bottom: 0; }
-  .grid.list-view .name {
-    -webkit-line-clamp: 2;
-    margin-bottom: 0;
-    font-size: 0.84rem;
-  }
-  .grid.list-view .btn {
-    padding: 6px 10px;
-    font-size: 0.72rem;
-    width: fit-content;
-  }
-
-  /* ── 카드 공통 ── */
-  .card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    transition: transform .2s ease, border-color .2s, box-shadow .2s;
-  }
-  .card:hover {
-    transform: translateY(-3px);
-    border-color: #3a3a3a;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.45);
-  }
-  .grid.list-view .card:hover {
-    transform: translateX(3px);
-  }
-  .card img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    background: #1f1f1f;
-    display: block;
-  }
-  .card.no-img img { display: none; }
-  .card-body {
-    padding: 10px 10px 12px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-  .badge-row {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 7px;
-    flex-wrap: wrap;
-  }
-  .badge {
-    display: inline-block;
-    background: rgba(255,107,53,0.12);
-    color: var(--accent);
-    font-size: 0.67rem;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,107,53,0.25);
-    flex-shrink: 0;
-  }
-  .badge-new {
-    display: inline-block;
-    background: rgba(255,209,102,0.12);
-    color: var(--accent2);
-    font-size: 0.62rem;
-    font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,209,102,0.25);
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
-  }
-  .badge-hot {
-    display: inline-block;
-    background: rgba(255,59,59,0.12);
-    color: #FF6B6B;
-    font-size: 0.62rem;
-    font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,59,59,0.25);
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
-  }
-  .badge-best {
-    display: inline-block;
-    background: rgba(80,220,120,0.12);
-    color: #50DC78;
-    font-size: 0.62rem;
-    font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 20px;
-    border: 1px solid rgba(80,220,120,0.25);
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
-  }
-
-  /* ── BEST/HOT 캐러셀 ── */
+  /* ── 추천 섹션 ── */
   .featured-section {
     padding: 14px 14px 0;
     max-width: 640px;
@@ -356,6 +259,9 @@
     align-items: center;
     gap: 5px;
   }
+  .carousel-outer {
+    position: relative;
+  }
   .carousel-wrap {
     overflow-x: auto;
     scrollbar-width: none;
@@ -366,7 +272,34 @@
     display: flex;
     gap: 10px;
     padding-bottom: 4px;
+    padding-left: 2px;
+    padding-right: 2px;
   }
+  .arrow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text2);
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: all .15s;
+    line-height: 1;
+    padding: 0;
+  }
+  .arrow-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .arrow-btn.left  { left: -4px; }
+  .arrow-btn.right { right: -4px; }
+
   .c-card {
     flex: 0 0 130px;
     background: var(--surface);
@@ -410,155 +343,89 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  .name {
-    font-size: 0.79rem;
-    line-height: 1.5;
-    color: #c0c0c0;
-    flex: 1;
-    margin-bottom: 10px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+
+  /* ── 그리드 ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+    gap: 12px;
+    padding: 12px 14px 28px;
+    max-width: 640px;
+    margin: 0 auto;
+    transition: all .2s;
+  }
+  .grid.list-view { grid-template-columns: 1fr; gap: 10px; }
+  .grid.list-view .card { flex-direction: row; height: 120px; }
+  .grid.list-view .card img { width: 120px; height: 120px; aspect-ratio: 1/1; flex-shrink: 0; border-radius: var(--radius) 0 0 var(--radius); }
+  .grid.list-view .card-body { padding: 10px 12px; justify-content: center; gap: 6px; }
+  .grid.list-view .badge-row { margin-bottom: 0; }
+  .grid.list-view .name { -webkit-line-clamp: 2; margin-bottom: 0; font-size: 0.84rem; }
+  .grid.list-view .btn { padding: 6px 10px; font-size: 0.72rem; width: fit-content; }
+
+  /* ── 카드 ── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
     overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: transform .2s ease, border-color .2s, box-shadow .2s;
   }
-  .btn {
-    display: block;
-    text-align: center;
-    background: var(--accent);
-    color: #fff;
-    text-decoration: none;
-    padding: 8px 6px;
-    border-radius: 10px;
-    font-size: 0.75rem;
+  .card:hover { transform: translateY(-3px); border-color: #3a3a3a; box-shadow: 0 10px 28px rgba(0,0,0,0.45); }
+  body.light .card:hover { box-shadow: 0 10px 28px rgba(0,0,0,0.12); border-color: #ccc; }
+  .grid.list-view .card:hover { transform: translateX(3px); }
+  .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: var(--surface2); display: block; }
+  .card.no-img img { display: none; }
+  .card-body { padding: 10px 10px 12px; display: flex; flex-direction: column; flex: 1; }
+  .badge-row { display: flex; align-items: center; gap: 5px; margin-bottom: 7px; flex-wrap: wrap; }
+  .badge {
+    display: inline-block;
+    background: rgba(255,107,53,0.12);
+    color: var(--accent);
+    font-size: 0.67rem;
     font-weight: 700;
-    transition: opacity .15s;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,107,53,0.25);
+    flex-shrink: 0;
   }
+  .badge-new  { display: inline-block; background: rgba(255,209,102,0.12); color: var(--accent2); font-size: 0.62rem; font-weight: 800; padding: 2px 6px; border-radius: 20px; border: 1px solid rgba(255,209,102,0.25); letter-spacing: 0.04em; flex-shrink: 0; }
+  .badge-hot  { display: inline-block; background: rgba(255,107,53,0.12); color: #FF6B6B; font-size: 0.62rem; font-weight: 800; padding: 2px 6px; border-radius: 20px; border: 1px solid rgba(255,59,59,0.25); letter-spacing: 0.04em; flex-shrink: 0; }
+  .badge-best { display: inline-block; background: rgba(80,220,120,0.12); color: #50DC78; font-size: 0.62rem; font-weight: 800; padding: 2px 6px; border-radius: 20px; border: 1px solid rgba(80,220,120,0.25); letter-spacing: 0.04em; flex-shrink: 0; }
+  .name { font-size: 0.79rem; line-height: 1.5; color: #c0c0c0; flex: 1; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  body.light .name { color: #444; }
+  .btn { display: block; text-align: center; background: var(--accent); color: #fff; text-decoration: none; padding: 8px 6px; border-radius: 10px; font-size: 0.75rem; font-weight: 700; transition: opacity .15s; }
   .btn:hover { opacity: 0.82; }
 
-  .empty, #no-result {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text2);
-    font-size: 0.88rem;
-    grid-column: 1 / -1;
-  }
+  .empty, #no-result { text-align: center; padding: 60px 20px; color: var(--text2); font-size: 0.88rem; grid-column: 1 / -1; }
   #no-result { display: none; }
 
   /* ── 푸터 ── */
-  footer {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 0 14px 48px;
-  }
-  .disclosure-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 13px 16px;
-    margin-bottom: 14px;
-  }
-  .disclosure-title {
-    font-size: 0.68rem;
-    font-weight: 700;
-    color: #555;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-  }
-  .disclosure-text {
-    font-size: 0.7rem;
-    color: var(--text2);
-    line-height: 1.65;
-  }
-  .footer-copy {
-    font-size: 0.65rem;
-    color: #333;
-    text-align: center;
-  }
+  footer { max-width: 640px; margin: 0 auto; padding: 0 14px 48px; }
+  .disclosure-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 13px 16px; margin-bottom: 14px; }
+  .disclosure-title { font-size: 0.68rem; font-weight: 700; color: #555; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px; }
+  .disclosure-text { font-size: 0.7rem; color: var(--text2); line-height: 1.65; }
+  .footer-copy { font-size: 0.65rem; color: #333; text-align: center; }
 
   /* ── QR 모달 ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    backdrop-filter: blur(8px);
-    z-index: 500;
-    align-items: center;
-    justify-content: center;
-  }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 500; align-items: center; justify-content: center; }
   .modal-overlay.open { display: flex; }
-  .modal-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 28px 24px 22px;
-    max-width: 300px;
-    width: 90%;
-    text-align: center;
-  }
-  .modal-title {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 18px;
-    color: var(--text);
-  }
-  #qr-canvas {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 14px;
-  }
-  #qr-canvas canvas, #qr-canvas img {
-    border-radius: 10px;
-    border: 6px solid #fff;
-  }
-  .modal-url {
-    font-size: 0.65rem;
-    color: var(--text2);
-    word-break: break-all;
-    margin-bottom: 16px;
-    line-height: 1.5;
-  }
-  .modal-close {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--text2);
-    font-size: 0.82rem;
-    font-weight: 600;
-    padding: 8px 20px;
-    cursor: pointer;
-    transition: all .15s;
-  }
+  .modal-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px 24px 22px; max-width: 300px; width: 90%; text-align: center; }
+  .modal-title { font-size: 1rem; font-weight: 700; margin-bottom: 18px; color: var(--text); }
+  #qr-canvas { display: flex; justify-content: center; margin-bottom: 14px; }
+  #qr-canvas canvas, #qr-canvas img { border-radius: 10px; border: 6px solid #fff; }
+  .modal-url { font-size: 0.65rem; color: var(--text2); word-break: break-all; margin-bottom: 16px; line-height: 1.5; }
+  .modal-close { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text2); font-size: 0.82rem; font-weight: 600; padding: 8px 20px; cursor: pointer; transition: all .15s; }
   .modal-close:hover { border-color: #555; color: var(--text); }
 
-  /* ── 공유 토스트 ── */
-  .toast {
-    position: fixed;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: #222;
-    border: 1px solid #444;
-    border-radius: 24px;
-    padding: 10px 20px;
-    font-size: 0.82rem;
-    color: var(--text);
-    opacity: 0;
-    transition: all .3s;
-    z-index: 600;
-    white-space: nowrap;
-    pointer-events: none;
-  }
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  /* ── 토스트 ── */
+  .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: #222; border: 1px solid #444; border-radius: 24px; padding: 10px 20px; font-size: 0.82rem; color: var(--text); opacity: 0; transition: all .3s; z-index: 600; white-space: nowrap; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- 쿠팡파트너스 안내 티커 -->
 <div class="ticker-wrap">
   <div class="ticker-track">
     <span class="ticker-text">📢   ·  이 페이지의 링크는 쿠팡파트너스 활동의 일환으로, 구매 시 일정액의 수수료를 제공받을 수 있습니다  ·  이 페이지의 링크는 쿠팡파트너스 활동의 일환으로, 구매 시 일정액의 수수료를 제공받을 수 있습니다  ·  이 페이지의 링크는 쿠팡파트너스 활동의 일환으로, 구매 시 일정액의 수수료를 제공받을 수 있습니다  ·  이 페이지의 링크는 쿠팡파트너스 활동의 일환으로, 구매 시 일정액의 수수료를 제공받을 수 있습니다  ·  이 페이지의 링크는 쿠팡파트너스 활동의 일환으로, 구매 시 일정액의 수수료를 제공받을 수 있습니다  ·  이 페이지의 링크는 쿠팡파트너스 활동의 일환으로, 구매 시 일정액의 수수료를 제공받을 수 있습니다</span>
@@ -568,39 +435,41 @@
 
 <header>
   <div class="header-top">
-    <div style="width:60px"></div>
+    <div style="width:50px"></div>
     <div class="logo">🍯 <span class="accent">꿀픽</span></div>
     <div class="header-btns">
+      <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="다크/라이트">☀️</button>
       <button class="icon-btn" onclick="showQR()" title="QR코드">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 3h7v7H3V3zm2 2v3h3V5H5zm9-2h7v7h-7V3zm2 2v3h3V5h-3zM3 14h7v7H3v-7zm2 2v3h3v-3H5zm11 0h2v2h-2v-2zm2 2h2v2h-2v-2zm-4 0h2v2h-2v-2zm4-4h2v2h-2v-2zm-4 4h2v2h-2v-2zm4 4h2v2h-2v-2zm-2-2h2v2h-2v-2z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3V3zm2 2v3h3V5H5zm9-2h7v7h-7V3zm2 2v3h3V5h-3zM3 14h7v7H3v-7zm2 2v3h3v-3H5zm11 0h2v2h-2v-2zm2 2h2v2h-2v-2zm-4 0h2v2h-2v-2zm4-4h2v2h-2v-2zm-4 4h2v2h-2v-2zm4 4h2v2h-2v-2zm-2-2h2v2h-2v-2z"/></svg>
         QR
       </button>
       <button class="icon-btn" onclick="sharePage()" title="공유">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
         공유
       </button>
     </div>
   </div>
-
   <div class="tagline">매일 하나씩, 진짜 쓸만한 것들만</div>
   <div class="search-wrap">
     <input type="search" id="search" placeholder="코드(예: 027) 또는 상품명 검색" autocomplete="off" inputmode="search">
   </div>
 </header>
 
-<!-- BEST/HOT 캐러셀 -->
+<div class="cat-wrap" id="cat-wrap">
+  <button class="cat-pill active" data-cat="전체" onclick="filterCat(this)">전체</button><button class="cat-pill" data-cat="뷰티" onclick="filterCat(this)">뷰티</button><button class="cat-pill" data-cat="주방" onclick="filterCat(this)">주방</button><button class="cat-pill" data-cat="생활" onclick="filterCat(this)">생활</button><button class="cat-pill" data-cat="디지털/가전" onclick="filterCat(this)">디지털/가전</button><button class="cat-pill" data-cat="인테리어" onclick="filterCat(this)">인테리어</button><button class="cat-pill" data-cat="기타" onclick="filterCat(this)">기타</button>
+</div>
+
 <div class="featured-section" id="featured-section">
   <div class="featured-title">✨ 추천 상품</div>
-  <div class="carousel-wrap">
-    <div class="carousel-row" id="carousel-row"></div>
+  <div class="carousel-outer">
+    <button class="arrow-btn left" onclick="scrollCarousel(-1)">‹</button>
+    <div class="carousel-wrap">
+      <div class="carousel-row" id="carousel-row"></div>
+    </div>
+    <button class="arrow-btn right" onclick="scrollCarousel(1)">›</button>
   </div>
 </div>
 
-<!-- 컨트롤 바: 카운트 + 정렬 + 뷰모드 -->
 <div class="control-bar">
   <span class="count-label" id="count-label">상품 7개</span>
 
@@ -609,14 +478,10 @@
     <button class="sort-tab active" id="tab-newest" onclick="setSort('newest')">최신순</button>
     <button class="sort-tab" id="tab-popular" onclick="setSort('popular')">인기순</button>
   </div>
-
-  <!-- 뷰 모드 토글 -->
   <div class="view-toggle">
-    <!-- 그리드 아이콘 -->
     <button class="view-btn active" id="btn-grid" onclick="setView('grid')" title="카드형">
       <svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
     </button>
-    <!-- 리스트 아이콘 -->
     <button class="view-btn" id="btn-list" onclick="setView('list')" title="리스트형">
       <svg viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="3" rx="1"/><rect x="1" y="7" width="14" height="3" rx="1"/><rect x="1" y="12" width="14" height="3" rx="1"/></svg>
     </button>
@@ -641,24 +506,22 @@
       <div class="card-body">
         <div class="badge-row">
           <span class="badge">[006]</span>
-          <span class="badge-new">NEW</span>
         </div>
         <p class="name">쿠쿠 식기세척기 6인용 CDW-A0611TW 방문설치</p>
-        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5655029966&ctag=5655029966&lptag=I9265334954&itemId=9265334954&vendorItemId=71163768673&spec=10305199" target="_blank" rel="noopener noreferrer" class="btn">쿠팡에서 보기 →</a>
+        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5655029966&ctag=5655029966&lptag=I9265334954&itemId=9265334954&vendorItemId=71163768673&spec=10305199" target="_blank" rel="noopener noreferrer" class="btn" onclick="recordClick('006')">쿠팡에서 보기 →</a>
       </div>
     </div>
-    <div class="card" data-code="005" data-name="데코아르 스마트 자동센서 스테인레스 휴지통 (20l 전용)">
+    <div class="card" data-code="005" data-name="데코아르 스마트 자동센서 스테인레스 휴지통 (20l 전용)" data-category="생활">
       <img src="https://shopping-phinf.pstatic.net/main_5771787/57717876802.jpg" alt="데코아르 스마트 자동센서 스테인레스 휴지통 (20L 전용)" loading="lazy" onerror="this.parentElement.classList.add('no-img')">
       <div class="card-body">
         <div class="badge-row">
           <span class="badge">[005]</span>
-          <span class="badge-new">NEW</span>
         </div>
         <p class="name">데코아르 스마트 자동센서 스테인레스 휴지통 (20L 전용)</p>
-        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6582577923&ctag=6582577923&lptag=l050201694728&itemId=40208950176&vendorItemId=92082014509&spec=10305198" target="_blank" rel="noopener noreferrer" class="btn">쿠팡에서 보기 →</a>
+        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6582577923&ctag=6582577923&lptag=l050201694728&itemId=40208950176&vendorItemId=92082014509&spec=10305198" target="_blank" rel="noopener noreferrer" class="btn" onclick="recordClick('005')">쿠팡에서 보기 →</a>
       </div>
     </div>
-    <div class="card" data-code="004" data-name="산리오 헬로키티 미니 물 정수기 디스펜서 2l 핑크">
+    <div class="card" data-code="004" data-name="산리오 헬로키티 미니 물 정수기 디스펜서 2l 핑크" data-category="주방">
       <img src="https://shopping-phinf.pstatic.net/main_5880827/58808274258.jpg" alt="산리오 헬로키티 미니 물 정수기 디스펜서 2L 핑크" loading="lazy" onerror="this.parentElement.classList.add('no-img')">
       <div class="card-body">
         <div class="badge-row">
@@ -666,40 +529,37 @@
           
         </div>
         <p class="name">산리오 헬로키티 미니 물 정수기 디스펜서 2L 핑크</p>
-        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8645052268&ctag=8645052268&lptag=P8645052268&itemId=27727944467&vendorItemId=94689248135&spec=10305199" target="_blank" rel="noopener noreferrer" class="btn">쿠팡에서 보기 →</a>
+        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8645052268&ctag=8645052268&lptag=P8645052268&itemId=27727944467&vendorItemId=94689248135&spec=10305199" target="_blank" rel="noopener noreferrer" class="btn" onclick="recordClick('004')">쿠팡에서 보기 →</a>
       </div>
     </div>
-    <div class="card" data-code="003" data-name="clabo 딥클린 샴푸 트로피칼 시트러스 960ml 2개 약산성 두피케어">
+    <div class="card" data-code="003" data-name="clabo 딥클린 샴푸 트로피칼 시트러스 960ml 2개 약산성 두피케어" data-category="뷰티">
       <img src="https://shopping-phinf.pstatic.net/main_5720025/57200255943.jpg" alt="CLABO 딥클린 샴푸 트로피칼 시트러스 960ml 2개 약산성 두피케어" loading="lazy" onerror="this.parentElement.classList.add('no-img')">
       <div class="card-body">
         <div class="badge-row">
           <span class="badge">[003]</span>
-          
         </div>
         <p class="name">CLABO 딥클린 샴푸 트로피칼 시트러스 960ml 2개 약산성 두피케어</p>
-        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5652252849&ctag=5652252849&lptag=I8574817075&itemId=8574817075&vendorItemId=92419089816&spec=10305197" target="_blank" rel="noopener noreferrer" class="btn">쿠팡에서 보기 →</a>
+        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5652252849&ctag=5652252849&lptag=I8574817075&itemId=8574817075&vendorItemId=92419089816&spec=10305197" target="_blank" rel="noopener noreferrer" class="btn" onclick="recordClick('003')">쿠팡에서 보기 →</a>
       </div>
     </div>
-    <div class="card" data-code="002" data-name="네오플램 아르코 우디스텐 도마 우드화이버 원목 압축도마 1개 패들">
+    <div class="card" data-code="002" data-name="네오플램 아르코 우디스텐 도마 우드화이버 원목 압축도마 1개 패들" data-category="주방">
       <img src="https://shopping-phinf.pstatic.net/main_5912012/59120122138.jpg" alt="네오플램 아르코 우디스텐 도마 우드화이버 원목 압축도마 1개 패들" loading="lazy" onerror="this.parentElement.classList.add('no-img')">
       <div class="card-body">
         <div class="badge-row">
           <span class="badge">[002]</span>
-          
         </div>
         <p class="name">네오플램 아르코 우디스텐 도마 우드화이버 원목 압축도마 1개 패들</p>
-        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9398328940&ctag=9398328940&lptag=I27914508308&itemId=27914508308&vendorItemId=94873137382&spec=10305199" target="_blank" rel="noopener noreferrer" class="btn">쿠팡에서 보기 →</a>
+        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9398328940&ctag=9398328940&lptag=I27914508308&itemId=27914508308&vendorItemId=94873137382&spec=10305199" target="_blank" rel="noopener noreferrer" class="btn" onclick="recordClick('002')">쿠팡에서 보기 →</a>
       </div>
     </div>
-    <div class="card" data-code="001" data-name="라비드 비비드 퍼플 속건조 케어 수분 크림 50g 2개">
+    <div class="card" data-code="001" data-name="라비드 비비드 퍼플 속건조 케어 수분 크림 50g 2개" data-category="뷰티">
       <img src="https://shopping-phinf.pstatic.net/main_5539049/55390497493.9.jpg" alt="라비드 비비드 퍼플 속건조 케어 수분 크림 50g 2개" loading="lazy" onerror="this.parentElement.classList.add('no-img')">
       <div class="card-body">
         <div class="badge-row">
           <span class="badge">[001]</span>
-          
         </div>
         <p class="name">라비드 비비드 퍼플 속건조 케어 수분 크림 50g 2개</p>
-        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lptag=I25798233944&itemId=25798233944&vendorItemId=92800900135&spec=10305199" target="_blank" rel="noopener noreferrer" class="btn">쿠팡에서 보기 →</a>
+        <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lptag=I25798233944&itemId=25798233944&vendorItemId=92800900135&spec=10305199" target="_blank" rel="noopener noreferrer" class="btn" onclick="recordClick('001')">쿠팡에서 보기 →</a>
       </div>
     </div>
   <div id="no-result">검색 결과가 없습니다</div>
@@ -716,7 +576,6 @@
   <div class="footer-copy">© 꿀픽</div>
 </footer>
 
-<!-- QR 모달 -->
 <div id="qr-modal" class="modal-overlay" onclick="hideQR()">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-title">📱 QR코드로 공유</div>
@@ -726,97 +585,180 @@
   </div>
 </div>
 
-<!-- 공유 토스트 -->
 <div class="toast" id="toast">링크가 복사됐어요 ✓</div>
 
 <script>
   /* ── 상품 데이터 (Python 주입) ── */
   const PRODUCTS_DATA = [{"code": "001", "name": "라비드 비비드 퍼플 속건조 케어 수분 크림 50g 2개", "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lptag=I25798233944&itemId=25798233944&vendorItemId=92800900135&spec=10305199", "image_url": "https://shopping-phinf.pstatic.net/main_5539049/55390497493.9.jpg"}, {"code": "002", "name": "네오플램 아르코 우디스텐 도마 우드화이버 원목 압축도마 1개 패들", "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9398328940&ctag=9398328940&lptag=I27914508308&itemId=27914508308&vendorItemId=94873137382&spec=10305199", "image_url": "https://shopping-phinf.pstatic.net/main_5912012/59120122138.jpg"}, {"code": "003", "name": "CLABO 딥클린 샴푸 트로피칼 시트러스 960ml 2개 약산성 두피케어", "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5652252849&ctag=5652252849&lptag=I8574817075&itemId=8574817075&vendorItemId=92419089816&spec=10305197", "image_url": "https://shopping-phinf.pstatic.net/main_5720025/57200255943.jpg"}, {"code": "004", "name": "산리오 헬로키티 미니 물 정수기 디스펜서 2L 핑크", "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8645052268&ctag=8645052268&lptag=P8645052268&itemId=27727944467&vendorItemId=94689248135&spec=10305199", "image_url": "https://shopping-phinf.pstatic.net/main_5880827/58808274258.jpg"}, {"code": "005", "name": "데코아르 스마트 자동센서 스테인레스 휴지통 (20L 전용)", "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6582577923&ctag=6582577923&lptag=l050201694728&itemId=40208950176&vendorItemId=92082014509&spec=10305198", "image_url": "https://shopping-phinf.pstatic.net/main_5771787/57717876802.jpg"}, {"code": "006", "name": "쿠쿠 식기세척기 6인용 CDW-A0611TW 방문설치", "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5655029966&ctag=5655029966&lptag=I9265334954&itemId=9265334954&vendorItemId=71163768673&spec=10305199", "image_url": "https://shopping-phinf.pstatic.net/main_5932285/59322851701.1.jpg"}, {"code": "007", "name": "비즈 목덜이 넥밴드 선풍기 2개   화이트1+1 BZ-FL20", "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5954126991&ctag=5954126991&lptag=I19303587546&itemId=19303587546&vendorItemId=92075466958&spec=10305198", "image_url": "https://shopping-phinf.pstatic.net/main_5924557/59245572574.1.jpg"}];
 
-  /* ── 클릭 트래킹 ── */
-  const CLICK_KEY = 'kkul_clicks';
-  const HOT_THRESHOLD  = 3;
-  const BEST_THRESHOLD = 8;
-
-  function loadClicks() {
-    try { return JSON.parse(localStorage.getItem(CLICK_KEY) || '{}'); }
-    catch { return {}; }
-  }
-  function saveClicks(data) {
-    localStorage.setItem(CLICK_KEY, JSON.stringify(data));
+  /* ── 카테고리 자동 추론 ── */
+  function inferCategory(name) {
+    const n = name.toLowerCase();
+    if (/크림|샴푸|세럼|마스크팩|화장품|뷰티|헤어|두피|클렌징|세안|렌즈|로션|에센스|토너|선크림/.test(n)) return '뷰티';
+    if (/도마|식기세척기|주방|냄비|프라이팬|에어프라이어|정수기|조리|커피|그릇|칼|가위|집게/.test(n)) return '주방';
+    if (/휴지통|청소기|세탁|수납|정리함|쓰레기|걸레|진공|빨래|청소/.test(n)) return '생활';
+    if (/이어폰|블루투스|충전기|스마트워치|가전|전자|스피커|노트북|태블릿|키보드/.test(n)) return '디지털/가전';
+    if (/조명|무드등|디퓨저|인테리어|선반|수납장|커튼|러그/.test(n)) return '인테리어';
+    return '기타';
   }
 
-  function getClickCount(code) {
-    return loadClicks()[code] || 0;
+  function getCardCategory(card) {
+    const stored = (card.dataset.category || '').trim();
+    return stored || inferCategory(card.dataset.name || '');
   }
 
-  function applyClickBadges() {
+  /* ── 클릭 저장소 ── */
+  const CLICKS_KEY  = 'kkul_clicks';
+  const TS_KEY      = 'kkul_ts';
+  const THEME_KEY   = 'kkul_theme';
+  const VIEW_KEY    = 'kkul_view';
+
+  function loadClicks() { try { return JSON.parse(localStorage.getItem(CLICKS_KEY) || '{}'); } catch { return {}; } }
+  function saveClicks(d) { localStorage.setItem(CLICKS_KEY, JSON.stringify(d)); }
+  function loadTs()     { try { return JSON.parse(localStorage.getItem(TS_KEY) || '{}'); } catch { return {}; } }
+  function saveTs(d)    { localStorage.setItem(TS_KEY, JSON.stringify(d)); }
+
+  function recordClick(code) {
+    // 총 클릭수
     const clicks = loadClicks();
+    clicks[code] = (clicks[code] || 0) + 1;
+    saveClicks(clicks);
+
+    // 타임스탬프 (30일 보관)
+    const ts = loadTs();
+    if (!ts[code]) ts[code] = [];
+    ts[code].push(Date.now());
+    const cutoff30 = Date.now() - 30 * 86400000;
+    ts[code] = ts[code].filter(t => t > cutoff30);
+    saveTs(ts);
+
+    applyBadges();
+  }
+
+  /* ── 뱃지 계산 ──
+     NEW  : registered_at 기준 48시간 이내 신규 상품
+     BEST : 전체 누적 클릭 상위 5% (최소 3클릭, 최대 20개)
+     HOT  : 최근 48시간 내 2회 이상 클릭, BEST 아닌 상품
+  */
+  function computeBadges() {
+    const clicks  = loadClicks();
+    const ts      = loadTs();
+    const now     = Date.now();
+    const MS_48H  = 48 * 3600000;
+    const MIN_CLICKS = 3;
+
+    // BEST
+    const withClicks = PRODUCTS_DATA
+      .map(p => ({ code: p.code, cnt: clicks[p.code] || 0 }))
+      .filter(x => x.cnt >= MIN_CLICKS)
+      .sort((a, b) => b.cnt - a.cnt);
+    const topN = Math.min(Math.max(Math.ceil(withClicks.length * 0.05), 1), 20);
+    const bestCodes = new Set(withClicks.slice(0, topN).map(x => x.code));
+
+    // HOT
+    const hotCodes = new Set();
+    for (const p of PRODUCTS_DATA) {
+      if (bestCodes.has(p.code)) continue;
+      const recent = (ts[p.code] || []).filter(t => now - t < MS_48H);
+      if (recent.length >= 2) hotCodes.add(p.code);
+    }
+
+    // NEW
+    const newCodes = new Set();
+    for (const p of PRODUCTS_DATA) {
+      if (!p.registered_at) continue;
+      const reg = new Date(p.registered_at).getTime();
+      if (!isNaN(reg) && now - reg < MS_48H) newCodes.add(p.code);
+    }
+
+    return { bestCodes, hotCodes, newCodes };
+  }
+
+  function applyBadges() {
+    const { bestCodes, hotCodes, newCodes } = computeBadges();
     document.querySelectorAll('.card').forEach(card => {
-      const code  = card.dataset.code;
-      const count = clicks[code] || 0;
-      const row   = card.querySelector('.badge-row');
-      row.querySelectorAll('.badge-hot, .badge-best').forEach(b => b.remove());
-      if (count >= BEST_THRESHOLD) {
-        const b = document.createElement('span');
-        b.className = 'badge-best';
-        b.textContent = 'BEST';
-        row.appendChild(b);
-      } else if (count >= HOT_THRESHOLD) {
-        const b = document.createElement('span');
-        b.className = 'badge-hot';
-        b.textContent = 'HOT 🔥';
-        row.appendChild(b);
+      const code = card.dataset.code;
+      const row  = card.querySelector('.badge-row');
+      row.querySelectorAll('.badge-hot, .badge-best, .badge-new').forEach(b => b.remove());
+      if (bestCodes.has(code)) {
+        row.insertAdjacentHTML('beforeend', '<span class="badge-best">BEST</span>');
+      } else if (hotCodes.has(code)) {
+        row.insertAdjacentHTML('beforeend', '<span class="badge-hot">HOT 🔥</span>');
+      }
+      if (newCodes.has(code)) {
+        row.insertAdjacentHTML('beforeend', '<span class="badge-new">NEW</span>');
       }
     });
   }
 
-  document.querySelectorAll('.btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const card = btn.closest('.card');
-      if (!card) return;
-      const clicks = loadClicks();
-      clicks[card.dataset.code] = (clicks[card.dataset.code] || 0) + 1;
-      saveClicks(clicks);
-      applyClickBadges();
+  applyBadges();
+
+  /* ── 카테고리 필터 ── */
+  let currentCat = '전체';
+
+  function filterCat(btn) {
+    currentCat = btn.dataset.cat;
+    document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    filterAndCount();
+  }
+
+  /* ── 검색 + 카테고리 통합 필터 ── */
+  const searchInput = document.getElementById('search');
+  const allCards    = Array.from(document.querySelectorAll('.card'));
+  const noResult    = document.getElementById('no-result');
+  const countLabel  = document.getElementById('count-label');
+
+  function filterAndCount() {
+    const q = searchInput.value.trim().replace(/[\[\]]/g, '').toLowerCase();
+    let visible = 0;
+    allCards.forEach(c => {
+      const matchSearch   = !q || c.dataset.code.startsWith(q) || c.dataset.name.includes(q);
+      const cardCat       = getCardCategory(c);
+      const matchCat      = currentCat === '전체' || cardCat === currentCat;
+      const show          = matchSearch && matchCat;
+      c.style.display     = show ? '' : 'none';
+      if (show) visible++;
     });
-  });
+    noResult.style.display = visible === 0 ? 'block' : 'none';
+    const suffix = q || currentCat !== '전체' ? `${visible}개 검색됨` : `상품 ${allCards.length}개`;
+    countLabel.textContent = suffix;
+  }
 
-  applyClickBadges();
+  searchInput.addEventListener('input', filterAndCount);
 
-  /* ── BEST/HOT 캐러셀 ── */
+  const hash = location.hash.replace('#', '').replace(/[\[\]]/g, '');
+  if (hash) {
+    searchInput.value = hash;
+    filterAndCount();
+    const target = document.querySelector(`.card[data-code="${hash.padStart(3,'0')}"]`);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  /* ── 추천 캐러셀 ── */
   function buildCarousel() {
     const row = document.getElementById('carousel-row');
     if (!row || !PRODUCTS_DATA.length) return;
     const clicks = loadClicks();
-    const hasClicks = Object.values(clicks).some(v => v > 0);
+    const { bestCodes, hotCodes, newCodes } = computeBadges();
 
-    let items;
-    if (hasClicks) {
-      items = [...PRODUCTS_DATA].sort((a, b) => {
-        const ca = clicks[a.code] || 0;
-        const cb = clicks[b.code] || 0;
-        return cb !== ca ? cb - ca : parseInt(b.code) - parseInt(a.code);
-      }).slice(0, 5);
-    } else {
-      items = [...PRODUCTS_DATA].sort((a, b) => parseInt(b.code) - parseInt(a.code)).slice(0, 5);
-    }
+    const items = [...PRODUCTS_DATA].sort((a, b) => {
+      const ca = clicks[a.code] || 0, cb = clicks[b.code] || 0;
+      return cb !== ca ? cb - ca : parseInt(b.code) - parseInt(a.code);
+    }).slice(0, 8);
 
     row.innerHTML = items.map(p => {
-      const cnt = clicks[p.code] || 0;
-      const isBest = cnt >= BEST_THRESHOLD;
-      const isHot  = cnt >= HOT_THRESHOLD;
+      const isBest = bestCodes.has(p.code);
+      const isHot  = hotCodes.has(p.code);
+      const isNew  = newCodes.has(p.code);
       const badgeClass = isBest ? 'best' : isHot ? 'hot' : 'new';
       const badgeText  = isBest ? 'BEST' : isHot ? 'HOT 🔥' : 'NEW';
       const rankClass  = isBest ? 'rank-best' : isHot ? 'rank-hot' : '';
-      const imgTag = p.image_url
-        ? `<img src="${p.image_url}" alt="${p.name}" loading="lazy">`
-        : '';
-      const href = p.url || '#';
-      const target = p.url ? 'target="_blank" rel="noopener noreferrer"' : '';
+      const imgTag = p.image_url ? `<img src="${p.image_url}" alt="${p.name}" loading="lazy">` : '';
       return `
-        <a class="c-card ${rankClass}" href="${href}" ${target}
-           onclick="trackCarouselClick('${p.code}')">
+        <a class="c-card ${rankClass}" href="${p.url || '#'}"
+           ${p.url ? 'target="_blank" rel="noopener noreferrer"' : ''}
+           onclick="recordClick('${p.code}')">
           ${imgTag}
           <div class="c-card-body">
             <span class="c-badge ${badgeClass}">${badgeText}</span>
@@ -826,42 +768,10 @@
     }).join('');
   }
 
-  function trackCarouselClick(code) {
-    const clicks = loadClicks();
-    clicks[code] = (clicks[code] || 0) + 1;
-    saveClicks(clicks);
-    applyClickBadges();
-    buildCarousel();
-  }
-
   buildCarousel();
 
-  /* ── 검색 ── */
-  const searchInput = document.getElementById('search');
-  const allCards = Array.from(document.querySelectorAll('.card'));
-  const noResult = document.getElementById('no-result');
-  const countLabel = document.getElementById('count-label');
-
-  function filterCards() {
-    const q = searchInput.value.trim().replace(/[\[\]]/g, '').toLowerCase();
-    let visible = 0;
-    allCards.forEach(c => {
-      const match = !q || c.dataset.code.startsWith(q) || c.dataset.name.includes(q);
-      c.style.display = match ? '' : 'none';
-      if (match) visible++;
-    });
-    noResult.style.display = visible === 0 ? 'block' : 'none';
-    countLabel.textContent = q ? `${visible}개 검색됨` : `상품 ${allCards.length}개`;
-  }
-
-  searchInput.addEventListener('input', filterCards);
-
-  const hash = location.hash.replace('#', '').replace(/[\[\]]/g, '');
-  if (hash) {
-    searchInput.value = hash;
-    filterCards();
-    const target = document.querySelector(`.card[data-code="${hash.padStart(3,'0')}"]`);
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  function scrollCarousel(dir) {
+    document.querySelector('.carousel-wrap').scrollBy({ left: dir * 145, behavior: 'smooth' });
   }
 
   /* ── 정렬 ── */
@@ -871,30 +781,20 @@
     currentSort = mode;
     document.getElementById('tab-newest').classList.toggle('active', mode === 'newest');
     document.getElementById('tab-popular').classList.toggle('active', mode === 'popular');
-
     const grid = document.getElementById('grid');
-    const noResultEl = document.getElementById('no-result');
-
-    // 카드만 추출 (no-result 제외)
+    const noEl = document.getElementById('no-result');
     const cards = allCards.slice();
-
     if (mode === 'newest') {
-      // 코드 숫자 내림차순 (높은 번호 = 최신)
       cards.sort((a, b) => parseInt(b.dataset.code) - parseInt(a.dataset.code));
     } else {
-      // 인기순: 클릭수 내림차순, 같으면 최신순
       const clicks = loadClicks();
       cards.sort((a, b) => {
-        const ca = clicks[a.dataset.code] || 0;
-        const cb = clicks[b.dataset.code] || 0;
-        if (cb !== ca) return cb - ca;
-        return parseInt(b.dataset.code) - parseInt(a.dataset.code);
+        const ca = clicks[a.dataset.code] || 0, cb = clicks[b.dataset.code] || 0;
+        return cb !== ca ? cb - ca : parseInt(b.dataset.code) - parseInt(a.dataset.code);
       });
     }
-
-    // DOM 재배치
-    cards.forEach(c => grid.insertBefore(c, noResultEl));
-    filterCards();
+    cards.forEach(c => grid.insertBefore(c, noEl));
+    filterAndCount();
   }
 
   /* ── 뷰 모드 ── */
@@ -902,50 +802,42 @@
 
   function setView(mode) {
     currentView = mode;
-    const grid = document.getElementById('grid');
     document.getElementById('btn-grid').classList.toggle('active', mode === 'grid');
     document.getElementById('btn-list').classList.toggle('active', mode === 'list');
-
-    if (mode === 'list') {
-      grid.classList.add('list-view');
-    } else {
-      grid.classList.remove('list-view');
-    }
-    // 로컬에 저장 (새로고침 후에도 유지)
-    localStorage.setItem('kkul_view', mode);
+    document.getElementById('grid').classList.toggle('list-view', mode === 'list');
+    localStorage.setItem(VIEW_KEY, mode);
   }
 
-  // 저장된 뷰 모드 복원
-  const savedView = localStorage.getItem('kkul_view');
-  if (savedView && savedView !== 'grid') {
-    setView(savedView);
+  const savedView = localStorage.getItem(VIEW_KEY);
+  if (savedView && savedView !== 'grid') setView(savedView);
+
+  /* ── 다크/라이트 모드 ── */
+  function applyTheme(theme) {
+    document.body.classList.toggle('light', theme === 'light');
+    document.getElementById('theme-btn').textContent = theme === 'light' ? '🌙' : '☀️';
   }
 
-  /* ── QR 코드 ── */
+  function toggleTheme() {
+    const next = document.body.classList.contains('light') ? 'dark' : 'light';
+    localStorage.setItem(THEME_KEY, next);
+    applyTheme(next);
+  }
+
+  applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
+
+  /* ── QR ── */
   let qrGenerated = false;
-
   function showQR() {
     const modal = document.getElementById('qr-modal');
-    const urlText = document.getElementById('qr-url-text');
     const url = window.location.href;
-    urlText.textContent = url;
+    document.getElementById('qr-url-text').textContent = url;
     if (!qrGenerated) {
-      new QRCode(document.getElementById('qr-canvas'), {
-        text: url,
-        width: 200,
-        height: 200,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H,
-      });
+      new QRCode(document.getElementById('qr-canvas'), { text: url, width: 200, height: 200, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.H });
       qrGenerated = true;
     }
     modal.classList.add('open');
   }
-
-  function hideQR() {
-    document.getElementById('qr-modal').classList.remove('open');
-  }
+  function hideQR() { document.getElementById('qr-modal').classList.remove('open'); }
 
   /* ── 공유 ── */
   function sharePage() {
@@ -953,7 +845,7 @@
     if (navigator.share) {
       navigator.share({ title: '꿀픽', text: '매일 하나씩, 진짜 쓸만한 것들만', url }).catch(() => {});
     } else {
-      navigator.clipboard.writeText(url).then(() => showToast()).catch(() => { prompt('링크를 복사하세요:', url); });
+      navigator.clipboard.writeText(url).then(showToast).catch(() => { prompt('링크를 복사하세요:', url); });
     }
   }
 

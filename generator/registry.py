@@ -7,11 +7,13 @@ import json
 import os
 import re
 import sys
+from datetime import datetime, timezone, timedelta
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from config import DATA_DIR
 
 REGISTRY_PATH = os.path.join(DATA_DIR, "product_registry.json")
+KST = timezone(timedelta(hours=9))
 
 
 def _extract_item_id(url: str) -> str | None:
@@ -33,7 +35,7 @@ def _save(reg: dict):
         json.dump(reg, f, ensure_ascii=False, indent=2)
 
 
-def assign_code(product_url: str, name: str = "", image_url: str = "") -> str:
+def assign_code(product_url: str, name: str = "", image_url: str = "", category: str = "") -> str:
     """
     상품 URL에 순번 코드 할당.
     이미 등록된 URL이면 기존 코드 반환.
@@ -44,35 +46,52 @@ def assign_code(product_url: str, name: str = "", image_url: str = "") -> str:
 
     # 1. URL key 일치
     if key and key in reg["products"]:
-        if image_url and not reg["products"][key].get("image_url"):
-            reg["products"][key]["image_url"] = image_url
+        entry = reg["products"][key]
+        changed = False
+        if image_url and not entry.get("image_url"):
+            entry["image_url"] = image_url
+            changed = True
+        if category and not entry.get("category"):
+            entry["category"] = category
+            changed = True
+        if changed:
             _save(reg)
-        return reg["products"][key]["code"]
+        return entry["code"]
 
     # 2. itemId 일치 — ctag만 다른 동일 상품 감지
     item_id = _extract_item_id(product_url)
     if item_id:
-        # 차단 목록 확인 (수동 삭제된 상품 재진입 방지)
         if item_id in reg.get("blocked_item_ids", []):
-            return ""  # 빈 문자열 = 차단됨
+            return ""
         for existing in reg["products"].values():
             if _extract_item_id(existing.get("url", "")) == item_id:
                 return existing["code"]
 
     code = str(reg["next_code"]).zfill(3)
     if key:
-        reg["products"][key] = {"code": code, "name": name, "url": product_url, "image_url": image_url}
+        reg["products"][key] = {
+            "code": code,
+            "name": name,
+            "url": product_url,
+            "image_url": image_url,
+            "category": category,
+            "registered_at": datetime.now(KST).isoformat(),
+        }
     reg["next_code"] += 1
     _save(reg)
     return code
 
 
-def mark_posted(code: str):
+def mark_posted(code: str, category: str = ""):
     """포스팅 성공 시 호출 — 해당 코드 상품을 posted=True 로 표시"""
     reg = _load()
     for v in reg["products"].values():
         if v["code"] == code:
             v["posted"] = True
+            if category and not v.get("category"):
+                v["category"] = category
+            if not v.get("registered_at"):
+                v["registered_at"] = datetime.now(KST).isoformat()
             break
     _save(reg)
 
@@ -86,6 +105,8 @@ def get_all() -> list[dict]:
             "name": v.get("name", ""),
             "url": v.get("url", ""),
             "image_url": v.get("image_url", ""),
+            "category": v.get("category", ""),
+            "registered_at": v.get("registered_at", ""),
         }
         for v in reg["products"].values()
         if v.get("posted", False)

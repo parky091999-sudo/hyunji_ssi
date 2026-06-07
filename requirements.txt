@@ -7,3 +7,4 @@ python-dotenv
 requests
 aiofiles
 beautifulsoup4
+Pillow

@@ -17,8 +17,9 @@ ROOT = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, ROOT)
 from config import GOOGLE_API_KEY
 
-IMGBB_API_KEY   = os.getenv("IMGBB_API_KEY", "")
+IMGBB_API_KEY    = os.getenv("IMGBB_API_KEY", "")
 TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY", "")
+HF_TOKEN         = os.getenv("HF_TOKEN", "")
 
 logger = logging.getLogger("image_gen")
 
@@ -93,29 +94,50 @@ Rules:
     return CATEGORY_PROMPTS.get(category, CATEGORY_PROMPTS["기타"])
 
 
+def _hf_generate(prompt: str) -> bytes | None:
+    """Hugging Face Inference API — FLUX.1-schnell (무료, 카드 불필요)"""
+    try:
+        r = requests.post(
+            "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
+            headers={"Authorization": f"Bearer {HF_TOKEN}"},
+            json={"inputs": prompt},
+            timeout=90,
+        )
+        if r.status_code == 200:
+            ct = r.headers.get("content-type", "")
+            if ct.startswith("image") or r.content[:3] in (b'\xff\xd8\xff', b'\x89PN'):
+                return r.content
+        elif r.status_code == 503:
+            # 모델 로딩 중 — 최대 30초 대기 후 재시도
+            wait = r.json().get("estimated_time", 20)
+            logger.info(f"    HF 모델 로딩 중, {min(wait,30):.0f}초 대기...")
+            time.sleep(min(wait, 30))
+            r2 = requests.post(
+                "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
+                headers={"Authorization": f"Bearer {HF_TOKEN}"},
+                json={"inputs": prompt},
+                timeout=90,
+            )
+            if r2.status_code == 200 and r2.content[:3] in (b'\xff\xd8\xff', b'\x89PN'):
+                return r2.content
+        logger.warning(f"  HF 오류: {r.status_code} {r.text[:100]}")
+    except Exception as e:
+        logger.warning(f"  HF 예외: {e}")
+    return None
+
+
 def _together_generate(prompt: str) -> bytes | None:
-    """Together AI FLUX.1-schnell-Free로 이미지 생성 (무료)"""
+    """Together AI FLUX.1-schnell-Free (결제 활성화 시 사용)"""
     try:
         r = requests.post(
             "https://api.together.xyz/v1/images/generations",
-            headers={
-                "Authorization": f"Bearer {TOGETHER_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model":           "black-forest-labs/FLUX.1-schnell-Free",
-                "prompt":          prompt,
-                "width":           1024,
-                "height":          1024,
-                "steps":           4,
-                "n":               1,
-                "response_format": "b64_json",
-            },
+            headers={"Authorization": f"Bearer {TOGETHER_API_KEY}", "Content-Type": "application/json"},
+            json={"model": "black-forest-labs/FLUX.1-schnell-Free", "prompt": prompt,
+                  "width": 1024, "height": 1024, "steps": 4, "n": 1, "response_format": "b64_json"},
             timeout=60,
         )
         if r.status_code == 200:
-            b64 = r.json()["data"][0]["b64_json"]
-            return base64.b64decode(b64)
+            return base64.b64decode(r.json()["data"][0]["b64_json"])
         logger.warning(f"  Together AI 오류: {r.status_code} {r.text[:120]}")
     except Exception as e:
         logger.warning(f"  Together AI 예외: {e}")
@@ -172,14 +194,20 @@ def generate_and_upload_images(product: dict, post_text: str = "") -> list[str]:
     for i, prompt in enumerate(prompts[:4]):
         logger.info(f"  이미지 {i+1}/4 생성 중...")
 
-        # 1순위: Together AI
+        # 1순위: Hugging Face (무료, 카드 불필요)
         img_bytes = None
-        if TOGETHER_API_KEY:
+        if HF_TOKEN:
+            img_bytes = _hf_generate(prompt)
+            if img_bytes:
+                logger.info(f"    HF 생성 성공 ({i+1})")
+
+        # 2순위: Together AI (결제 활성화 시)
+        if not img_bytes and TOGETHER_API_KEY:
             img_bytes = _together_generate(prompt)
             if img_bytes:
                 logger.info(f"    Together AI 생성 성공 ({i+1})")
 
-        # 2순위: pollinations.ai
+        # 3순위: pollinations.ai (로컬 환경 폴백)
         if not img_bytes:
             logger.info(f"    pollinations.ai 폴백 ({i+1})...")
             img_bytes = _pollinations_generate(prompt, idx=i)

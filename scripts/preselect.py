@@ -6,6 +6,7 @@ import asyncio
 import json
 import logging
 import os
+import re
 import sys
 from datetime import datetime, timezone, timedelta
 
@@ -44,11 +45,24 @@ def _load_posted_ids() -> set[str]:
         return set(json.load(f))
 
 
+def _extract_page_key(url: str) -> str:
+    m = re.search(r"pageKey=(\d+)", url or "")
+    return m.group(1) if m else ""
+
+
 def _load_rejected_urls() -> set[str]:
     if not os.path.exists(REJECTED_PATH):
         return set()
-    with open(REJECTED_PATH, encoding="utf-8") as f:
-        return set(json.load(f).get("urls", []))
+    urls = json.load(open(REJECTED_PATH, encoding="utf-8")).get("urls", [])
+    # pageKey 기준으로 비교 (ctag·lptag 차이 무시)
+    keys = set()
+    for u in urls:
+        pk = _extract_page_key(u)
+        if pk:
+            keys.add(pk)
+        else:
+            keys.add(u)
+    return keys
 
 
 def _product_key(product: dict) -> str:
@@ -62,7 +76,10 @@ async def _collect_products(need: int, posted_ids: set[str], rejected_urls: set[
 
     def _is_rejected(p: dict) -> bool:
         url = p.get("product_url", "")
-        return bool(url and url in rejected_urls)
+        if not url:
+            return False
+        pk = _extract_page_key(url)
+        return (pk and pk in rejected_urls) or url in rejected_urls
 
     if YOUTUBE_API_KEY:
         logger.info("YouTube 트렌딩 수집...")
@@ -123,7 +140,9 @@ async def run():
             for c in existing_pending.get("candidates", []):
                 url    = c.get("product", {}).get("product_url", "")
                 status = c.get("status", "pending")
-                if status not in ("rejected", "excluded") and url not in rejected_urls:
+                pk     = _extract_page_key(url)
+                is_blocked = (pk and pk in rejected_urls) or url in rejected_urls
+                if status not in ("rejected", "excluded") and not is_blocked:
                     existing_good.append(c)
             logger.info(f"기존 유효 후보 {len(existing_good)}개 유지")
 

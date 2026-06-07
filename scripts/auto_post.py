@@ -52,13 +52,17 @@ def _product_key(product: dict) -> str:
 
 
 def _pick_from_pending() -> dict | None:
-    """pending_post.json 에서 오늘 날짜 후보 중 포스팅할 것 선택"""
+    """pending_post.json 에서 오늘/어제 날짜 후보 중 포스팅할 것 선택"""
     pending = _load_json(PENDING_PATH, {})
     today = datetime.now(KST).strftime("%Y-%m-%d")
+    yesterday = (datetime.now(KST) - timedelta(days=1)).strftime("%Y-%m-%d")
 
-    if pending.get("for_date") != today:
-        logger.info(f"  pending_post 날짜 불일치 (기대: {today}, 파일: {pending.get('for_date', '없음')})")
+    file_date = pending.get("for_date", "없음")
+    if file_date not in (today, yesterday):
+        logger.info(f"  pending_post 날짜 불일치 (기대: {today}, 파일: {file_date})")
         return None
+    if file_date == yesterday:
+        logger.info(f"  pending_post 날짜 1일 초과 (어제 후보 사용)")
 
     candidates = pending.get("candidates", [])
     if not candidates:

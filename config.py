@@ -26,6 +26,11 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
 # Google Cloud Console → YouTube Data API v3 활성화 → API 키 발급
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "")
 
+# imgBB 이미지 호스팅 API (선택) - AI 생성 이미지 영구 업로드용
+# 무료 발급: https://api.imgbb.com/
+# 없으면 pollinations.ai URL 직접 사용 (API 키 불필요)
+IMGBB_API_KEY = os.getenv("IMGBB_API_KEY", "")
+
 # 상품 품질 필터
 REQUIRE_BRAND = False     # 별점/리뷰수 필터가 더 강력 — 브랜드 필터는 오탈락 많아 비활성화
 CHECK_RATING = False      # GitHub Actions IP를 쿠팡이 차단해 별점 확인 불가 → 비활성화

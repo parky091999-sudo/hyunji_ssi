@@ -117,6 +117,16 @@ async def run():
 
     logger.info(f"포스팅: {product.get('name', '')[:40]} [{code}]")
 
+    # AI 이미지 생성 (상세 이미지 없을 때)
+    if not detail_imgs:
+        try:
+            from generator.image_gen import generate_and_upload_images
+            detail_imgs = generate_and_upload_images(product, post_text)
+            if detail_imgs:
+                logger.info(f"AI 이미지 {len(detail_imgs)}장 생성")
+        except Exception as e:
+            logger.warning(f"AI 이미지 생성 실패: {e}")
+
     from poster.threads import post_thread_api
     from poster.comment_replier import add_recent_post
 

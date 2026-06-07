@@ -425,6 +425,8 @@ let _shas    = {};          // 파일별 sha 캐시
 let _data    = {};          // 파일별 데이터 캐시
 let _checkedCandidates = new Set();  // 체크된 후보 인덱스
 let _historyFilter = "all";
+let _pollingTimer  = null;
+let _pollingUrl    = "";
 
 // ── 토큰 ──────────────────────────────────────────────────────────────────────
 function saveToken() {
@@ -702,6 +704,10 @@ function renderQueueItem(item, i, total) {
       <div class="qi-name">${esc(p.name || "(이름 없음)")}${edited}</div>
       <div class="qi-meta">${p.price || ""}</div>
     </div>
+    <div class="queue-controls" onclick="event.stopPropagation()">
+      <button class="move-btn" onclick="moveQueue(${i},-1)" ${i===0?"disabled":""} title="위로">▲</button>
+      <button class="move-btn" onclick="moveQueue(${i},1)" ${i===total-1?"disabled":""} title="아래로">▼</button>
+    </div>
   </div>`;
 }
 
@@ -963,9 +969,11 @@ async function submitUrls() {
       catch(_) { queue = []; }
       const existingUrls = new Set(queue.map(q => q.product?.product_url || ""));
       let added = 0;
+      let firstNewUrl = "";
       for (const url of coupangUrls) {
         if (existingUrls.has(url)) continue;
         existingUrls.add(url);
+        if (!firstNewUrl) firstNewUrl = url;
         queue.push({
           product: { product_url: url, name: "쿠팡 상품 (URL 직접 등록)", image_url: "", price: "" },
           image_url: "", detail_images: [], post_text: "",
@@ -977,7 +985,19 @@ async function submitUrls() {
       if (added) {
         await ghPut("data/manual_queue.json", queue, `admin: 쿠팡 URL ${added}개 큐 직접 추가`);
         await loadManualQueue();
-        messages.push(`쿠팡 URL ${added}개 → 큐 추가 완료`);
+
+        // AI 본문 즉시 생성 트리거
+        try { await ghDispatch("generate_queue_content.yml"); } catch(_) {}
+
+        // 첫 번째 추가 항목 프리뷰 로딩 상태로 바로 열기
+        if (firstNewUrl) {
+          const newQueue = _data["data/manual_queue.json"] || [];
+          const newIdx = newQueue.findIndex(q => q.product?.product_url === firstNewUrl);
+          if (newIdx >= 0) showPreviewLoading(newIdx, firstNewUrl);
+          startPollingQueue(firstNewUrl);
+        }
+
+        messages.push(`쿠팡 URL ${added}개 → AI 본문 생성 중 (1~2분)`);
       } else {
         messages.push("쿠팡 URL: 이미 큐에 있는 상품");
       }
@@ -997,6 +1017,63 @@ async function submitUrls() {
 
   document.getElementById("url-paste-input").value = "";
   showToast(messages.join(" · ") || "처리 완료");
+}
+
+function showPreviewLoading(queueIdx, productUrl) {
+  _previewSource = "queue";
+  _previewIdx    = queueIdx;
+
+  document.getElementById("preview-product-info").innerHTML = `
+    <div style="width:60px;height:60px;border-radius:8px;background:#1a1a1a;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;font-size:24px;animation:spin 2s linear infinite">⏳</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:13px;font-weight:700;color:#888;margin-bottom:4px">상품 정보 불러오는 중...</div>
+      ${productUrl ? `<a href="${productUrl}" target="_blank" class="product-link">🔗 상품 확인 →</a>` : ""}
+      <div style="font-size:10px;color:#555;margin-top:5px">📌 큐 ${queueIdx+1}번 · AI 본문 생성 중 (약 1~2분)</div>
+    </div>`;
+
+  const ta = document.getElementById("preview-post-text");
+  ta.value = "";
+  ta.placeholder = "AI가 본문을 생성하는 중입니다... 완료되면 자동으로 표시됩니다";
+
+  const panel = document.getElementById("manual-preview-panel");
+  panel.style.display = "block";
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  document.querySelectorAll(".qi-card").forEach(e => e.classList.remove("active"));
+  const qel = document.getElementById(`qi-${queueIdx}`);
+  if (qel) qel.classList.add("active");
+}
+
+function startPollingQueue(targetUrl) {
+  if (_pollingTimer) { clearInterval(_pollingTimer); _pollingTimer = null; }
+  _pollingUrl = targetUrl;
+  let tries = 0;
+
+  _pollingTimer = setInterval(async () => {
+    tries++;
+    if (tries > 18) {  // 3분 타임아웃
+      clearInterval(_pollingTimer);
+      _pollingTimer = null;
+      showToast("생성 시간 초과 — 직접 입력하거나 잠시 후 새로고침하세요");
+      const ta = document.getElementById("preview-post-text");
+      ta.placeholder = "직접 본문을 입력하세요";
+      return;
+    }
+    try {
+      const queue = await ghGet("data/manual_queue.json");
+      const item  = queue.find(q => q.product?.product_url === _pollingUrl);
+      if (item?.post_text?.trim()) {
+        clearInterval(_pollingTimer);
+        _pollingTimer = null;
+        await loadManualQueue();
+        const idx = (_data["data/manual_queue.json"] || [])
+          .findIndex(q => q.product?.product_url === _pollingUrl);
+        if (idx >= 0) showPreview("queue", idx);
+        showToast("✓ 본문 및 사진 생성 완료!");
+      }
+    } catch(_) {}
+  }, 10000);
 }
 
 // ── 수동관리: 프리뷰 패널 ─────────────────────────────────────────────────────

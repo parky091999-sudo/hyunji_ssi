@@ -1,5 +1,5 @@
 {
-  "next_code": 7,
+  "next_code": 8,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -42,6 +42,13 @@
       "name": "[만족도최상]초고당도 농장직송 고령 하미과 메론, 3kg, 1박스",
       "url": "https://www.coupang.com/vp/products/9539230511",
       "image_url": "",
+      "posted": true
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5655029966&ctag=5655029966&lpt": {
+      "code": "007",
+      "name": "쿠쿠 식기세척기 6인용 CDW-A0611TW 방문설치",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5655029966&ctag=5655029966&lptag=I9265334954&itemId=9265334954&vendorItemId=71163768673&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5932285/59322851701.1.jpg",
       "posted": true
     }
   }

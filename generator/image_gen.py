@@ -106,10 +106,9 @@ def generate_and_upload_images(product: dict, post_text: str = "") -> list[str]:
                 if getattr(part, "thought", False):
                     continue
                 if part.inline_data is not None:
-                    generated = part.as_image()
-                    buf = io.BytesIO()
-                    generated.save(buf, format="JPEG", quality=90)
-                    url = _upload_imgbb(buf.getvalue())
+                    raw = part.inline_data.data
+                    img_bytes = base64.b64decode(raw) if isinstance(raw, str) else raw
+                    url = _upload_imgbb(img_bytes)
                     if url:
                         results.append(url)
                         logger.info(f"  업로드 완료 ({i+1}): {url[:55]}...")

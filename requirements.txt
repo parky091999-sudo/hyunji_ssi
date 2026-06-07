@@ -1,6 +1,7 @@
 playwright
 anthropic
 groq
+google-generativeai
 schedule
 python-dotenv
 requests

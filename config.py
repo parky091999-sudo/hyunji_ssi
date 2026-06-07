@@ -16,8 +16,11 @@ THREADS_USER_ID = os.getenv("THREADS_USER_ID", "")  # 숫자 ID (조회 방법: 
 NAVER_CLIENT_ID = os.getenv("NAVER_CLIENT_ID", "")
 NAVER_CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET", "")
 
-# Groq API - 댓글 자동 대댓글 생성 (무료, 하루 14,400 요청)
+# Groq API - 폴백용 (무료, 하루 14,400 요청)
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+
+# Google Gemini API - 본문 생성 메인 모델 (무료 2.0 Flash)
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
 
 # YouTube Data API v3 - 트렌딩 상품 탐지 (무료, 하루 10,000 units)
 # Google Cloud Console → YouTube Data API v3 활성화 → API 키 발급

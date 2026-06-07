@@ -12,7 +12,7 @@ import sys
 import logging
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from config import COUPANG_PARTNERS_ACTIVE, GROQ_API_KEY
+from config import COUPANG_PARTNERS_ACTIVE, GROQ_API_KEY, GOOGLE_API_KEY
 
 logger = logging.getLogger(__name__)
 
@@ -119,40 +119,71 @@ def _fix_linebreaks(text: str) -> str:
     return "\n".join(result)
 
 
-def _generate_post1_ai(product: dict, product_code: str) -> str | None:
-    if not GROQ_API_KEY:
+def _build_user_msg(product: dict) -> str:
+    name         = product.get("name", "")
+    brand        = product.get("brand", "")
+    category     = product.get("category_hint", "")
+    rating       = product.get("rating", "")
+    review_count = product.get("review_count", "")
+    yt_title     = (product.get("youtube_source") or {}).get("title", "")
+    msg = f"상품명: {name}"
+    if brand:        msg += f"\n브랜드: {brand}"
+    if category:     msg += f"\n카테고리: {category}"
+    if rating:       msg += f"\n별점: {rating}"
+    if review_count: msg += f"\n리뷰 수: {review_count}"
+    if yt_title:     msg += f"\n참고 유튜브 제목: {yt_title[:60]}"
+    msg += "\n\n위 상품을 소개하는 Threads 게시글을 써줘. 첫 줄은 스크롤을 멈추게 하는 강력한 훅으로 시작해."
+    return msg
+
+_KOREAN_ONLY = "\n\n[필수] 한국어로만 출력. 태국어·중국어·일본어·베트남어·아랍어 등 어떤 외국어도 절대 사용 금지. 한글+영문+이모지만 허용."
+
+
+def _generate_with_gemini(product: dict, product_code: str) -> str | None:
+    try:
+        import google.generativeai as genai
+        genai.configure(api_key=GOOGLE_API_KEY)
+        model = genai.GenerativeModel(
+            "gemini-2.0-flash",
+            system_instruction=_POST1_SYSTEM,
+            generation_config=genai.types.GenerationConfig(
+                max_output_tokens=450,
+                temperature=0.9,
+            ),
+        )
+        user_msg = _build_user_msg(product)
+        body_and_tags = None
+        for attempt in range(3):
+            extra = _KOREAN_ONLY if attempt > 0 else ""
+            resp = model.generate_content(user_msg + extra)
+            candidate = resp.text.strip().strip("\"'""''") if resp.text else ""
+            if not candidate:
+                continue
+            if _has_foreign_chars(candidate):
+                logger.warning(f"Gemini 외국어 감지 → 재시도 {attempt + 1}/3")
+                continue
+            body_and_tags = candidate
+            break
+        if not body_and_tags:
+            logger.warning("Gemini 3회 재시도 후 외국어 포함 → Groq 폴백")
+            return None
+        body_and_tags = _fix_linebreaks(body_and_tags)
+        return f"{body_and_tags}\n\n{_CODE_LINE.format(code=product_code)}"
+    except Exception as e:
+        logger.warning(f"Gemini 생성 실패: {e}")
         return None
+
+
+def _generate_with_groq(product: dict, product_code: str) -> str | None:
     try:
         import httpx, urllib3
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         from groq import Groq
         client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
-
-        name = product.get("name", "")
-        category_hint = product.get("category_hint", "")
-        brand = product.get("brand", "")
-        yt = product.get("youtube_source", {})
-        rating = product.get("rating", "")
-        review_count = product.get("review_count", "")
-
-        user_msg = f"상품명: {name}"
-        if brand:
-            user_msg += f"\n브랜드: {brand}"
-        if category_hint:
-            user_msg += f"\n카테고리: {category_hint}"
-        if rating:
-            user_msg += f"\n별점: {rating}"
-        if review_count:
-            user_msg += f"\n리뷰 수: {review_count}"
-        if yt.get("title"):
-            user_msg += f"\n참고 유튜브 제목: {yt['title'][:60]}"
-        user_msg += "\n\n위 상품을 소개하는 Threads 게시글을 써줘. 첫 줄은 스크롤을 멈추게 하는 강력한 훅으로 시작해."
-
-        _korean_only_suffix = "\n\n[필수] 한국어로만 출력. 태국어·중국어·일본어·베트남어·아랍어 등 어떤 외국어도 절대 사용 금지. 한글+영문+이모지만 허용."
+        user_msg = _build_user_msg(product)
         body_and_tags = None
         for attempt in range(3):
             temp = 0.9 if attempt == 0 else 0.6
-            extra = _korean_only_suffix if attempt > 0 else ""
+            extra = _KOREAN_ONLY if attempt > 0 else ""
             resp = client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
                 messages=[
@@ -166,19 +197,32 @@ def _generate_post1_ai(product: dict, product_code: str) -> str | None:
             if not candidate:
                 continue
             if _has_foreign_chars(candidate):
-                logger.warning(f"외국어 감지 → 재시도 {attempt + 1}/3")
+                logger.warning(f"Groq 외국어 감지 → 재시도 {attempt + 1}/3")
                 continue
             body_and_tags = candidate
             break
-
         if not body_and_tags:
-            logger.warning("3회 재시도 후에도 외국어 포함 → 폴백 사용")
+            logger.warning("Groq 3회 재시도 후 외국어 포함 → 폴백 사용")
             return None
         body_and_tags = _fix_linebreaks(body_and_tags)
         return f"{body_and_tags}\n\n{_CODE_LINE.format(code=product_code)}"
     except Exception as e:
-        logger.warning(f"AI 글1 생성 실패: {e}")
+        logger.warning(f"Groq 생성 실패: {e}")
         return None
+
+
+def _generate_post1_ai(product: dict, product_code: str) -> str | None:
+    if GOOGLE_API_KEY:
+        result = _generate_with_gemini(product, product_code)
+        if result:
+            logger.info("  [Gemini 2.0 Flash] 본문 생성 완료")
+            return result
+    if GROQ_API_KEY:
+        result = _generate_with_groq(product, product_code)
+        if result:
+            logger.info("  [Groq 폴백] 본문 생성 완료")
+            return result
+    return None
 
 
 # ── 글1: 폴백 템플릿 ──────────────────────────────────────────────────────────

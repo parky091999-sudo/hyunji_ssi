@@ -642,20 +642,13 @@ async function submitReject() {
     pending.candidates[idx].rejection_reason = reason || "(사유 없음)";
     await ghPut("data/pending_post.json", pending, `admin: 후보 ${idx} ${newStatus} — ${(reason||"").slice(0,30)}`);
 
-    // 영구 제외 시 rejected_products.json에 URL 추가
-    if (shouldExclude && productUrl) {
-      await addToRejected(productUrl);
-    }
-
-    if (shouldRewrite) {
-      try {
-        await ghDispatch("daily_preselect.yml");
-        showToast("✕ 반려 · 새 후보 자동 선정 중 (5분 소요)");
-      } catch (_) {
-        showToast("✕ 반려됐습니다 (새 후보 수동 선정 필요)");
-      }
-    } else {
-      showToast(shouldExclude ? "✕ 상품 영구 제외됐습니다" : "✕ 반려됐습니다");
+    // 모든 반려/제외: 영구차단 + 새 후보 자동 선정
+    if (productUrl) await addToRejected(productUrl);
+    try {
+      await ghDispatch("daily_preselect.yml");
+      showToast(shouldExclude ? "✕ 영구 제외 · 새 후보 선정 중 (5분 소요)" : "✕ 반려 · 새 후보 자동 선정 중 (5분 소요)");
+    } catch (_) {
+      showToast(shouldExclude ? "✕ 영구 제외됐습니다" : "✕ 반려됐습니다");
     }
 
     await loadAutoCandidates();

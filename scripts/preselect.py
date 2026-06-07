@@ -111,41 +111,65 @@ async def run():
     logger.info("=" * 50)
 
     tomorrow = (datetime.now(KST) + timedelta(days=1)).strftime("%Y-%m-%d")
-    posted_ids   = _load_posted_ids()
+    posted_ids    = _load_posted_ids()
     rejected_urls = _load_rejected_urls()
 
-    products = await _collect_products(CANDIDATES_COUNT, posted_ids, rejected_urls)
-    if not products:
-        logger.warning("수집 상품 없음 — pending_post.json 업데이트 건너뜀")
+    # 기존 pending_post에서 유효한 후보 유지 (반려/제외 아닌 것)
+    existing_good: list[dict] = []
+    if os.path.exists(PENDING_PATH):
+        with open(PENDING_PATH, encoding="utf-8") as f:
+            existing_pending = json.load(f)
+        if existing_pending.get("for_date") == tomorrow:
+            for c in existing_pending.get("candidates", []):
+                url    = c.get("product", {}).get("product_url", "")
+                status = c.get("status", "pending")
+                if status not in ("rejected", "excluded") and url not in rejected_urls:
+                    existing_good.append(c)
+            logger.info(f"기존 유효 후보 {len(existing_good)}개 유지")
+
+    need = CANDIDATES_COUNT - len(existing_good)
+    if need <= 0:
+        logger.info(f"후보가 이미 {CANDIDATES_COUNT}개 — 종료")
         return
 
-    candidates = []
+    # 기존 후보 URL도 중복 방지용으로 posted_ids에 포함
+    existing_urls = {c.get("product", {}).get("product_url", "")[:80] for c in existing_good}
+    temp_posted   = posted_ids | existing_urls
+
+    products = await _collect_products(need, temp_posted, rejected_urls)
+    if not products:
+        logger.warning("수집 상품 없음 — 기존 후보만 유지")
+        if not existing_good:
+            return
+
+    new_candidates: list[dict] = []
     for product in products:
         logger.info(f"콘텐츠 생성: {product.get('name', '')[:40]}")
-        # assign_code_now=False: 코드는 실제 포스팅 시점에 부여
         content = generate_post(product, assign_code_now=False)
         if not content:
             continue
-        candidates.append({
+        new_candidates.append({
             "product":       content["product"],
             "post_text":     content["post_text_1"],
             "image_url":     content.get("image_url", ""),
             "detail_images": content.get("detail_images", []),
-            "product_code":  "",   # 포스팅 시점에 할당
+            "product_code":  "",
             "status":        "pending",
         })
+
+    all_candidates = existing_good + new_candidates
 
     pending = {
         "for_date":     tomorrow,
         "generated_at": datetime.now(KST).isoformat(),
-        "candidates":   candidates,
+        "candidates":   all_candidates[:CANDIDATES_COUNT],
     }
 
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(PENDING_PATH, "w", encoding="utf-8") as f:
         json.dump(pending, f, ensure_ascii=False, indent=2)
 
-    logger.info(f"pending_post.json 저장 완료 — {len(candidates)}개 후보 (for {tomorrow})")
+    logger.info(f"pending_post.json 저장 완료 — 기존 {len(existing_good)}개 유지 + 신규 {len(new_candidates)}개 (for {tomorrow})")
 
 
 if __name__ == "__main__":

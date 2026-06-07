@@ -1,6 +1,6 @@
 """
 수동 포스팅 큐 AI 본문 즉시 생성
-post_text가 비어있는 manual_queue 항목에 Groq로 본문 생성
+post_text가 비어있는 manual_queue 항목에 Gemini(기본)/Groq(폴백)로 본문 생성
 """
 import json
 import logging
@@ -11,7 +11,7 @@ from datetime import datetime, timezone, timedelta
 ROOT = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, ROOT)
 
-from config import DATA_DIR, LOG_DIR, GROQ_API_KEY
+from config import DATA_DIR, LOG_DIR, GROQ_API_KEY, GOOGLE_API_KEY
 
 QUEUE_PATH = os.path.join(DATA_DIR, "manual_queue.json")
 KST = timezone(timedelta(hours=9))
@@ -51,34 +51,51 @@ _POST_SYSTEM = """
 """.strip()
 
 
-def _generate(product: dict) -> str | None:
-    if not GROQ_API_KEY:
-        return None
+def _build_prompt(product: dict) -> str:
     name  = product.get("name", "")
     brand = product.get("brand", "")
     price = product.get("price", "")
     desc = f"상품명: {name}"
-    if brand:
-        desc += f"\n브랜드: {brand}"
-    if price:
-        desc += f"\n가격대: {price}"
-    prompt = f"{desc}\n\n위 상품에 대한 Threads 포스팅을 작성해줘."
-    try:
-        from groq import Groq
-        client = Groq(api_key=GROQ_API_KEY)
-        resp = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "system", "content": _POST_SYSTEM},
-                {"role": "user",   "content": prompt},
-            ],
-            max_tokens=500,
-            temperature=0.85,
-        )
-        return resp.choices[0].message.content.strip()
-    except Exception as e:
-        logger.warning(f"  Groq 생성 오류: {e}")
-        return None
+    if brand: desc += f"\n브랜드: {brand}"
+    if price: desc += f"\n가격대: {price}"
+    return f"{desc}\n\n위 상품에 대한 Threads 포스팅을 작성해줘."
+
+
+def _generate(product: dict) -> str | None:
+    prompt = _build_prompt(product)
+
+    if GOOGLE_API_KEY:
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=GOOGLE_API_KEY)
+            model = genai.GenerativeModel(
+                "gemini-2.0-flash",
+                system_instruction=_POST_SYSTEM,
+                generation_config=genai.types.GenerationConfig(max_output_tokens=500, temperature=0.85),
+            )
+            resp = model.generate_content(prompt)
+            text = resp.text.strip() if resp.text else ""
+            if text:
+                logger.info("  [Gemini] 생성 완료")
+                return text
+        except Exception as e:
+            logger.warning(f"  Gemini 오류 → Groq 폴백: {e}")
+
+    if GROQ_API_KEY:
+        try:
+            from groq import Groq
+            client = Groq(api_key=GROQ_API_KEY)
+            resp = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[{"role": "system", "content": _POST_SYSTEM}, {"role": "user", "content": prompt}],
+                max_tokens=500,
+                temperature=0.85,
+            )
+            return resp.choices[0].message.content.strip()
+        except Exception as e:
+            logger.warning(f"  Groq 생성 오류: {e}")
+
+    return None
 
 
 def run():

@@ -1,5 +1,5 @@
 {
-  "next_code": 10,
+  "next_code": 11,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -89,6 +89,16 @@
       "category": "뷰티",
       "registered_at": "2026-06-07T22:24:31.500535+09:00",
       "posted": true
+    },
+    "https://link.coupang.com/a/epkxxrVWOz?abTestInfo=100412_group_A": {
+      "code": "010",
+      "name": "초고당도 농장직송 고령 하미과 메론",
+      "url": "https://link.coupang.com/a/epkxxrVWOz?abTestInfo=100412_group_A",
+      "image_url": "",
+      "category": "",
+      "registered_at": "2026-06-09T02:41:59.952607+09:00",
+      "posted": true,
+      "short_name": "하미과 메론"
     }
   }
 }

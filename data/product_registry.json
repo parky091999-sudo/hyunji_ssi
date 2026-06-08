@@ -1,5 +1,5 @@
 {
-  "next_code": 11,
+  "next_code": 12,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -99,6 +99,16 @@
       "registered_at": "2026-06-09T02:41:59.952607+09:00",
       "posted": true,
       "short_name": "하미과 메론"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8923523045&ctag=8923523045&lpt": {
+      "code": "011",
+      "name": "코지스 전동 충전식 원터치 소금 후추그라인더 1세트 200ml",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8923523045&ctag=8923523045&lptag=I26078683398&itemId=26078683398&vendorItemId=93059656519&spec=10305198",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5733255/57332559712.8.jpg",
+      "category": "주방",
+      "registered_at": "2026-06-09T03:18:18.899642+09:00",
+      "posted": true,
+      "short_name": "전동 후추그라인더"
     }
   }
 }

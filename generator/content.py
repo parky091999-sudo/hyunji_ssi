@@ -146,16 +146,19 @@ def _generate_with_gemini(product: dict, product_code: str) -> str | None:
         model = genai.GenerativeModel(
             "gemini-2.5-flash",
             system_instruction=_POST1_SYSTEM,
-            generation_config=genai.types.GenerationConfig(
-                max_output_tokens=450,
-                temperature=0.9,
-            ),
         )
         user_msg = _build_user_msg(product)
         body_and_tags = None
         for attempt in range(3):
             extra = _KOREAN_ONLY if attempt > 0 else ""
-            resp = model.generate_content(user_msg + extra)
+            resp = model.generate_content(
+                user_msg + extra,
+                generation_config={
+                    "max_output_tokens": 2000,
+                    "temperature": 0.9,
+                    "thinking_config": {"thinking_budget": 0},
+                },
+            )
             candidate = resp.text.strip().strip("\"'""''") if resp.text else ""
             if not candidate:
                 continue
@@ -437,12 +440,15 @@ def generate_general_post(post_type: str | None = None) -> str | None:
             model = genai.GenerativeModel(
                 "gemini-2.5-flash",
                 system_instruction=_CASUAL_SYSTEM,
-                generation_config=genai.types.GenerationConfig(
-                    max_output_tokens=300,
-                    temperature=0.95,
-                ),
             )
-            resp = model.generate_content(user_msg)
+            resp = model.generate_content(
+                user_msg,
+                generation_config={
+                    "max_output_tokens": 1000,
+                    "temperature": 0.95,
+                    "thinking_config": {"thinking_budget": 0},
+                },
+            )
             text = resp.text.strip().strip("\"'""''") if resp.text else ""
             if text and not _has_foreign_chars(text):
                 logger.info("  [Gemini 2.0 Flash] 일상글 생성 완료")

@@ -182,9 +182,15 @@ def _generate(product: dict) -> str | None:
             model = genai.GenerativeModel(
                 "gemini-2.5-flash",
                 system_instruction=_POST_SYSTEM,
-                generation_config=genai.types.GenerationConfig(max_output_tokens=500, temperature=0.85),
             )
-            resp = model.generate_content(prompt)
+            resp = model.generate_content(
+                prompt,
+                generation_config={
+                    "max_output_tokens": 2000,
+                    "temperature": 0.85,
+                    "thinking_config": {"thinking_budget": 0},
+                },
+            )
             text = resp.text.strip() if resp.text else ""
             if text:
                 logger.info("  [Gemini] 생성 완료")

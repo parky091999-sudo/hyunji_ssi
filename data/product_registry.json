@@ -1,5 +1,5 @@
 {
-  "next_code": 12,
+  "next_code": 13,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -109,6 +109,16 @@
       "registered_at": "2026-06-09T03:18:18.899642+09:00",
       "posted": true,
       "short_name": "전동 후추그라인더"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9544762614&ctag=9544762614&lpt": {
+      "code": "012",
+      "name": "QUZO 아이스 터보 휴대용 선풍기 급속냉각 손풍기  회색  H-202",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9544762614&ctag=9544762614&lptag=I28474601961&itemId=28474601961&vendorItemId=95424830533&spec=10305198",
+      "image_url": "https://shopping-phinf.pstatic.net/main_6024768/60247686492.jpg",
+      "category": "",
+      "registered_at": "2026-06-10T01:27:38.524711+09:00",
+      "posted": true,
+      "short_name": "휴대용 선풍기"
     }
   }
 }

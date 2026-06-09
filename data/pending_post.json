@@ -1,6 +1,6 @@
 {
   "for_date": "2026-06-10",
-  "generated_at": "2026-06-09T03:20:44.966842+09:00",
+  "generated_at": "2026-06-09T20:03:51.706495+09:00",
   "candidates": [
     {
       "product": {
@@ -22,6 +22,60 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_5915999/59159994257.10.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_5915999/59159994257.10.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "우드 인테리어 삼각 튼튼한건조대 원룸 화이트 우드",
+        "price": "90,800원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_6000142/60001427810.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8094896185&ctag=8094896185&lptag=I22878996596&itemId=22878996596&vendorItemId=89913594549&spec=10305199",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "빨래건조대",
+        "category_hint": "생활",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-09T11:01:45.922399",
+        "youtube_source": {
+          "title": "좁은 주방 2배 넓게 쓰는 신박한 방법! 싱크대 삼각 건조대 후기 #살림룰루",
+          "video_id": "Bt-0fwmjsjs",
+          "views": 1760,
+          "keyword": "신박한 주방용품"
+        }
+      },
+      "post_text": "좁은 집 살면 주방이 항상 좁게 느껴지더라\n그래서 요즘 주방을 2배로 늘려주는 아이템이 떴는데, 이것만 있으면 진짜 공간 활용이 달라지더라고\n이건 삼각형 모양으로 설계된 건조대여서 공간을 최대한 활용할 수 있더라고\n근데 이건 진짜로 잘 만든건지 후기를 보니까 산 사람들은 거의 다 만족했는지 거의 모두가 하나같이 왜 이제 샀냐고 하더라\n✔ 이건 요리 후 설거지 바로 할 수 있는 위치에 놓으면 진짜 편리하더라\n✔ 게다가 우드 소재라서 인테리어도 예쁘고, 튼튼해서 오래 쓰기 좋더라고\n\n#생활꿀템 #좁은주방해결 #삼각건조대 #주방인테리어 #설거지꿀템",
+      "image_url": "https://shopping-phinf.pstatic.net/main_6000142/60001427810.jpg",
+      "detail_images": [
+        "https://shopping-phinf.pstatic.net/main_6000142/60001427810.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "셰프토프 전동 소금 후추 그라인더 1개",
+        "price": "22,730원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_5802855/58028555315.1.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7737919583&ctag=7737919583&lptag=I20810714429&itemId=20810714429&vendorItemId=94863152668&spec=10305199",
+        "badge": "쿠팡",
+        "brand": "글라스락",
+        "category": "보관/밀폐용기",
+        "category_hint": "주방",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-09T11:03:44.112947"
+      },
+      "post_text": "요즘 집에서 요리하는 날이 많아졌는데 소금, 후추 뿌릴 때마다 은근히 귀찮더라\n근데 이게 사실 요리할 때마다 매번 일일히 소금 후추통을 따서 뿌리고 하는 게 좀 번거롭더라고\n그래서 전동 소금 후추 그라인더 쓰고 있는데 이건 그냥 소금이나 후추를 넣으면 버튼 누르면 자동으로 가루로 만들어서 뿌려주더라고\n리뷰 보니까 산 사람들이 진짜 하나같이 왜 이제 샀냐고 하더라\n✔ 이거 쓰니까 요리할 때 소금 후추 뿌릴 때마다 편하더라고,✔ 게다가 손이 많이 가는 요리할 때도 딱일거 같더라고\n\n#생활꿀템 #주방용품 #요리하기쉬워 #소금후추그라인더",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5802855/58028555315.1.jpg",
+      "detail_images": [
+        "https://shopping-phinf.pstatic.net/main_5802855/58028555315.1.jpg"
       ],
       "product_code": "",
       "status": "pending"

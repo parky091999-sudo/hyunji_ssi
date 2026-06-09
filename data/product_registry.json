@@ -1,5 +1,5 @@
 {
-  "next_code": 13,
+  "next_code": 14,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -119,6 +119,16 @@
       "registered_at": "2026-06-10T01:27:38.524711+09:00",
       "posted": true,
       "short_name": "휴대용 선풍기"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9414993291&ctag=9414993291&lpt": {
+      "code": "013",
+      "name": "PONTE 독일 다기능 스팀청소기 핸디 고압 화이트 PVC-4809",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9414993291&ctag=9414993291&lptag=I27976259146&itemId=27976259146&vendorItemId=94381995919&spec=10305198",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5915999/59159994257.10.jpg",
+      "category": "생활",
+      "registered_at": "2026-06-10T02:27:57.431164+09:00",
+      "posted": true,
+      "short_name": "스팀청소기"
     }
   }
 }

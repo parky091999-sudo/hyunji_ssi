@@ -1,6 +1,6 @@
 {
   "for_date": "2026-06-11",
-  "generated_at": "2026-06-10T21:41:42.330868+09:00",
+  "generated_at": "2026-06-10T22:17:42.645881+09:00",
   "candidates": [
     {
       "product": {
@@ -31,31 +31,6 @@
       ],
       "product_code": "",
       "status": "pending"
-    },
-    {
-      "product": {
-        "name": "셰프토프 전동 소금 후추 그라인더 1개",
-        "price": "22,730원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5802855/58028555315.1.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7737919583&ctag=7737919583&lptag=I20810714429&itemId=20810714429&vendorItemId=94863152668&spec=10305199",
-        "badge": "쿠팡",
-        "brand": "글라스락",
-        "category": "보관/밀폐용기",
-        "category_hint": "주방",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-09T17:30:13.777269"
-      },
-      "post_text": "요즘 집에서 요리할 때마다 소금과 후추를 뿌릴 때마다 허리 아프더라\n그래서 요리할 때마다 도움되는 거 찾고 있었는데, 전동으로 작동하는 소금 후추 그라인더가 있더라고\n이거 그냥 손으로 돌리지 않아도 되고, 소금과 후추를 미리 넣어두면 버튼만 누르면 자동으로 가루로 만들어 주는 거라 편리하더라\n근데 리뷰 보니까 산 사람들 모두가 이거 왜 이제 샀냐고 하더라\n그래서 나도 이거 쓰면서 요리할 때마다 편리함을 느끼고 있더라고\n✔ 이건 요리할 때마다 꼭 필요한 아이템이라서, 요리하는 사람들에게 강추한다는 거 잊지 마세요!\n✔ 그리고 이건 전동이라서 소금과 후추를 미리 넣어두면, 손님 오실 때도 편리하게 쓸 수 있더라고\n\n#생활꿀템 #주방용품 #요리용품 #전동그라인더 #소금후추그라인더",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5802855/58028555315.1.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5802855/58028555315.1.jpg"
-      ],
-      "product_code": "",
-      "status": "rejected",
-      "rejection_reason": "후추그라인더 상품 올라갔었음"
     }
   ]
 }

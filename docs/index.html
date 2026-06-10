@@ -717,10 +717,14 @@
     applyBadges();
     if (!_db) return;
     const today = new Date().toISOString().slice(0,10).replace(/-/g,'');
-    _db.collection("products").doc(code).set({
+    const ref = _db.collection("products").doc(code);
+    ref.update({
       total: firebase.firestore.FieldValue.increment(1),
       [`days.${today}`]: firebase.firestore.FieldValue.increment(1),
-    }, { merge: true }).catch(e => console.warn('[꿀픽] write error:', e));
+    }).catch(() => {
+      ref.set({ total: 1, days: { [today]: 1 } })
+         .catch(e => console.warn('[꿀픽] write error:', e));
+    });
   }
 
   /* ── 뱃지 계산 ──

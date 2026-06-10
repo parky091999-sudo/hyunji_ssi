@@ -166,8 +166,12 @@
     padding: 0 14px;
     display: flex;
     gap: 6px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;          /* 한 줄 고정 */
+    overflow-x: auto;           /* 옆으로 스와이프 */
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
+  .cat-wrap::-webkit-scrollbar { display: none; }
   .cat-pill {
     font-size: 0.72rem;
     font-weight: 600;
@@ -335,6 +339,20 @@
   .c-badge.best { background: rgba(80,220,120,0.2); color: #50DC78; border: 1px solid rgba(80,220,120,0.3); }
   .c-badge.hot  { background: rgba(255,107,53,0.2); color: var(--accent); border: 1px solid rgba(255,107,53,0.3); }
   .c-badge.new  { background: rgba(255,209,102,0.2); color: var(--accent2); border: 1px solid rgba(255,209,102,0.3); }
+  .c-overlay-badge {
+    position: absolute; top: 4px; left: 4px;
+    font-size: 0.58rem; font-weight: 800;
+    padding: 2px 6px; border-radius: 5px; line-height: 1.3;
+  }
+  .c-overlay-badge.hot { background: rgba(255,107,53,.92); color: #fff; }
+  .c-overlay-badge.new { background: rgba(255,209,102,.95); color: #5a3e00; }
+  /* 카테고리 보기: Best/추천 배너 절반 이하 축소 */
+  #featured-section.compact { padding-top: 8px; }
+  #featured-section.compact .featured-title { margin-bottom: 5px; font-size: 0.68rem; }
+  #featured-section.compact .c-card { flex: 0 0 84px; border-radius: 10px; }
+  #featured-section.compact .c-card-body { padding: 4px 5px 5px; }
+  #featured-section.compact .c-name { -webkit-line-clamp: 1; font-size: 0.62rem; }
+  #featured-section.compact .arrow-btn { display: none; }
   .c-name {
     font-size: 0.7rem;
     font-weight: 600;
@@ -356,12 +374,12 @@
     margin: 0 auto;
     transition: all .2s;
   }
-  .grid.list-view { grid-template-columns: 1fr; gap: 10px; }
-  .grid.list-view .card { flex-direction: row; height: 100px; }
-  .grid.list-view .card img { width: 100px; height: 100px; aspect-ratio: 1/1; flex-shrink: 0; border-radius: var(--radius) 0 0 var(--radius); }
-  .grid.list-view .card-body { padding: 10px 12px; justify-content: center; gap: 4px; }
-  .grid.list-view .badge-row { margin-bottom: 0; }
-  .grid.list-view .name { -webkit-line-clamp: 2; margin-bottom: 0; font-size: 0.84rem; }
+  .grid.list-view { grid-template-columns: 1fr; gap: 8px; }
+  .grid.list-view .card { flex-direction: row; height: 76px; }
+  .grid.list-view .card img { width: 76px; height: 76px; aspect-ratio: 1/1; flex-shrink: 0; border-radius: var(--radius) 0 0 var(--radius); }
+  .grid.list-view .card-body { padding: 6px 12px; justify-content: center; align-items: center; text-align: center; gap: 3px; }
+  .grid.list-view .badge-row { margin-bottom: 0; justify-content: center; }
+  .grid.list-view .name { -webkit-line-clamp: 2; margin-bottom: 0; font-size: 0.8rem; flex: initial; }
 
   /* ── 카드 ── */
   .card {
@@ -396,7 +414,7 @@
   .badge-new  { display: inline-block; background: rgba(255,209,102,0.12); color: var(--accent2); font-size: 0.62rem; font-weight: 800; padding: 2px 6px; border-radius: 20px; border: 1px solid rgba(255,209,102,0.25); letter-spacing: 0.04em; flex-shrink: 0; }
   .badge-hot  { display: inline-block; background: rgba(255,107,53,0.12); color: #FF6B6B; font-size: 0.62rem; font-weight: 800; padding: 2px 6px; border-radius: 20px; border: 1px solid rgba(255,59,59,0.25); letter-spacing: 0.04em; flex-shrink: 0; }
   .badge-best { display: inline-block; background: rgba(80,220,120,0.12); color: #50DC78; font-size: 0.62rem; font-weight: 800; padding: 2px 6px; border-radius: 20px; border: 1px solid rgba(80,220,120,0.25); letter-spacing: 0.04em; flex-shrink: 0; }
-  .name { font-size: 0.82rem; font-weight: 600; line-height: 1.45; color: #c0c0c0; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .name { font-size: 0.82rem; font-weight: 600; line-height: 1.45; color: #c0c0c0; flex: 1; text-align: center; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   body.light .name { color: #333; }
 
   .empty, #no-result { text-align: center; padding: 60px 20px; color: var(--text2); font-size: 0.88rem; grid-column: 1 / -1; }
@@ -450,18 +468,17 @@
       </button>
     </div>
   </div>
-  <div class="tagline">매일 하나씩, 진짜 쓸만한 것들만</div>
   <div class="search-wrap">
     <input type="search" id="search" placeholder="코드(예: 027) 또는 상품명 검색" autocomplete="off" inputmode="search">
   </div>
 </header>
 
 <div class="cat-wrap" id="cat-wrap">
-  <button class="cat-pill active" data-cat="전체" onclick="filterCat(this)">전체</button><button class="cat-pill" data-cat="뷰티" onclick="filterCat(this)">뷰티</button><button class="cat-pill" data-cat="주방" onclick="filterCat(this)">주방</button><button class="cat-pill" data-cat="생활" onclick="filterCat(this)">생활</button><button class="cat-pill" data-cat="디지털/가전" onclick="filterCat(this)">디지털/가전</button><button class="cat-pill" data-cat="인테리어" onclick="filterCat(this)">인테리어</button><button class="cat-pill" data-cat="기타" onclick="filterCat(this)">기타</button>
+  <button class="cat-pill active" data-cat="전체" onclick="filterCat(this)">전체</button><button class="cat-pill" data-cat="먹는거" onclick="filterCat(this)">먹는거</button><button class="cat-pill" data-cat="뷰티" onclick="filterCat(this)">뷰티</button><button class="cat-pill" data-cat="주방" onclick="filterCat(this)">주방</button><button class="cat-pill" data-cat="생활" onclick="filterCat(this)">생활</button><button class="cat-pill" data-cat="디지털/가전" onclick="filterCat(this)">디지털/가전</button><button class="cat-pill" data-cat="인테리어" onclick="filterCat(this)">인테리어</button><button class="cat-pill" data-cat="기타" onclick="filterCat(this)">기타</button>
 </div>
 
 <div class="featured-section" id="featured-section">
-  <div class="featured-title">🏆 Best 10</div>
+  <div class="featured-title" id="title-best">🏆 Best 10</div>
   <div class="carousel-outer">
     <button class="arrow-btn left" onclick="scrollCarousel('best10',-1)">‹</button>
     <div class="carousel-wrap" id="wrap-best10">
@@ -469,7 +486,7 @@
     </div>
     <button class="arrow-btn right" onclick="scrollCarousel('best10',1)">›</button>
   </div>
-  <div class="featured-title" style="margin-top:14px">🔥 추천 상품</div>
+  <div class="featured-title" id="title-hot" style="margin-top:14px">🔥 추천 상품</div>
   <div class="carousel-wrap" id="wrap-hot" style="padding:0 2px">
     <div class="carousel-row" id="row-hot"><div style="color:var(--text2);font-size:0.75rem;padding:14px 4px">집계 중...</div></div>
   </div>
@@ -675,6 +692,7 @@
   /* ── 카테고리 자동 추론 ── */
   function inferCategory(name) {
     const n = name.toLowerCase();
+    if (/메론|멜론|과일|사과|딸기|포도|감귤|고기|한우|삼겹|식품|간식|과자|젤리|견과|쌀|김치|반찬|즉석|밀키트|음료|주스|차류|원두|해산물|생선|간재미|오징어|새우|소스|양념|장아찌|육포|빵|떡|꿀/.test(n)) return '먹는거';
     if (/크림|샴푸|세럼|마스크팩|화장품|뷰티|헤어|두피|클렌징|세안|렌즈|로션|에센스|토너|선크림/.test(n)) return '뷰티';
     if (/도마|식기세척기|주방|냄비|프라이팬|에어프라이어|정수기|조리|커피|그릇|칼|가위|집게/.test(n)) return '주방';
     if (/휴지통|청소기|세탁|수납|정리함|쓰레기|걸레|진공|빨래|청소/.test(n)) return '생활';
@@ -730,7 +748,14 @@
     }
   }
 
+  /* 운영자 클릭 제외: ?owner=1 로 켜고 ?owner=0 으로 끔 (admin 접속 기기는 자동 ON) */
+  const _params = new URLSearchParams(location.search);
+  if (_params.get('owner') === '1') { localStorage.setItem('kkul_owner', '1'); }
+  if (_params.get('owner') === '0') { localStorage.removeItem('kkul_owner'); }
+  const _isOwner = localStorage.getItem('kkul_owner') === '1';
+
   function recordClick(code) {
+    if (_isOwner) return;        // 내 클릭은 집계 제외
     if (!_clicks[code]) _clicks[code] = { total: 0, hot7: 0 };
     _clicks[code].total++;
     _clicks[code].hot7++;
@@ -752,20 +777,23 @@
      HOT  : 최근 7일 클릭 상위 2 (BEST 제외)
      NEW  : registered_at 기준 48시간 이내
   */
-  function computeBadges() {
+  function pCat(p) { return (p.category || '').trim() || inferCategory((p.name || '').toLowerCase()); }
+
+  function computeBadges(pool, minClicks) {
+    pool = pool || PRODUCTS_DATA;
     const now = Date.now();
     const MS_48H  = 48 * 3600000;
-    const MIN_CLICKS = 3;
+    const MIN_CLICKS = (minClicks !== undefined) ? minClicks : 3;
 
     // BEST: 누적 클릭 상위 10
-    const withTotal = PRODUCTS_DATA
+    const withTotal = pool
       .map(p => ({ code: p.code, total: _clicks[p.code]?.total || 0 }))
       .filter(x => x.total >= MIN_CLICKS)
       .sort((a, b) => b.total - a.total);
     const bestCodes = new Set(withTotal.slice(0, 10).map(x => x.code));
 
     // HOT: 7일 클릭 상위 2 (BEST 제외)
-    const withHot = PRODUCTS_DATA
+    const withHot = pool
       .filter(p => !bestCodes.has(p.code))
       .map(p => ({ code: p.code, hot7: _clicks[p.code]?.hot7 || 0 }))
       .filter(x => x.hot7 > 0)
@@ -774,7 +802,7 @@
 
     // NEW: registered_at 기준 48시간 이내
     const newCodes = new Set();
-    for (const p of PRODUCTS_DATA) {
+    for (const p of pool) {
       if (!p.registered_at) continue;
       const reg = new Date(p.registered_at).getTime();
       if (!isNaN(reg) && now - reg < MS_48H) newCodes.add(p.code);
@@ -810,6 +838,9 @@
     currentCat = btn.dataset.cat;
     document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
+    // 카테고리 모드: Best/추천도 해당 카테고리 기준으로 재계산 + 배너 축소
+    document.getElementById('featured-section').classList.toggle('compact', currentCat !== '전체');
+    buildCarousel();
     filterAndCount();
   }
 
@@ -848,12 +879,19 @@
   /* ── 추천 캐러셀 (Best10 + HOT 2) ── */
   function buildCarousel() {
     if (!PRODUCTS_DATA.length) return;
-    const { bestCodes, hotCodes, newCodes } = computeBadges();
+    const inCat = currentCat !== '전체';
+    const pool  = inCat ? PRODUCTS_DATA.filter(p => pCat(p) === currentCat) : PRODUCTS_DATA;
+    // 카테고리 모드: 풀이 작으니 최소 클릭 1로 완화
+    const { bestCodes, hotCodes, newCodes } = computeBadges(pool, inCat ? 1 : 3);
+    const tB = document.getElementById('title-best');
+    const tH = document.getElementById('title-hot');
+    if (tB) tB.textContent = inCat ? `🏆 ${currentCat} Best` : '🏆 Best 10';
+    if (tH) tH.textContent = inCat ? `🔥 ${currentCat} 추천` : '🔥 추천 상품';
 
     // ── Best 10 ──
     const rowBest = document.getElementById('row-best10');
     if (rowBest) {
-      const bestItems = [...PRODUCTS_DATA]
+      const bestItems = [...pool]
         .filter(p => bestCodes.has(p.code))
         .sort((a, b) => (_clicks[b.code]?.total || 0) - (_clicks[a.code]?.total || 0))
         .slice(0, 10);
@@ -871,7 +909,6 @@
                 <span style="position:absolute;top:4px;left:4px;background:rgba(0,0,0,.72);color:#FFD166;font-size:.6rem;font-weight:800;padding:2px 5px;border-radius:5px;line-height:1.3">#${i+1}</span>
               </div>
               <div class="c-card-body">
-                <span class="c-badge best">BEST</span>
                 <div class="c-name">${p.name}</div>
               </div>
             </a>`;
@@ -882,11 +919,11 @@
     // ── HOT 추천 2 ──
     const rowHot = document.getElementById('row-hot');
     if (rowHot) {
-      const hotItems = [...PRODUCTS_DATA]
+      const hotItems = [...pool]
         .filter(p => hotCodes.has(p.code))
         .sort((a, b) => (_clicks[b.code]?.hot7 || 0) - (_clicks[a.code]?.hot7 || 0));
       // 부족하면 NEW로 채움
-      const newFill = [...PRODUCTS_DATA]
+      const newFill = [...pool]
         .filter(p => newCodes.has(p.code) && !hotCodes.has(p.code) && !bestCodes.has(p.code));
       const combined = [...hotItems, ...newFill].slice(0, 2);
       if (!combined.length) {
@@ -898,13 +935,14 @@
           const badgeText  = isHot ? 'HOT 🔥' : 'NEW';
           const rankClass  = isHot ? 'rank-hot' : '';
           const imgTag = p.image_url ? `<img src="${p.image_url}" alt="${p.name}" loading="lazy">` : '';
+          const overlay = `<span class="c-overlay-badge ${badgeClass}">${badgeText}</span>`;
           return `
             <a class="c-card ${rankClass}" href="${p.url || '#'}"
                ${p.url ? 'target="_blank" rel="noopener noreferrer"' : ''}
                onclick="recordClick('${p.code}')">
-              ${imgTag}
+              <div style="position:relative">${imgTag}${imgTag ? overlay : ''}</div>
               <div class="c-card-body">
-                <span class="c-badge ${badgeClass}">${badgeText}</span>
+                ${imgTag ? '' : overlay}
                 <div class="c-name">${p.name}</div>
               </div>
             </a>`;

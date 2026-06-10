@@ -62,7 +62,7 @@ _POST1_SYSTEM = """
 
 ━━━ 기타 규칙 ━━━
 - 이모지 1~2개만, 본문에 자연스럽게
-- 해시태그 첫 번째는 항상 #생활꿀템, 총 4~5개
+- 해시태그 총 4~5개, 상품 카테고리에 어울리게 (사용자 메시지의 추천 해시태그 풀에서 조합). 매번 #생활꿀템으로 시작하지 말고 카테고리마다 다르게
 - 가격 언급 금지
 - 제품명(상품명) 직접 언급 금지 — 기능·소재·효과·상황으로만 표현해
 - 글 전체 400~600자
@@ -167,6 +167,35 @@ def _fix_linebreaks(text: str) -> str:
     return "\n".join(result)
 
 
+_HASHTAG_POOLS = {
+    "먹는거":      ["#먹꿀템", "#간식추천", "#맛스타그램", "#푸드템", "#먹스타그램", "#오늘뭐먹지"],
+    "뷰티":        ["#뷰티템", "#뷰티꿀템", "#화장품추천", "#피부관리", "#셀프케어"],
+    "주방":        ["#주방꿀템", "#주방템", "#자취요리", "#살림템", "#요리템"],
+    "생활":        ["#생활꿀템", "#살림꿀템", "#자취템", "#필수템", "#살림템"],
+    "디지털/가전": ["#테크템", "#가전추천", "#전자기기", "#IT템", "#테크"],
+    "인테리어":    ["#인테리어소품", "#집꾸미기", "#홈데코", "#감성인테리어", "#홈스타일링"],
+    "기타":        ["#꿀템", "#아이디어상품", "#추천템", "#꿀템추천", "#잇템"],
+}
+
+
+def _infer_category_kr(name: str) -> str:
+    n = (name or "").lower()
+    if re.search(r"메론|멜론|과일|고기|한우|삼겹|식품|간식|과자|젤리|견과|쌀|김치|반찬|즉석|밀키트|음료|주스|원두|해산물|생선|간재미|오징어|새우|소스|양념|육포|빵|떡", n): return "먹는거"
+    if re.search(r"크림|샴푸|마스크팩|세럼|클렌징|선크림|화장|뷰티|미스트|로션|에센스", n): return "뷰티"
+    if re.search(r"냄비|프라이팬|후라이팬|그라인더|믹서|에어프라이어|주방|식기|텀블러|보관용기|도마|커피머신|컵", n): return "주방"
+    if re.search(r"청소|세제|수납|정리|건조기|빨래|욕실|화장지|물티슈|방향제|탈취|살림|스팀", n): return "생활"
+    if re.search(r"충전|케이블|이어폰|스피커|보조배터리|마우스|키보드|모니터|공기청정|선풍기|가습|히터|드라이기|led|전동|무선|손풍기", n): return "디지털/가전"
+    if re.search(r"조명|무드등|쿠션|커튼|러그|액자|인테리어|디퓨저|캔들|화분", n): return "인테리어"
+    return "기타"
+
+
+def _hashtag_pool(product: dict) -> list[str]:
+    cat = (product.get("category_hint") or product.get("category") or "").strip()
+    if cat not in _HASHTAG_POOLS:
+        cat = _infer_category_kr(product.get("name", ""))
+    return _HASHTAG_POOLS.get(cat, _HASHTAG_POOLS["기타"])
+
+
 def _build_user_msg(product: dict) -> str:
     name         = product.get("name", "")
     brand        = product.get("brand", "")
@@ -180,6 +209,7 @@ def _build_user_msg(product: dict) -> str:
     if rating:       msg += f"\n별점: {rating}"
     if review_count: msg += f"\n리뷰 수: {review_count}"
     if yt_title:     msg += f"\n참고 유튜브 제목: {yt_title[:60]}"
+    msg += "\n추천 해시태그 풀(이 중 4~5개 자유 조합, 어울리는 태그 1개 추가 가능): " + " ".join(_hashtag_pool(product))
     msg += "\n\n위 상품을 소개하는 Threads 게시글을 써줘. 첫 줄은 스크롤을 멈추게 하는 강력한 훅으로 시작해."
     banned = _recent_first_lines()
     if banned:
@@ -296,6 +326,10 @@ def _post1_fallback(name: str, product_code: str) -> str:
         "진작 알았으면 좋았을 텐데 싶은 거\n리뷰 평점 보고 바로 믿고 사는 물건\n\n✔ 사용법 간단해서 누구나 OK\n✔ 선물용으로도 반응 좋음\n\n#생활꿀템 #아이디어상품 #꿀템 #추천템 #살림꿀템",
     ]
     body_and_tags = random.choice(variations)
+    # 카테고리 기반 해시태그로 교체 (#생활꿀템 고정 탈피)
+    pool = _hashtag_pool({"name": name})
+    tags = " ".join(random.sample(pool, k=min(4, len(pool))))
+    body_and_tags = re.sub(r"\n#[^\n]+$", "\n" + tags, body_and_tags)
     return f"{body_and_tags}\n\n{_CODE_LINE.format(code=product_code)}"
 
 

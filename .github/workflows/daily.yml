@@ -2,10 +2,10 @@ name: Auto Post (08:05 KST)
 
 on:
   schedule:
-    - cron: '5 23 * * *'   # 23:05 UTC = 08:05 KST (기준)
-    - cron: '5  2 * * *'   # 02:05 UTC = 11:05 KST (딜레이 보정 1차)
-    - cron: '5  5 * * *'   # 05:05 UTC = 14:05 KST (딜레이 보정 2차)
-    - cron: '5  8 * * *'   # 08:05 UTC = 17:05 KST (딜레이 보정 3차)
+    - cron: '17 14 * * *'  # 23:17 KST — 지연(실측 7~12h) 시 다음날 점심대 도착
+    - cron: '17 17 * * *'  # 02:17 KST
+    - cron: '17 20 * * *'  # 05:17 KST
+    - cron: '17 23 * * *'  # 08:17 KST — 지연 0이어도 게이트가 11시까지 대기 후 게시
   workflow_dispatch:
     inputs:
       skip_delay:

@@ -147,6 +147,10 @@ async def _collect_fallback() -> dict | None:
 
 async def run():
     import random
+    # KST 게이트: 새벽 차단, 11시 전 도착 시 11시까지 대기(최대 4h) — 점심 골든타임 정렬
+    from scripts.post_gate import kst_gate
+    if not await kst_gate(11.0, 23.0, max_wait_h=4.0, label="auto"):
+        return
     skip_delay = os.getenv("SKIP_DELAY", "false").lower() == "true"
     if not skip_delay:
         delay = random.randint(0, 15)  # 최대 15분 (기존 55분에서 축소)
@@ -311,7 +315,7 @@ async def run():
     _save_json(FEED_POSTS_PATH, feed[:200])
 
     if post_url and post_id:
-        add_recent_post(post_url, post_id, "story")
+        add_recent_post(post_url, post_id, "story", code)
 
     logger.info(f"포스팅 완료: {status} | {post_url or '(URL 없음)'}")
 

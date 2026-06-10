@@ -2,10 +2,10 @@ name: Manual Post (12:05 KST)
 
 on:
   schedule:
-    - cron: '5  3 * * *'   # 03:05 UTC = 12:05 KST (기준)
-    - cron: '5  6 * * *'   # 06:05 UTC = 15:05 KST (딜레이 보정 1차)
-    - cron: '5  9 * * *'   # 09:05 UTC = 18:05 KST (딜레이 보정 2차)
-    - cron: '5 12 * * *'   # 12:05 UTC = 21:05 KST (딜레이 보정 3차)
+    - cron: '17 2 * * *'   # 11:17 KST — 지연 시 저녁(21시대) 도착, 정시면 생략
+    - cron: '17 5 * * *'   # 14:17 KST — 정시면 19시까지 대기 후 게시
+    - cron: '17 8 * * *'   # 17:17 KST
+    - cron: '17 11 * * *'  # 20:17 KST — 저녁 골든 직격
   workflow_dispatch:
     inputs:
       skip_delay:

@@ -59,6 +59,10 @@ def run():
     logger.info(f"일상글 포스팅 체크: {datetime.now(KST).strftime('%Y-%m-%d %H:%M KST')}")
     logger.info("=" * 50)
 
+    from scripts.post_gate import kst_gate_sync
+    if not kst_gate_sync(8.0, 22.0, label="casual"):
+        return
+
     if not _should_post():
         tracker = _load_json(TRACKER_PATH, {})
         logger.info(f"아직 {INTERVAL_DAYS}일 미경과 (마지막: {tracker.get('last_posted_at', '없음')}) — 건너뜀")

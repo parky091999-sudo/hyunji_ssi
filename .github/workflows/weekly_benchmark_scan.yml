@@ -2,7 +2,7 @@ name: Weekly Benchmark Scan (Sun 23:00 KST)
 
 on:
   schedule:
-    - cron: '0 14 * * 0'   # 14:00 UTC Sunday = 23:00 KST Sunday
+    - cron: '37 13 * * 0' # 일 22:37 KST
   workflow_dispatch:
 
 env:

@@ -2,7 +2,7 @@ name: Casual Post (일상글, 3일에 1번)
 
 on:
   schedule:
-    - cron: '30 1 * * *'   # 01:30 UTC = 10:30 KST
+    - cron: '17 0 * * *'   # 09:17 KST (지연 시 저녁 도착도 허용창 내)
   workflow_dispatch:
 
 # 포스팅 워크플로 동시 실행 금지 — 크론 지연으로 겹칠 때 중복 게시 방지

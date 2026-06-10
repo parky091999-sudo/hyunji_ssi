@@ -32,6 +32,10 @@ async def run():
     logger.info(f"댓글 체크 시작: {datetime.now(KST).strftime('%Y-%m-%d %H:%M KST')}")
     logger.info("=" * 50)
 
+    from scripts.post_gate import kst_gate
+    if not await kst_gate(7.0, 24.0, label="comments"):
+        return
+
     if not THREADS_ACCESS_TOKEN:
         logger.warning("THREADS_ACCESS_TOKEN 미설정 — 건너뜀")
         return

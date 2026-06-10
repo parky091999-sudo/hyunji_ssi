@@ -2,7 +2,7 @@ name: Healthcheck & Auto-Recover (17:00 KST)
 
 on:
   schedule:
-    - cron: '0 8 * * *'   # 08:00 UTC = 17:00 KST
+    - cron: '17 10 * * *'  # 19:17 KST — auto 미게시 시 저녁 내 복구
   workflow_dispatch:
 
 # 포스팅 워크플로 동시 실행 금지 — 크론 지연으로 겹칠 때 중복 게시 방지

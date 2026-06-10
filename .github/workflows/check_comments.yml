@@ -2,7 +2,7 @@ name: Comment Check & Auto-Reply (6시간마다)
 
 on:
   schedule:
-    - cron: '0 */6 * * *'   # UTC 0/6/12/18시 = KST 9/15/21/3시
+    - cron: '23 */6 * * *' # 6시간마다 (혼잡 분 회피)
   workflow_dispatch:
 
 env:

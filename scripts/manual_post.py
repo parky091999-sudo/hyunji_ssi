@@ -52,6 +52,10 @@ def _product_key(product: dict) -> str:
 
 async def run():
     import random
+    # KST 게이트: 저녁 골든(19시~) 정렬, 14시 이후 도착은 19시까지 대기, 새벽 차단
+    from scripts.post_gate import kst_gate
+    if not await kst_gate(19.0, 23.5, max_wait_h=5.0, label="manual"):
+        return
     skip_delay = os.getenv("SKIP_DELAY", "false").lower() == "true"
     if not skip_delay:
         delay = random.randint(0, 15)  # 최대 15분 (기존 55분에서 축소)
@@ -232,7 +236,7 @@ async def run():
     _save_json(FEED_POSTS_PATH, feed[:200])
 
     if post_url and post_id:
-        add_recent_post(post_url, post_id, "manual")
+        add_recent_post(post_url, post_id, "manual", code)
 
     logger.info(f"수동 포스팅 완료: {status} | {post_url or '(URL 없음)'}")
 

@@ -414,6 +414,7 @@ body {
 const REPO   = "parky091999-sudo/coupang-pipeline";
 const BASE   = `https://api.github.com/repos/${REPO}`;
 let TOKEN    = localStorage.getItem("kkul_pat") || "";
+localStorage.setItem("kkul_owner", "1");  // 어드민 접속 기기 = 운영자 → 상품페이지 클릭 집계 제외
 let _shas    = {};          // 파일별 sha 캐시
 let _data    = {};          // 파일별 데이터 캐시
 let _checkedCandidates = new Set();  // 체크된 후보 인덱스

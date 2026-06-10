@@ -142,24 +142,8 @@ body {
   font-size: 13px; transition: all .15s;
 }
 .checked .check-box { border-color: #f8c93a; background: #f8c93a; color: #000; }
-/* ── 이력 ── */
-.history-item {
-  border-bottom: 1px solid #1a1a1a; padding: 12px 16px;
-  display: flex; gap: 10px; align-items: flex-start;
-}
-.hist-type {
-  font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 6px;
-  flex-shrink: 0; margin-top: 2px;
-}
-.type-auto   { background: #1a2a3a; color: #5dade2; }
-.type-manual { background: #1a2a1a; color: #58d68d; }
-.type-casual { background: #2a1a2a; color: #c39bd3; }
-.hist-info { flex: 1; min-width: 0; }
-.hist-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hist-meta { font-size: 11px; color: #666; }
-.hist-status { font-size: 11px; flex-shrink: 0; }
-.status-ok  { color: #27ae60; }
-.status-fail{ color: #e74c3c; }
+/* ── 클릭통계 ── */
+.active-sort { color: #f8c93a !important; border-color: #f8c93a55 !important; }
 /* ── 공통 ── */
 .empty-msg { color: #555; font-size: 13px; padding: 24px 0; text-align: center; }
 .loading { color: #555; font-size: 13px; padding: 20px 0; text-align: center; }
@@ -299,7 +283,7 @@ body {
   <div class="tab-nav">
     <button class="tab-btn active" onclick="switchTab('auto',this)">자동포스팅</button>
     <button class="tab-btn"        onclick="switchTab('manual',this)">수동관리</button>
-    <button class="tab-btn"        onclick="switchTab('history',this)">이력</button>
+    <button class="tab-btn"        onclick="switchTab('clicks',this)">클릭통계</button>
   </div>
 </div>
 
@@ -391,16 +375,17 @@ body {
 
 </div>
 
-<!-- ── 탭3: 이력 ── -->
-<div id="tab-history" class="tab-panel">
+<!-- ── 탭3: 클릭통계 ── -->
+<div id="tab-clicks" class="tab-panel">
   <div class="section" style="padding-bottom:20px">
-    <div style="display:flex;gap:8px;margin-bottom:16px">
-      <button class="btn btn-outline btn-sm active-filter" id="filter-all"    onclick="filterHistory('all',this)">전체</button>
-      <button class="btn btn-outline btn-sm"               id="filter-auto"   onclick="filterHistory('auto',this)">자동</button>
-      <button class="btn btn-outline btn-sm"               id="filter-manual" onclick="filterHistory('manual',this)">수동</button>
-      <button class="btn btn-outline btn-sm"               id="filter-casual" onclick="filterHistory('casual',this)">일상</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div class="section-title" style="margin-bottom:0">상품별 클릭수</div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm active-sort" id="sort-latest"  onclick="sortClicks('latest',this)">최신순</button>
+        <button class="btn btn-outline btn-sm"             id="sort-popular" onclick="sortClicks('popular',this)">인기순</button>
+      </div>
     </div>
-    <div id="history-list"><div class="loading">불러오는 중...</div></div>
+    <div id="clicks-list"><div class="loading">불러오는 중...</div></div>
   </div>
 </div>
 
@@ -430,7 +415,8 @@ let TOKEN    = localStorage.getItem("kkul_pat") || "";
 let _shas    = {};          // 파일별 sha 캐시
 let _data    = {};          // 파일별 데이터 캐시
 let _checkedCandidates = new Set();  // 체크된 후보 인덱스
-let _historyFilter = "all";
+let _clicksSort   = "latest";
+let _clicksRows   = [];
 let _pollingTimer  = null;
 let _pollingUrl    = "";
 
@@ -504,7 +490,7 @@ async function loadAll() {
     loadAutoCandidates(),
     loadManualQueue(),
     loadBenchmarkCandidates(),
-    loadHistory(),
+    loadClicks(),
   ]);
 }
 
@@ -926,56 +912,95 @@ async function triggerScan() {
   } catch(e) { showToast("오류: "+e.message); }
 }
 
-// ── 탭3: 이력 ────────────────────────────────────────────────────────────────
-async function loadHistory() {
-  const el = document.getElementById("history-list");
+// ── 탭3: 클릭통계 ────────────────────────────────────────────────────────────
+async function loadClicks() {
+  const el = document.getElementById("clicks-list");
+  if (!el) return;
   try {
-    const feed = await ghGet("data/feed_posts.json");
-    renderHistory(feed);
+    let clicks = {};
+    try { clicks = JSON.parse(localStorage.getItem("kkul_clicks") || "{}"); } catch(_) {}
+
+    let feed;
+    try { feed = _data["data/feed_posts.json"] || await ghGet("data/feed_posts.json"); }
+    catch(_) { feed = []; }
+
+    // code → product info (feed_posts 기준, 코드별 첫 번째 항목)
+    const products = {};
+    for (const f of feed) {
+      const code = f.product_code;
+      if (!code || code === "preview") continue;
+      if (!products[code]) {
+        products[code] = {
+          code,
+          name:  f.product_name  || "",
+          image: f.product_image || "",
+          url:   f.threads_url   || "",
+        };
+      }
+    }
+
+    const allCodes = new Set([
+      ...Object.keys(products),
+      ...Object.keys(clicks).filter(c => c !== "preview"),
+    ]);
+
+    if (!allCodes.size) {
+      el.innerHTML = `<div class="empty-msg">포스팅된 상품이 없습니다</div>`;
+      return;
+    }
+
+    _clicksRows = [...allCodes].map(code => ({
+      code,
+      name:   products[code]?.name  || code,
+      image:  products[code]?.image || "",
+      url:    products[code]?.url   || "",
+      clicks: clicks[code] || 0,
+    }));
+
+    renderClicks(el);
   } catch(e) {
-    el.innerHTML = `<div class="empty-msg">불러오기 실패: ${e.message}</div>`;
+    if (el) el.innerHTML = `<div class="empty-msg">불러오기 실패: ${e.message}</div>`;
   }
 }
 
-function renderHistory(feed) {
-  const el = document.getElementById("history-list");
-  let items = feed;
-  if (_historyFilter === "auto")   items = feed.filter(f => f.post_type === "auto"   || !f.post_type);
-  if (_historyFilter === "manual") items = feed.filter(f => f.post_type === "manual");
-  if (_historyFilter === "casual") items = feed.filter(f => f.post_type === "casual");
-
-  if (!items.length) {
-    el.innerHTML = `<div class="empty-msg">이력 없음</div>`;
+function renderClicks(el) {
+  if (!el) el = document.getElementById("clicks-list");
+  if (!_clicksRows.length) {
+    el.innerHTML = `<div class="empty-msg">포스팅된 상품이 없습니다</div>`;
     return;
   }
-  el.innerHTML = items.map(f => {
-    const dt  = f.timestamp ? f.timestamp.slice(0,16).replace("T"," ") : "";
-    const ptype = f.post_type === "manual" ? "수동" : f.post_type === "casual" ? "일상" : "자동";
-    const ptypeClass = f.post_type === "manual" ? "type-manual" : f.post_type === "casual" ? "type-casual" : "type-auto";
-    const statusClass = f.status === "posted" ? "status-ok" : "status-fail";
-    const statusText  = f.status === "posted" ? "✓ 성공" : "✕ 실패";
-    const link = f.threads_url
-      ? `<a href="${f.threads_url}" target="_blank" style="color:#f8c93a;font-size:11px;margin-top:2px;display:block">Threads 바로가기 →</a>`
-      : "";
-    return `
-    <div class="history-item">
-      <span class="hist-type ${ptypeClass}">${ptype}</span>
-      <div class="hist-info">
-        <div class="hist-name">${esc(f.product_name || "(이름 없음)")}</div>
-        <div class="hist-meta">${dt}${f.product_code ? " · ["+f.product_code+"]" : ""}</div>
-        ${link}
+
+  const sorted = [..._clicksRows];
+  if (_clicksSort === "popular") {
+    sorted.sort((a, b) => (b.clicks - a.clicks) || b.code.localeCompare(a.code));
+  } else {
+    sorted.sort((a, b) => b.code.localeCompare(a.code));
+  }
+
+  el.innerHTML = sorted.map(r => `
+    <div style="background:#141414;border:1px solid #222;border-radius:10px;padding:12px 14px;
+      margin-bottom:8px;display:flex;align-items:center;gap:12px">
+      ${r.image
+        ? `<img src="${r.image}" style="width:52px;height:52px;object-fit:cover;border-radius:7px;flex-shrink:0" onerror="this.style.display='none'">`
+        : '<div style="width:52px;height:52px;background:#1e1e1e;border-radius:7px;flex-shrink:0"></div>'}
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.name)}</div>
+        <div style="font-size:11px;color:#666">[${r.code}]${r.url
+          ? ` · <a href="${r.url}" target="_blank" style="color:#f8c93a88;text-decoration:none">Threads →</a>`
+          : ""}</div>
       </div>
-      <div class="hist-status ${statusClass}">${statusText}</div>
-    </div>`;
-  }).join("");
+      <div style="text-align:right;flex-shrink:0;min-width:44px">
+        <div style="font-size:22px;font-weight:800;color:${r.clicks > 0 ? '#f8c93a' : '#444'};line-height:1">${r.clicks}</div>
+        <div style="font-size:10px;color:#555;margin-top:1px">클릭</div>
+      </div>
+    </div>`).join("");
 }
 
-function filterHistory(type, btn) {
-  _historyFilter = type;
-  document.querySelectorAll(".active-filter").forEach(b => b.classList.remove("active-filter"));
-  btn.classList.add("active-filter");
-  const feed = _data["data/feed_posts.json"];
-  if (feed) renderHistory(feed);
+function sortClicks(type, btn) {
+  _clicksSort = type;
+  document.querySelectorAll("#sort-latest, #sort-popular").forEach(b => b.classList.remove("active-sort"));
+  btn.classList.add("active-sort");
+  renderClicks(document.getElementById("clicks-list"));
 }
 
 // ── 수동관리: URL 등록 ────────────────────────────────────────────────────────

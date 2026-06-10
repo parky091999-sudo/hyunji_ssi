@@ -1,5 +1,5 @@
 {
-  "next_code": 14,
+  "next_code": 15,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -129,6 +129,16 @@
       "registered_at": "2026-06-10T02:27:57.431164+09:00",
       "posted": true,
       "short_name": "스팀청소기"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8094896185&ctag=8094896185&lpt": {
+      "code": "014",
+      "name": "우드 인테리어 삼각 튼튼한건조대 원룸 화이트 우드",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8094896185&ctag=8094896185&lptag=I22878996596&itemId=22878996596&vendorItemId=89913594549&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_6000142/60001427810.jpg",
+      "category": "생활",
+      "registered_at": "2026-06-11T01:59:20.118454+09:00",
+      "posted": true,
+      "short_name": "삼각 건조대"
     }
   }
 }

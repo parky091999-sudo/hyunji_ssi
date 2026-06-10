@@ -54,7 +54,8 @@
         "https://shopping-phinf.pstatic.net/main_5802855/58028555315.1.jpg"
       ],
       "product_code": "",
-      "status": "pending"
+      "status": "rejected",
+      "rejection_reason": "후추그라인더 상품 올라갔었음"
     }
   ]
 }

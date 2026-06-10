@@ -12,6 +12,19 @@ from generator.registry import get_all
 from config import COUPANG_PARTNERS_ACTIVE
 
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "docs", "index.html")
+_FB_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "firebase_config.json")
+
+
+def load_firebase_config() -> str:
+    """firebase_config.json을 읽어 JSON 문자열로 반환. 없으면 'null' 반환."""
+    try:
+        with open(_FB_CONFIG_PATH, encoding="utf-8") as f:
+            cfg = json.load(f)
+        if cfg.get("apiKey", "").startswith("여기에"):
+            return "null"
+        return json.dumps(cfg, ensure_ascii=False)
+    except FileNotFoundError:
+        return "null"
 
 _TICKER_MSG = "이 페이지의 링크는 쿠팡파트너스 활동의 일환으로, 구매 시 일정액의 수수료를 제공받을 수 있습니다"
 
@@ -57,6 +70,7 @@ def build_cards(products: list[dict]) -> str:
 def build_html(products: list[dict]) -> str:
     cards    = build_cards(products)
     count    = len(products)
+    firebase_config_json = load_firebase_config()
     products_json = json.dumps(
         [
             {
@@ -90,6 +104,8 @@ def build_html(products: list[dict]) -> str:
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>꿀픽 | 진짜 쓸만한 것들만 모았어요</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -545,13 +561,17 @@ def build_html(products: list[dict]) -> str:
 </div>
 
 <div class="featured-section" id="featured-section">
-  <div class="featured-title">✨ 추천 상품</div>
+  <div class="featured-title">🏆 Best 10</div>
   <div class="carousel-outer">
-    <button class="arrow-btn left" onclick="scrollCarousel(-1)">‹</button>
-    <div class="carousel-wrap">
-      <div class="carousel-row" id="carousel-row"></div>
+    <button class="arrow-btn left" onclick="scrollCarousel('best10',-1)">‹</button>
+    <div class="carousel-wrap" id="wrap-best10">
+      <div class="carousel-row" id="row-best10"><div style="color:var(--text2);font-size:0.75rem;padding:14px 4px">집계 중...</div></div>
     </div>
-    <button class="arrow-btn right" onclick="scrollCarousel(1)">›</button>
+    <button class="arrow-btn right" onclick="scrollCarousel('best10',1)">›</button>
+  </div>
+  <div class="featured-title" style="margin-top:14px">🔥 추천 상품</div>
+  <div class="carousel-wrap" id="wrap-hot" style="padding:0 2px">
+    <div class="carousel-row" id="row-hot"><div style="color:var(--text2);font-size:0.75rem;padding:14px 4px">집계 중...</div></div>
   </div>
 </div>
 
@@ -618,63 +638,87 @@ def build_html(products: list[dict]) -> str:
     return stored || inferCategory(card.dataset.name || '');
   }}
 
-  /* ── 클릭 저장소 ── */
-  const CLICKS_KEY  = 'kkul_clicks';
-  const TS_KEY      = 'kkul_ts';
-  const THEME_KEY   = 'kkul_theme';
-  const VIEW_KEY    = 'kkul_view';
+  /* ── Firebase 클릭 트래킹 ── */
+  const _FB_CONFIG = {firebase_config_json};
+  let _db = null;
+  let _clicks = {{}};   // {{ code: {{ total, hot7 }} }}
+  const THEME_KEY = 'kkul_theme';
+  const VIEW_KEY  = 'kkul_view';
 
-  function loadClicks() {{ try {{ return JSON.parse(localStorage.getItem(CLICKS_KEY) || '{{}}'); }} catch {{ return {{}}; }} }}
-  function saveClicks(d) {{ localStorage.setItem(CLICKS_KEY, JSON.stringify(d)); }}
-  function loadTs()     {{ try {{ return JSON.parse(localStorage.getItem(TS_KEY) || '{{}}'); }} catch {{ return {{}}; }} }}
-  function saveTs(d)    {{ localStorage.setItem(TS_KEY, JSON.stringify(d)); }}
+  if (_FB_CONFIG) {{
+    try {{
+      firebase.initializeApp(_FB_CONFIG);
+      _db = firebase.firestore();
+    }} catch(e) {{
+      console.warn('[꿀픽] Firebase init error:', e);
+    }}
+  }}
+
+  async function _loadClickStats() {{
+    if (!_db) return;
+    try {{
+      const snap = await _db.collection("products").get();
+      const now = Date.now();
+      const last7 = [];
+      for (let i = 0; i < 7; i++) {{
+        const d = new Date(now - i * 86400000);
+        last7.push(d.toISOString().slice(0,10).replace(/-/g,''));
+      }}
+      _clicks = {{}};
+      snap.forEach(ds => {{
+        const data = ds.data();
+        _clicks[ds.id] = {{
+          total: data.total || 0,
+          hot7:  last7.reduce((s, day) => s + (data.days?.[day] || 0), 0),
+        }};
+      }});
+      applyBadges();
+      buildCarousel();
+      if (currentSort === 'popular') setSort('popular');
+    }} catch(e) {{
+      console.warn('[꿀픽] Firebase load error:', e);
+    }}
+  }}
 
   function recordClick(code) {{
-    // 총 클릭수
-    const clicks = loadClicks();
-    clicks[code] = (clicks[code] || 0) + 1;
-    saveClicks(clicks);
-
-    // 타임스탬프 (30일 보관)
-    const ts = loadTs();
-    if (!ts[code]) ts[code] = [];
-    ts[code].push(Date.now());
-    const cutoff30 = Date.now() - 30 * 86400000;
-    ts[code] = ts[code].filter(t => t > cutoff30);
-    saveTs(ts);
-
+    if (!_clicks[code]) _clicks[code] = {{ total: 0, hot7: 0 }};
+    _clicks[code].total++;
+    _clicks[code].hot7++;
     applyBadges();
+    if (!_db) return;
+    const today = new Date().toISOString().slice(0,10).replace(/-/g,'');
+    _db.collection("products").doc(code).set({{
+      total: firebase.firestore.FieldValue.increment(1),
+      [`days.${{today}}`]: firebase.firestore.FieldValue.increment(1),
+    }}, {{ merge: true }}).catch(e => console.warn('[꿀픽] write error:', e));
   }}
 
   /* ── 뱃지 계산 ──
-     NEW  : registered_at 기준 48시간 이내 신규 상품
-     BEST : 전체 누적 클릭 상위 5% (최소 3클릭, 최대 20개)
-     HOT  : 최근 48시간 내 2회 이상 클릭, BEST 아닌 상품
+     BEST : 누적 클릭 상위 10 (최소 3클릭)
+     HOT  : 최근 7일 클릭 상위 2 (BEST 제외)
+     NEW  : registered_at 기준 48시간 이내
   */
   function computeBadges() {{
-    const clicks  = loadClicks();
-    const ts      = loadTs();
-    const now     = Date.now();
+    const now = Date.now();
     const MS_48H  = 48 * 3600000;
     const MIN_CLICKS = 3;
 
-    // BEST
-    const withClicks = PRODUCTS_DATA
-      .map(p => ({{ code: p.code, cnt: clicks[p.code] || 0 }}))
-      .filter(x => x.cnt >= MIN_CLICKS)
-      .sort((a, b) => b.cnt - a.cnt);
-    const topN = Math.min(Math.max(Math.ceil(withClicks.length * 0.05), 1), 20);
-    const bestCodes = new Set(withClicks.slice(0, topN).map(x => x.code));
+    // BEST: 누적 클릭 상위 10
+    const withTotal = PRODUCTS_DATA
+      .map(p => ({{ code: p.code, total: _clicks[p.code]?.total || 0 }}))
+      .filter(x => x.total >= MIN_CLICKS)
+      .sort((a, b) => b.total - a.total);
+    const bestCodes = new Set(withTotal.slice(0, 10).map(x => x.code));
 
-    // HOT
-    const hotCodes = new Set();
-    for (const p of PRODUCTS_DATA) {{
-      if (bestCodes.has(p.code)) continue;
-      const recent = (ts[p.code] || []).filter(t => now - t < MS_48H);
-      if (recent.length >= 2) hotCodes.add(p.code);
-    }}
+    // HOT: 7일 클릭 상위 2 (BEST 제외)
+    const withHot = PRODUCTS_DATA
+      .filter(p => !bestCodes.has(p.code))
+      .map(p => ({{ code: p.code, hot7: _clicks[p.code]?.hot7 || 0 }}))
+      .filter(x => x.hot7 > 0)
+      .sort((a, b) => b.hot7 - a.hot7);
+    const hotCodes = new Set(withHot.slice(0, 2).map(x => x.code));
 
-    // NEW
+    // NEW: registered_at 기준 48시간 이내
     const newCodes = new Set();
     for (const p of PRODUCTS_DATA) {{
       if (!p.registered_at) continue;
@@ -702,7 +746,8 @@ def build_html(products: list[dict]) -> str:
     }});
   }}
 
-  applyBadges();
+  applyBadges();   // NEW 뱃지는 즉시 표시 (Firebase 없이도)
+  _loadClickStats(); // BEST/HOT은 Firebase 로드 후 표시
 
   /* ── 카테고리 필터 ── */
   let currentCat = '전체';
@@ -746,43 +791,77 @@ def build_html(products: list[dict]) -> str:
     if (target) target.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
   }}
 
-  /* ── 추천 캐러셀 ── */
+  /* ── 추천 캐러셀 (Best10 + HOT 2) ── */
   function buildCarousel() {{
-    const row = document.getElementById('carousel-row');
-    if (!row || !PRODUCTS_DATA.length) return;
-    const clicks = loadClicks();
+    if (!PRODUCTS_DATA.length) return;
     const {{ bestCodes, hotCodes, newCodes }} = computeBadges();
 
-    const items = [...PRODUCTS_DATA].sort((a, b) => {{
-      const ca = clicks[a.code] || 0, cb = clicks[b.code] || 0;
-      return cb !== ca ? cb - ca : parseInt(b.code) - parseInt(a.code);
-    }}).slice(0, 8);
+    // ── Best 10 ──
+    const rowBest = document.getElementById('row-best10');
+    if (rowBest) {{
+      const bestItems = [...PRODUCTS_DATA]
+        .filter(p => bestCodes.has(p.code))
+        .sort((a, b) => (_clicks[b.code]?.total || 0) - (_clicks[a.code]?.total || 0))
+        .slice(0, 10);
+      if (!bestItems.length) {{
+        rowBest.innerHTML = '<div style="color:var(--text2);font-size:0.75rem;padding:16px 4px">아직 집계된 클릭이 없습니다</div>';
+      }} else {{
+        rowBest.innerHTML = bestItems.map((p, i) => {{
+          const imgTag = p.image_url ? `<img src="${{p.image_url}}" alt="${{p.name}}" loading="lazy">` : '';
+          return `
+            <a class="c-card rank-best" href="${{p.url || '#'}}"
+               ${{p.url ? 'target="_blank" rel="noopener noreferrer"' : ''}}
+               onclick="recordClick('${{p.code}}')">
+              <div style="position:relative">
+                ${{imgTag}}
+                <span style="position:absolute;top:4px;left:4px;background:rgba(0,0,0,.72);color:#FFD166;font-size:.6rem;font-weight:800;padding:2px 5px;border-radius:5px;line-height:1.3">#${{i+1}}</span>
+              </div>
+              <div class="c-card-body">
+                <span class="c-badge best">BEST</span>
+                <div class="c-name">${{p.name}}</div>
+              </div>
+            </a>`;
+        }}).join('');
+      }}
+    }}
 
-    row.innerHTML = items.map(p => {{
-      const isBest = bestCodes.has(p.code);
-      const isHot  = hotCodes.has(p.code);
-      const isNew  = newCodes.has(p.code);
-      const badgeClass = isBest ? 'best' : isHot ? 'hot' : 'new';
-      const badgeText  = isBest ? 'BEST' : isHot ? 'HOT 🔥' : 'NEW';
-      const rankClass  = isBest ? 'rank-best' : isHot ? 'rank-hot' : '';
-      const imgTag = p.image_url ? `<img src="${{p.image_url}}" alt="${{p.name}}" loading="lazy">` : '';
-      return `
-        <a class="c-card ${{rankClass}}" href="${{p.url || '#'}}"
-           ${{p.url ? 'target="_blank" rel="noopener noreferrer"' : ''}}
-           onclick="recordClick('${{p.code}}')">
-          ${{imgTag}}
-          <div class="c-card-body">
-            <span class="c-badge ${{badgeClass}}">${{badgeText}}</span>
-            <div class="c-name">${{p.name}}</div>
-          </div>
-        </a>`;
-    }}).join('');
+    // ── HOT 추천 2 ──
+    const rowHot = document.getElementById('row-hot');
+    if (rowHot) {{
+      const hotItems = [...PRODUCTS_DATA]
+        .filter(p => hotCodes.has(p.code))
+        .sort((a, b) => (_clicks[b.code]?.hot7 || 0) - (_clicks[a.code]?.hot7 || 0));
+      // 부족하면 NEW로 채움
+      const newFill = [...PRODUCTS_DATA]
+        .filter(p => newCodes.has(p.code) && !hotCodes.has(p.code) && !bestCodes.has(p.code));
+      const combined = [...hotItems, ...newFill].slice(0, 2);
+      if (!combined.length) {{
+        rowHot.innerHTML = '<div style="color:var(--text2);font-size:0.75rem;padding:16px 4px">추천 상품 집계 중...</div>';
+      }} else {{
+        rowHot.innerHTML = combined.map(p => {{
+          const isHot = hotCodes.has(p.code);
+          const badgeClass = isHot ? 'hot' : 'new';
+          const badgeText  = isHot ? 'HOT 🔥' : 'NEW';
+          const rankClass  = isHot ? 'rank-hot' : '';
+          const imgTag = p.image_url ? `<img src="${{p.image_url}}" alt="${{p.name}}" loading="lazy">` : '';
+          return `
+            <a class="c-card ${{rankClass}}" href="${{p.url || '#'}}"
+               ${{p.url ? 'target="_blank" rel="noopener noreferrer"' : ''}}
+               onclick="recordClick('${{p.code}}')">
+              ${{imgTag}}
+              <div class="c-card-body">
+                <span class="c-badge ${{badgeClass}}">${{badgeText}}</span>
+                <div class="c-name">${{p.name}}</div>
+              </div>
+            </a>`;
+        }}).join('');
+      }}
+    }}
   }}
 
-  buildCarousel();
-
-  function scrollCarousel(dir) {{
-    document.querySelector('.carousel-wrap').scrollBy({{ left: dir * 145, behavior: 'smooth' }});
+  function scrollCarousel(id, dir) {{
+    const wrap = document.getElementById('wrap-' + id);
+    if (wrap) wrap.scrollBy({{ left: dir * 145, behavior: 'smooth' }});
   }}
 
   /* ── 정렬 ── */
@@ -798,9 +877,9 @@ def build_html(products: list[dict]) -> str:
     if (mode === 'newest') {{
       cards.sort((a, b) => parseInt(b.dataset.code) - parseInt(a.dataset.code));
     }} else {{
-      const clicks = loadClicks();
       cards.sort((a, b) => {{
-        const ca = clicks[a.dataset.code] || 0, cb = clicks[b.dataset.code] || 0;
+        const ca = _clicks[a.dataset.code]?.total || 0;
+        const cb = _clicks[b.dataset.code]?.total || 0;
         return cb !== ca ? cb - ca : parseInt(b.dataset.code) - parseInt(a.dataset.code);
       }});
     }}

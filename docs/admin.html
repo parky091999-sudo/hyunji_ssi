@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>꿀픽 관리 페이지</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -486,6 +488,19 @@ async function ghDispatch(workflow) {
 // ── 전체 로드 ─────────────────────────────────────────────────────────────────
 async function loadAll() {
   if (!TOKEN) return;
+
+  // Firebase 초기화 (firebase_config.json에서 설정 로드)
+  if (!window._fbInitialized) {
+    try {
+      const fbConfig = await ghGet("firebase_config.json");
+      if (fbConfig && fbConfig.projectId && !fbConfig.projectId.includes("여기에")) {
+        firebase.initializeApp(fbConfig);
+        window._fbDb = firebase.firestore();
+        window._fbInitialized = true;
+      }
+    } catch(_) {}
+  }
+
   await Promise.allSettled([
     loadAutoCandidates(),
     loadManualQueue(),
@@ -917,33 +932,42 @@ async function loadClicks() {
   const el = document.getElementById("clicks-list");
   if (!el) return;
   try {
-    let clicks = {};
-    try { clicks = JSON.parse(localStorage.getItem("kkul_clicks") || "{}"); } catch(_) {}
+    if (!window._fbDb) {
+      el.innerHTML = `<div class="empty-msg" style="line-height:1.8">Firebase 미연결<br><small style="color:#444">firebase_config.json에 실제 설정값을 입력 후 generate_page.py 실행</small></div>`;
+      return;
+    }
+
+    // Firestore에서 클릭 통계 로드
+    const snap = await window._fbDb.collection("products").get();
+    const now = Date.now();
+    const last7 = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(now - i * 86400000);
+      last7.push(d.toISOString().slice(0,10).replace(/-/g,''));
+    }
+    const clicksTotal = {}, clicksHot7 = {};
+    snap.forEach(ds => {
+      const data = ds.data();
+      clicksTotal[ds.id] = data.total || 0;
+      clicksHot7[ds.id]  = last7.reduce((s, day) => s + (data.days?.[day] || 0), 0);
+    });
 
     let feed;
     try { feed = _data["data/feed_posts.json"] || await ghGet("data/feed_posts.json"); }
     catch(_) { feed = []; }
 
-    // code → product info (feed_posts 기준, 코드별 첫 번째 항목)
     const products = {};
     for (const f of feed) {
       const code = f.product_code;
       if (!code || code === "preview") continue;
       if (!products[code]) {
         products[code] = {
-          code,
-          name:  f.product_name  || "",
-          image: f.product_image || "",
-          url:   f.threads_url   || "",
+          code, name: f.product_name || "", image: f.product_image || "", url: f.threads_url || ""
         };
       }
     }
 
-    const allCodes = new Set([
-      ...Object.keys(products),
-      ...Object.keys(clicks).filter(c => c !== "preview"),
-    ]);
-
+    const allCodes = new Set([...Object.keys(products), ...Object.keys(clicksTotal)]);
     if (!allCodes.size) {
       el.innerHTML = `<div class="empty-msg">포스팅된 상품이 없습니다</div>`;
       return;
@@ -951,10 +975,11 @@ async function loadClicks() {
 
     _clicksRows = [...allCodes].map(code => ({
       code,
-      name:   products[code]?.name  || code,
-      image:  products[code]?.image || "",
-      url:    products[code]?.url   || "",
-      clicks: clicks[code] || 0,
+      name:  products[code]?.name  || code,
+      image: products[code]?.image || "",
+      url:   products[code]?.url   || "",
+      clicks: clicksTotal[code] || 0,
+      hot7:   clicksHot7[code]  || 0,
     }));
 
     renderClicks(el);
@@ -989,9 +1014,10 @@ function renderClicks(el) {
           ? ` · <a href="${r.url}" target="_blank" style="color:#f8c93a88;text-decoration:none">Threads →</a>`
           : ""}</div>
       </div>
-      <div style="text-align:right;flex-shrink:0;min-width:44px">
+      <div style="text-align:right;flex-shrink:0;min-width:52px">
         <div style="font-size:22px;font-weight:800;color:${r.clicks > 0 ? '#f8c93a' : '#444'};line-height:1">${r.clicks}</div>
-        <div style="font-size:10px;color:#555;margin-top:1px">클릭</div>
+        <div style="font-size:10px;color:#555;margin-top:1px">총 클릭</div>
+        ${r.hot7 > 0 ? `<div style="font-size:11px;font-weight:700;color:#FF6B35;margin-top:5px">🔥 ${r.hot7}</div><div style="font-size:9px;color:#555">7일</div>` : ""}
       </div>
     </div>`).join("");
 }

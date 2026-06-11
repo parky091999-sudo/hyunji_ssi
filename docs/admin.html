@@ -524,8 +524,15 @@ async function loadAutoCandidates() {
       titleEl.textContent = "내일 포스팅 후보 (미선정)";
     }
 
-    if (!candidates.length) {
-      el.innerHTML = `<div class="empty-msg">선정된 후보 없음<br><small style="color:#444">매일 오전 9시에 자동 선정됩니다</small></div>`;
+    // used 후보(이미 포스팅 완료)는 화면에서 숨김 — 다음 preselect가 청소할 때까지 표시 안 함
+    const usedCount = candidates.filter(c => c.status === "used").length;
+
+    const visible = candidates.filter(c => c.status !== "used");
+    if (!visible.length) {
+      const msg = usedCount > 0
+        ? `오늘 후보 모두 포스팅 완료 (${usedCount}개)<br><small style="color:#444">새 후보는 다음 자동 선정에 채워집니다 · '↺ 재선정' 즉시 가능</small>`
+        : `선정된 후보 없음<br><small style="color:#444">매일 오전 9시에 자동 선정됩니다</small>`;
+      el.innerHTML = `<div class="empty-msg">${msg}</div>`;
       return;
     }
 
@@ -534,7 +541,16 @@ async function loadAutoCandidates() {
     if (approvedIdx >= 0) defaultIdx = approvedIdx;
     else defaultIdx = candidates.findIndex(c => c.status === "pending");
 
-    el.innerHTML = candidates.map((c, i) => renderCandidateCard(c, i, i === defaultIdx && approvedIdx < 0)).join("");
+    // 원본 인덱스를 카드에 보존 (used 숨겨도 다른 핸들러는 원본 인덱스 사용)
+    el.innerHTML = candidates.map((c, i) =>
+      c.status === "used" ? "" : renderCandidateCard(c, i, i === defaultIdx && approvedIdx < 0)
+    ).join("");
+
+    if (usedCount > 0) {
+      el.insertAdjacentHTML("beforeend",
+        `<div style="font-size:11px;color:#666;text-align:center;padding:6px 0">+ 포스팅 완료 ${usedCount}개 숨김</div>`
+      );
+    }
   } catch (e) {
     el.innerHTML = `<div class="empty-msg">불러오기 실패: ${e.message}</div>`;
   }

@@ -77,12 +77,17 @@ def run():
     seen_urls = set(existing_selected.keys())
     candidates = []
 
+    # 카테고리별 할당량: 50개 ÷ 7개 ≈ 7개/카테고리 (균형잡힌 분포)
+    max_per_category = 7
+    category_counts = {cat: 0 for cat in SEARCH_POOLS}
+
     for category, keywords in SEARCH_POOLS.items():
         if len(candidates) >= MAX_CANDIDATES:
             break
-        logger.info(f"카테고리: {category}")
+        logger.info(f"카테고리: {category} (최대 {max_per_category}개)")
+
         for kw in keywords:
-            if len(candidates) >= MAX_CANDIDATES:
+            if len(candidates) >= MAX_CANDIDATES or category_counts[category] >= max_per_category:
                 break
             try:
                 logger.info(f"  검색: {kw}")
@@ -90,7 +95,7 @@ def run():
                 logger.info(f"    → {len(items)}개 항목 수신")
 
                 for item in items:
-                    if len(candidates) >= MAX_CANDIDATES:
+                    if len(candidates) >= MAX_CANDIDATES or category_counts[category] >= max_per_category:
                         break
                     p = _to_product(item, category_hint=category)
                     if not p:
@@ -114,7 +119,8 @@ def run():
                         "source_account": f"검색:{kw}",
                         "selected": False,
                     })
-                    logger.info(f"  ✅ [{category}] {p.get('name','')[:40]}")
+                    category_counts[category] += 1
+                    logger.info(f"  OK [{category}] {p.get('name','')[:40]} ({category_counts[category]}/{max_per_category})")
 
                 time.sleep(0.5)
             except Exception as e:
@@ -122,6 +128,21 @@ def run():
 
     preserved = list(existing_selected.values())
     final = (preserved + candidates)[:MAX_CANDIDATES]
+
+    # 카테고리별 분포 로깅
+    distribution = {}
+    for c in final:
+        cat = c.get("product", {}).get("category_hint", "미분류")
+        distribution[cat] = distribution.get(cat, 0) + 1
+
+    logger.info("\n" + "=" * 50)
+    logger.info("[카테고리별 분포]")
+    for cat in sorted(SEARCH_POOLS.keys()):
+        count = distribution.get(cat, 0)
+        pct = count * 100 / len(final) if final else 0
+        bar = "#" * (count // 2) if count > 0 else ""
+        logger.info(f"  {cat:15} {count:2}개 ({pct:5.1f}%) {bar}")
+    logger.info("=" * 50)
 
     result = {
         "scanned_at": datetime.now(KST).isoformat(),

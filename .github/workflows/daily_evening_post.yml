@@ -1,0 +1,66 @@
+name: Evening Auto Post (19:00 KST)
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # 18:00 KST — 지연 시 다음날 10시대 도착 가능
+    - cron: '0 10 * * *'  # 19:00 KST — 목표 시간
+    - cron: '0 11 * * *'  # 20:00 KST
+  workflow_dispatch:
+    inputs:
+      skip_delay:
+        description: '랜덤 딜레이 건너뛰기 (테스트용)'
+        required: false
+        default: 'false'
+        type: boolean
+
+# 포스팅 워크플로 동시 실행 금지 — 아침/저녁 포스팅 겹침 방지
+concurrency:
+  group: threads-posting
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  evening-post:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright
+        run: playwright install chromium --with-deps
+
+      - name: Run evening post
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID:      ${{ secrets.THREADS_USER_ID }}
+          NAVER_CLIENT_ID:      ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET:  ${{ secrets.NAVER_CLIENT_SECRET }}
+          YOUTUBE_API_KEY:      ${{ secrets.YOUTUBE_API_KEY }}
+          GROQ_API_KEY:         ${{ secrets.GROQ_API_KEY }}
+          GOOGLE_API_KEY:       ${{ secrets.GOOGLE_API_KEY }}
+          GEMINI_API_KEY:       ${{ secrets.GOOGLE_API_KEY }}
+          IMGBB_API_KEY:        ${{ secrets.IMGBB_API_KEY }}
+          SKIP_DELAY:           ${{ github.event.inputs.skip_delay || 'false' }}
+        run: python scripts/evening_post.py
+
+      - name: Commit changes
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/index.html docs/feed.html || true
+          git add data/feed_posts.json data/posted_ids.json || true
+          git add -u || true
+          git diff --staged --quiet || git commit -m "auto: evening post $(date -u +%Y-%m-%d)"
+          git pull --rebase -X theirs origin main
+          git push || (git pull --rebase -X theirs origin main && git push)

@@ -132,6 +132,44 @@ def get_post_url(post_id: str) -> str | None:
         return None
 
 
+def create_reply(post_id: str, text: str) -> str | None:
+    """포스트에 댓글 달기
+
+    반환: 댓글 ID (실패 시 None)
+    """
+    if not THREADS_ACCESS_TOKEN:
+        logger.warning("THREADS_ACCESS_TOKEN 미설정 — 댓글 불가")
+        return None
+
+    try:
+        data = _api(
+            "POST",
+            f"/{THREADS_USER_ID}/threads",
+            params={
+                "media_type": "TEXT",
+                "text": text,
+                "reply_settings": "everyone",
+                "access_token": THREADS_ACCESS_TOKEN,
+            },
+        )
+        reply_id = data.get("id", "")
+
+        # 이 reply를 원래 포스트에 연결
+        _api(
+            "POST",
+            f"/{post_id}/replies",
+            params={
+                "media_id": reply_id,
+                "access_token": THREADS_ACCESS_TOKEN,
+            },
+        )
+        logger.info(f"  댓글 작성 완료: {reply_id}")
+        return reply_id
+    except Exception as e:
+        logger.warning(f"댓글 작성 실패: {e}")
+        return None
+
+
 def find_recent_post_by_marker(marker: str, limit: int = 25) -> dict | None:
     """최근 내 게시글에서 marker(예: '[013] 검색') 포함 글 탐색 — 중복 게시 차단용.
     발견 시 {post_id, post_url} 반환, 없거나 조회 실패 시 None (게시 진행)."""

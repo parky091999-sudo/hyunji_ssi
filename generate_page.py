@@ -1037,6 +1037,36 @@ def build_html(products: list[dict]) -> str:
 </html>"""
 
 
+def build_redirect_pages(products: list[dict]) -> None:
+    """각 상품 코드별 리다이렉트 페이지 생성 — /r/[CODE].html"""
+    redirect_dir = os.path.join(os.path.dirname(__file__), "docs", "r")
+    os.makedirs(redirect_dir, exist_ok=True)
+
+    for p in products:
+        code = p.get("code", "")
+        if not code:
+            continue
+
+        redirect_html = f"""<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[{code}] 상품 페이지로 이동 중...</title>
+    <script>
+        window.location.href = '../#' + '{code}';
+    </script>
+</head>
+<body>
+    <p>상품 페이지로 이동 중입니다...</p>
+</body>
+</html>"""
+
+        filepath = os.path.join(redirect_dir, f"{code}.html")
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(redirect_html)
+
+
 def main():
     products = get_all()
     html = build_html(products)
@@ -1045,11 +1075,15 @@ def main():
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         f.write(html)
 
+    # 리다이렉트 페이지도 생성
+    build_redirect_pages(products)
+
     print(f"생성 완료: {OUTPUT_PATH}")
     print(f"상품 {len(products)}개 포함")
     if products:
         codes = sorted([p['code'] for p in products], key=lambda x: int(x), reverse=True)
         print("코드 목록 (최신순):", ", ".join(f"[{c}]" for c in codes))
+        print(f"리다이렉트 페이지: docs/r/[CODE].html ({len(products)}개)")
 
 
 if __name__ == "__main__":

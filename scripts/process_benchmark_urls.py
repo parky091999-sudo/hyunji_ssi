@@ -101,6 +101,22 @@ def _is_coupang_url(url: str) -> bool:
     return "coupang.com" in url
 
 
+# 후보 등록 직전 이름 기반 차단 — 014/015 같은 중국 셀러 키워드 스터핑 패턴 방지
+from scraper.naver_shopping import is_blocked_product, is_chinese_seller_style
+
+
+def _is_low_quality_name(name: str) -> bool:
+    if not name:
+        return False
+    if is_blocked_product(name):
+        logger.info(f"  차단 키워드 필터: {name[:40]}")
+        return True
+    if is_chinese_seller_style(name):
+        logger.info(f"  중국셀러 패턴 필터: {name[:40]}")
+        return True
+    return False
+
+
 def _follow_to_coupang(url: str) -> str | None:
     """어떤 링크든 최종 쿠팡 상품 URL로 추적"""
     # 이미 coupang.com 직접 URL인 경우
@@ -524,6 +540,9 @@ async def _scrape_collection(page_url: str, source_label: str) -> list[dict]:
         if not product_info:
             continue
 
+        if _is_low_quality_name(product_info.get("name", "")):
+            continue
+
         extra = _naver_enrich(product_info["name"])
         product = {
             "name":          product_info["name"],
@@ -565,6 +584,8 @@ def _process_single_url(url: str) -> dict | None:
         return None
     product_info = _fetch_product_info(coupang_url)
     if not product_info:
+        return None
+    if _is_low_quality_name(product_info.get("name", "")):
         return None
     extra = _naver_enrich(product_info["name"])
     return {

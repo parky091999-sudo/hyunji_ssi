@@ -293,6 +293,27 @@ def _is_bad_name(name: str) -> bool:
     return False
 
 
+_BRAND_RE = re.compile(r"\b[A-Z][A-Z0-9\-]{1,}\b")
+
+
+def is_chinese_seller_style(name: str) -> bool:
+    """중국 셀러 키워드 스터핑 패턴 — 한국어 단어(2자+) 반복 + 영문 브랜드 없음.
+
+    예시 차단:
+    - "우드 인테리어 삼각 튼튼한건조대 원룸 화이트 우드"  (우드 2회)
+    - "휴대용 의류건조기 ... 휴대용 200w"                 (휴대용 2회)
+    예시 통과:
+    - "PONTE 독일 다기능 스팀청소기 핸디 ..."             (PONTE 브랜드)
+    - "밥도둑세상 국내산간재미 간재미무침 1k 1kg 1개"      (반복 없음)
+    """
+    if _BRAND_RE.search(name):
+        return False
+    korean_words = re.findall(r"[가-힣]{2,}", name)
+    if len(set(korean_words)) < len(korean_words):
+        return True
+    return False
+
+
 def _has_chinese(text: str) -> bool:
     for ch in text:
         cp = ord(ch)
@@ -319,6 +340,11 @@ def _to_product(item: dict, category_hint: str = "") -> dict | None:
     # ── 차단 키워드 필터 (공업용/업소용 등) ──────────────────────────────────
     if is_blocked_product(name):
         logger.info(f"  차단 키워드 필터: {name[:40]}")
+        return None
+
+    # ── 중국 셀러 키워드 스터핑 패턴 필터 (014/015형 재발 방지) ─────────────
+    if is_chinese_seller_style(name):
+        logger.info(f"  중국셀러 패턴 필터: {name[:40]}")
         return None
 
     if REQUIRE_BRAND:

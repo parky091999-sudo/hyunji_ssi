@@ -1,7 +1,7 @@
 """
-자동 포스팅 — 매일 오전 8:05 KST 실행
-1순위: pending_post.json 의 승인(또는 미반려) 후보 사용
-2순위: 실시간 수집 폴백 (main.py 방식)
+저녁 자동 포스팅 — 매일 오후 7시 KST 실행
+1순위: pending_post.json 의 승인(또는 미반려) 후보 사용 (두 번째)
+2순위: 실시간 수집 폴백
 """
 import asyncio
 import json
@@ -26,11 +26,11 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s - %(message)s",
     handlers=[
-        logging.FileHandler(os.path.join(LOG_DIR, "auto_post.log"), encoding="utf-8"),
+        logging.FileHandler(os.path.join(LOG_DIR, "evening_post.log"), encoding="utf-8"),
         logging.StreamHandler(sys.stdout),
     ],
 )
-logger = logging.getLogger("auto_post")
+logger = logging.getLogger("evening_post")
 
 
 def _load_json(path, default):
@@ -62,7 +62,7 @@ def _mark_pending_used(product_url: str) -> None:
 
 
 def _pick_from_pending() -> dict | None:
-    """pending_post.json 에서 오늘/어제 날짜 후보 중 포스팅할 것 선택"""
+    """pending_post.json 에서 오늘/어제 날짜 후보 중 두 번째 포스팅할 것 선택"""
     pending = _load_json(PENDING_PATH, {})
     today = datetime.now(KST).strftime("%Y-%m-%d")
     yesterday = (datetime.now(KST) - timedelta(days=1)).strftime("%Y-%m-%d")
@@ -85,21 +85,19 @@ def _pick_from_pending() -> dict | None:
         url = c.get("product", {}).get("product_url", "")
         return not (url and url[:80] in posted_ids)
 
-    # 명시 승인된 것 우선
+    # 명시 승인된 것 우선 (status=="approved")
     for c in candidates:
         if c.get("status") == "approved" and _not_posted(c):
             logger.info(f"  [승인된 후보] {c['product'].get('name', '')[:40]}")
             return c
 
-    # 반려되지 않은 첫 번째
+    # 반려되지 않은 것 순서대로 (status=="pending" 또는 없음)
     for c in candidates:
-        if c.get("status") == "pending" and _not_posted(c):
+        if c.get("status") != "rejected" and _not_posted(c):
             logger.info(f"  [기본 후보] {c['product'].get('name', '')[:40]}")
             return c
 
     logger.info("  pending 후보 전부 이미 포스팅됨 → 실시간 수집으로 폴백")
-
-    logger.info("  모든 후보가 반려됨 → 실시간 수집으로 폴백")
     return None
 
 
@@ -147,33 +145,32 @@ async def _collect_fallback() -> dict | None:
 
 async def run():
     import random
-    # KST 게이트: 새벽 차단, 11시 전 도착 시 11시까지 대기(최대 4h) — 점심 골든타임 정렬
+    # KST 게이트: 저녁 19:00~21:30 (저녁 황금시간)
     from scripts.post_gate import kst_gate
-    if not await kst_gate(11.0, 23.0, max_wait_h=4.0, label="auto"):
+    if not await kst_gate(19.0, 21.5, max_wait_h=4.0, label="evening"):
         return
     skip_delay = os.getenv("SKIP_DELAY", "false").lower() == "true"
     if not skip_delay:
-        delay = random.randint(0, 15)  # 최대 15분 (기존 55분에서 축소)
+        delay = random.randint(0, 10)
         if delay:
             logger.info(f"랜덤 딜레이: {delay}분 대기...")
             await asyncio.sleep(delay * 60)
 
     logger.info("=" * 50)
-    logger.info(f"자동 포스팅 시작: {datetime.now(KST).strftime('%Y-%m-%d %H:%M KST')}")
+    logger.info(f"저녁 포스팅 시작: {datetime.now(KST).strftime('%Y-%m-%d %H:%M KST')}")
     logger.info("=" * 50)
 
-    # 오늘 이미 아침 자동 포스팅 완료했으면 건너뜀 (post_type이 "auto" 또는 "auto_evening")
+    # 오늘 이미 저녁 포스팅 완료했으면 건너뜀
     today_str = datetime.now(KST).strftime("%Y-%m-%d")
     if os.path.exists(FEED_POSTS_PATH):
         feed = json.load(open(FEED_POSTS_PATH, encoding="utf-8"))
-        auto_posted_today = any(
+        if any(
             p.get("timestamp", "")[:10] == today_str
-            and p.get("post_type") == "auto"
+            and p.get("post_type") == "auto_evening"
             and p.get("status") == "posted"
             for p in feed
-        )
-        if auto_posted_today:
-            logger.info(f"오늘({today_str}) 아침 자동 포스팅 완료 — 건너뜀")
+        ):
+            logger.info(f"오늘({today_str}) 저녁 포스팅 이미 완료 — 건너뜀")
             return
 
     # 1. pending_post.json 에서 후보 선택
@@ -307,7 +304,7 @@ async def run():
         "post_text":     post_text,
         "threads_url":   post_url,
         "status":        status,
-        "post_type":     "auto",
+        "post_type":     "auto_evening",  # 저녁 포스팅 표시
     })
     _save_json(FEED_POSTS_PATH, feed[:200])
 
@@ -336,7 +333,7 @@ async def run():
     except Exception as e:
         logger.error(f"페이지 생성 오류: {e}")
 
-    logger.info("자동 포스팅 완료!")
+    logger.info("저녁 포스팅 완료!")
 
 
 if __name__ == "__main__":

@@ -55,7 +55,7 @@ def _load_rejected() -> set:
 
 
 def run():
-    from scraper.naver_shopping import _fetch_items, _to_product, _is_chinese_seller_style
+    from scraper.naver_shopping import _fetch_items, _to_product, is_chinese_seller_style
 
     logger.info("=" * 50)
     logger.info(f"벤치마크 스캔 시작: {datetime.now(KST).strftime('%Y-%m-%d %H:%M KST')}")
@@ -97,7 +97,7 @@ def run():
                         continue
 
                     # 중국산/저품질 필터
-                    if _is_chinese_seller_style(p.get("name", "")):
+                    if is_chinese_seller_style(p.get("name", "")):
                         continue
 
                     url = p.get("product_url", "")

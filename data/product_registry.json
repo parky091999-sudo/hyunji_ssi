@@ -1,5 +1,5 @@
 {
-  "next_code": 18,
+  "next_code": 19,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -171,6 +171,16 @@
       "registered_at": "2026-06-12T12:14:52.003245+09:00",
       "posted": true,
       "short_name": "무타공 욕실선반"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9577543856&ctag=9577543856&lpt": {
+      "code": "018",
+      "name": "트리코 우베 크런치롤 1개 1kg",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9577543856&ctag=9577543856&lptag=I28588347633&itemId=28588347633&vendorItemId=95561478308&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_6029377/60293779722.1.jpg",
+      "category": "생활",
+      "registered_at": "2026-06-12T20:26:07.324183+09:00",
+      "posted": true,
+      "short_name": "크"
     }
   }
 }

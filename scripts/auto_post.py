@@ -108,29 +108,32 @@ def _pick_from_pending() -> dict | None:
 
 
 async def _collect_fallback() -> dict | None:
-    """pending_post 없을 때 실시간 수집"""
+    """pending_post 없을 때 실시간 수집. 각 폴백 단계마다 posted 필터링 후
+    fresh가 0이면 다음 폴백으로 넘어가야 chain이 끊기지 않음."""
     posted_ids = set(_load_json(POSTED_IDS_PATH, []))
-    products = []
+    new: list = []
+
+    def _fresh(ps: list) -> list:
+        return [p for p in ps if _product_key(p) not in posted_ids]
 
     if YOUTUBE_API_KEY:
         from scraper.youtube_trending import scrape_trending_products
-        products = scrape_trending_products(max_items=MAX_PRODUCTS_PER_RUN)
+        new = _fresh(scrape_trending_products(max_items=MAX_PRODUCTS_PER_RUN))
 
-    if not products and NAVER_CLIENT_ID:
+    if not new and NAVER_CLIENT_ID:
         from scraper.naver_shopping import scrape_deals
-        products = scrape_deals(max_items=MAX_PRODUCTS_PER_RUN)
+        new = _fresh(scrape_deals(max_items=MAX_PRODUCTS_PER_RUN))
 
-    if not products:
+    if not new:
         from scraper.coupang import scrape_homepage_deals
-        products = await scrape_homepage_deals(max_items=MAX_PRODUCTS_PER_RUN)
+        new = _fresh(await scrape_homepage_deals(max_items=MAX_PRODUCTS_PER_RUN))
 
-    if not products:
+    if not new:
         from scraper.preset import get_next_preset_product
         p = get_next_preset_product(posted_ids)
         if p:
-            products = [p]
+            new = [p]
 
-    new = [p for p in products if _product_key(p) not in posted_ids]
     if not new:
         return None
 

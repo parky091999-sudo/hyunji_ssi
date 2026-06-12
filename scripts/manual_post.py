@@ -161,16 +161,17 @@ async def run():
     from generator.content import ensure_korean
     post_text = ensure_korean(post_text, product, code)
 
-    # AI 이미지 생성 — 성공 시 교체, 실패 시 원본 유지
+    # 이미지 구성: 원본 image_url(메인, 1번 자리) + AI 비스듬 보조 컷
     try:
         from generator.image_gen import generate_and_upload_images
         ai_imgs = generate_and_upload_images(product, post_text)
+        base = [image_url] if (image_url and image_url.startswith("http")) else []
         if ai_imgs:
-            detail_imgs = ai_imgs
-            # 원본 image_url 은 비우지 않고 carousel 전멸 시 폴백으로 사용
-            logger.info(f"AI 이미지 {len(ai_imgs)}장으로 교체")
-        else:
-            logger.info("AI 이미지 생성 실패 → 원본 이미지 유지")
+            detail_imgs = base + ai_imgs
+            logger.info(f"원본 1장 + AI 보조 {len(ai_imgs)}장 = {len(detail_imgs)}장 carousel")
+        elif base:
+            detail_imgs = base
+            logger.info("AI 생성 실패 → 원본만 단일 이미지 게시")
     except Exception as e:
         logger.warning(f"AI 이미지 생성 오류: {e}")
 
@@ -242,7 +243,7 @@ async def run():
         if code and not already:
             try:
                 from poster.threads import post_product_link_comment
-                post_product_link_comment(post_id, code)
+                post_product_link_comment(post_id, code, product_url=product.get("product_url"))
             except Exception as e:
                 logger.warning(f"링크 댓글 실패(무시): {e}")
 

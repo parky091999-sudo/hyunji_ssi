@@ -94,7 +94,7 @@ async def run():
             continue
 
         logger.info(f"[{i}/{len(targets)}] {name} [{code}] 댓글 추가...")
-        reply_id = post_product_link_comment(post_id, code)
+        reply_id = post_product_link_comment(post_id, code, product_url=post.get("product_url"))
         if reply_id:
             done.add(key)
             replied[post_id] = list(done)

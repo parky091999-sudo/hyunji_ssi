@@ -199,11 +199,18 @@ def fetch_my_posts(limit: int = 100) -> list[dict]:
         return []
 
 
-def post_product_link_comment(post_id: str, code: str) -> str | None:
-    """포스팅 직후 첫 댓글로 상품 페이지 링크 달기 (본문 외부링크 회피 정석 패턴)"""
-    if not (post_id and code):
+def post_product_link_comment(post_id: str, code: str, product_url: str | None = None) -> str | None:
+    """포스팅 직후 첫 댓글로 상품 링크 달기.
+    product_url 있으면 쿠팡 파트너스 URL 직접, 없으면 꿀픽 페이지 폴백."""
+    if not post_id:
         return None
-    return create_reply(post_id, f"상품 정보 👉 {PAGE_BASE}/r/{code}.html")
+    if product_url and product_url.startswith("http"):
+        text = f"🛒 상품 보러가기 👉 {product_url}\n\n* 쿠팡 파트너스 활동으로 일정 수수료를 받을 수 있습니다."
+    elif code:
+        text = f"상품 정보 👉 {PAGE_BASE}/r/{code}.html"
+    else:
+        return None
+    return create_reply(post_id, text)
 
 
 def find_recent_post_by_marker(marker: str, limit: int = 25) -> dict | None:

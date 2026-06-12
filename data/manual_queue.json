@@ -82,5 +82,29 @@
     "source_account": "검색:과일탈수기",
     "added_at": "2026-06-12T01:01:08.808Z",
     "edited": false
+  },
+  {
+    "product": {
+      "name": "닥터베크만 세탁조 액상 클리너 컴플리트케어 오션브리즈",
+      "price": "21,280원",
+      "original_price": "",
+      "discount_rate": 0,
+      "image_url": "https://shopping-phinf.pstatic.net/main_5529149/55291493506.59.jpg",
+      "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6771300452&ctag=6771300452&lptag=l288260265771&itemId=08272617685&vendorItemId=74155114391&spec=10305198",
+      "badge": "쿠팡",
+      "brand": "",
+      "category": "세제/세정제",
+      "category_hint": "생활/청소",
+      "mall_name": "쿠팡",
+      "source": "naver_shopping",
+      "scraped_at": "2026-06-11T15:20:50.970368"
+    },
+    "image_url": "https://shopping-phinf.pstatic.net/main_5529149/55291493506.59.jpg",
+    "detail_images": [],
+    "post_text": "",
+    "product_code": "preview",
+    "source_account": "검색:세탁조클리너",
+    "added_at": "2026-06-12T01:01:25.934Z",
+    "edited": false
   }
 ]

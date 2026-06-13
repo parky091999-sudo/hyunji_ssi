@@ -2,7 +2,7 @@
 콘텐츠 생성기
 - 글1: Groq AI로 상품별 맞춤 생성 (스토리텔링 + 해시태그)
 - 글2: 코드 기반 유도 — 본문에 "프로필 링크에서 [CODE] 검색" 안내
-- COUPANG_PARTNERS_ACTIVE=True 시 본문 끝에 공정위 고지문 자동 추가 (자연스럽게 끝에만)
+- COUPANG_PARTNERS_ACTIVE는 페이지 푸터 disclosure 분기에만 사용 (본문에는 안 붙임 — 첫 댓글에서 처리)
 - ★ 수정: 쿠팡 상세페이지에서 이미지 3~4장 수집 → carousel 포스팅용
 """
 import random
@@ -411,9 +411,6 @@ def generate_post(product: dict, assign_code_now: bool = True) -> dict:
             body = _post1_fallback(name, "CODE")
             post_text_1 = re.sub(r'\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆', '', body)
             style = "fallback"
-
-    if COUPANG_PARTNERS_ACTIVE:
-        post_text_1 = f"{post_text_1}\n\n* {_AD_DISCLOSURE}"
 
     logger.info(f"생성 완료 [{style}]{('['+product_code+']') if product_code else '[코드미정]'}: {name[:30]}")
     return {

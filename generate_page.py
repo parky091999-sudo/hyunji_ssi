@@ -494,12 +494,16 @@ def build_html(products: list[dict]) -> str:
   .grid.list-view .card-body {{ padding: 10px 14px; justify-content: center; align-items: flex-start; text-align: left; gap: 0; }}
   .grid.list-view .badge-row:not(:empty) {{ margin-bottom: 4px; }}
   .grid.list-view .name {{
-    -webkit-line-clamp: 2;
     margin: 0;
     font-size: 1.15rem;
     font-weight: 400;
     flex: initial;
     text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.04em;
+    width: 100%;
   }}
 
   /* ── 카드 ── */
@@ -545,14 +549,14 @@ def build_html(products: list[dict]) -> str:
     font-family: 'Jua', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
     font-size: 1.15rem;
     font-weight: 400;
-    line-height: 1.35;
+    line-height: 1.4;
     color: var(--text);
     flex: 1;
     text-align: left;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.04em;
   }}
 
   .empty, #no-result {{ text-align: center; padding: 60px 20px; color: var(--text2); font-size: 0.88rem; grid-column: 1 / -1; }}

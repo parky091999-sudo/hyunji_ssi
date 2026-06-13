@@ -37,6 +37,14 @@ jobs:
           GOOGLE_API_KEY:       ${{ secrets.GOOGLE_API_KEY }}
         run: python scripts/casual_post.py
 
+      - name: Integrity check (post_text 잘림 사후 감지)
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID:      ${{ secrets.THREADS_USER_ID }}
+        run: |
+          python scripts/verify_posts.py; EXIT=$?
+          [ $EXIT -eq 0 ] || [ $EXIT -eq 2 ] || exit $EXIT
+
       - name: Commit changes
         run: |
           git config user.name  "github-actions[bot]"

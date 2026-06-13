@@ -165,10 +165,10 @@ def generate_html(contents: list[dict], engager_samples: list[dict]) -> str:
           </div>
           <div class="reply-row">
             <div class="reply-avatar-wrap">
-              <div class="avatar small">꿀픽</div>
+              <div class="avatar small">현지</div>
             </div>
             <div class="reply-bubble">
-              <span class="username">kkul.pick.kr</span>
+              <span class="username">hyunji_ssi</span>
               <div class="reply-text">{s['comment']}</div>
             </div>
           </div>
@@ -178,7 +178,7 @@ def generate_html(contents: list[dict], engager_samples: list[dict]) -> str:
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>꿀픽 미리보기 · {now}</title>
+<title>현지의 zip 미리보기 · {now}</title>
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{
@@ -353,7 +353,7 @@ def generate_html(contents: list[dict], engager_samples: list[dict]) -> str:
 
 <div class="topbar">
   <div class="topbar-row">
-    <div class="topbar-logo">꿀픽 미리보기</div>
+    <div class="topbar-logo">현지의 zip 미리보기</div>
     <div class="topbar-meta">실제 미게시 · {now}</div>
   </div>
   <div class="tab-nav">

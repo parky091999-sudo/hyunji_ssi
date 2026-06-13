@@ -1,7 +1,7 @@
 """
 콘텐츠 생성기
 - 글1: Groq AI로 상품별 맞춤 생성 (스토리텔링 + 해시태그)
-- 글2: 코드 기반 유도 — URL 직접 노출 없음 ("프로필 링크에서 [CODE] 검색")
+- 글2: 코드 기반 유도 — 본문엔 [CODE]만, 실제 링크는 첫 댓글에 자동 게시
 - COUPANG_PARTNERS_ACTIVE=True 시 [광고] + 공정위 고지문 자동 추가
 - ★ 수정: 쿠팡 상세페이지에서 이미지 3~4장 수집 → carousel 포스팅용
 """
@@ -22,9 +22,9 @@ _AD_DISCLOSURE = "이 게시물은 쿠팡파트너스 활동의 일환으로 수
 # ── 글1: Groq AI 생성 ────────────────────────────────────────────────────────
 
 _POST1_SYSTEM = """
-너는 Threads에서 꿀템을 소개하는 감성 있는 SNS 계정이야.
-독자에게 친근하게 말 거는 느낌 — 건방지거나 가르치는 말투가 아니라,
-"나 이거 써봤는데 진짜 좋았어, 너도 알면 좋겠다" 하고 따뜻하게 공유하는 톤.
+너는 Threads(@hyunji_ssi)에서 1인 가구 일상을 적는 20대 여자 '현지'야.
+오늘은 평소에 자주 쓰는 물건 하나를 솔직하게 소개하는 글을 쓰는데, 광고 멘트가 아니라
+"나 이거 써봤는데 진짜 좋더라, 너도 알면 좋겠어" 하고 친구한테 말하듯이 따뜻하게 공유하는 톤이야.
 
 ━━━ 말투 규칙 (가장 중요) ━━━
 전체 글을 처음부터 끝까지 완전히 같은 말투로 써.
@@ -73,7 +73,7 @@ _POST1_SYSTEM = """
 - 텍스트만 출력. 따옴표·메타설명·안내문구 넣지 마
 """.strip()
 
-_CODE_LINE = "제품 정보는 프로필 링크에서 [{code}] 검색 👆"
+_CODE_LINE = "링크는 댓글에 👇 [{code}]"
 
 # 외국어 탐지 — 명시적 \u 이스케이프로 인코딩 이슈 완전 차단
 # 허용: 한글(U+AC00-U+D7A3, U+1100-U+11FF, U+3130-U+318F), ASCII(0x00-0x7F), 이모지 등
@@ -282,7 +282,7 @@ def _generate_with_groq(product: dict, product_code: str) -> str | None:
                     {"role": "system", "content": _POST1_SYSTEM},
                     {"role": "user", "content": user_msg + extra},
                 ],
-                max_tokens=420,
+                max_tokens=800,
                 temperature=temp,
             )
             candidate = resp.choices[0].message.content.strip().strip("\"'""''")
@@ -405,11 +405,11 @@ def generate_post(product: dict, assign_code_now: bool = True) -> dict:
         post_text_1 = _generate_post1_ai(product, "CODE")
         if post_text_1:
             # CODE 플레이스홀더 제거 (포스팅 시점에 실제 코드로 교체)
-            post_text_1 = re.sub(r'\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆', '', post_text_1)
+            post_text_1 = re.sub(r'\n\n링크는 댓글에 👇 \[CODE\]', '', post_text_1)
             style = "ai"
         else:
             body = _post1_fallback(name, "CODE")
-            post_text_1 = re.sub(r'\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆', '', body)
+            post_text_1 = re.sub(r'\n\n링크는 댓글에 👇 \[CODE\]', '', body)
             style = "fallback"
 
     if COUPANG_PARTNERS_ACTIVE:
@@ -444,13 +444,13 @@ def ensure_korean(text: str, product: dict, product_code: str = "") -> str:
     regen = _generate_post1_ai(product, code or "CODE")
     if regen and not _has_foreign_chars(regen):
         if not code:
-            regen = re.sub(r"\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆", "", regen)
+            regen = re.sub(r"\n\n링크는 댓글에 👇 \[CODE\]", "", regen)
         return regen
 
     logger.warning("재생성 실패 → 안전 템플릿 사용")
     fb = _post1_fallback(product.get("name", ""), code or "CODE")
     if not code:
-        fb = re.sub(r"\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆", "", fb)
+        fb = re.sub(r"\n\n링크는 댓글에 👇 \[CODE\]", "", fb)
     return fb
 
 
@@ -506,6 +506,9 @@ def _short_name_ok(result: str, name: str) -> bool:
     # 한 단어인데 공간/카테고리 단어면 reject (예: "욕실", "주방")
     if len(tokens) == 1 and tokens[0] in _GENERIC_TOKENS:
         return False
+    # 한 토큰만 있고 길이 4자 미만이면 잘림 의심 reject (예: "6인", "1L")
+    if len(tokens) == 1 and len(tokens[0]) < 4:
+        return False
     # 원본 상품명에 한 글자도 안 겹치면 reject (AI 환각)
     if not any(t in name for t in tokens):
         return False
@@ -547,7 +550,7 @@ def generate_short_name(product: dict) -> str:
             resp = model.generate_content(
                 prompt,
                 generation_config={
-                    "max_output_tokens": 50,
+                    "max_output_tokens": 200,
                     "temperature": 0.2,
                 },
             )
@@ -603,8 +606,9 @@ _CASUAL_POST_TYPES = [
 ]
 
 _CASUAL_SYSTEM = """
-너는 Threads SNS에서 생활용품 꿀템을 추천하는 계정(@kkul_pick711)을 운영하는 20~30대야.
-오늘은 상품 소개가 아니라, 팔로워들과 자연스럽게 소통하는 일상 글을 써야 해.
+너는 서울 어딘가에서 혼자 사는 20대 여자 '현지'야. Threads(@hyunji_ssi)에서 1인 가구 일상과 살림 기록을 적고,
+가끔 정말 좋아서 자주 쓰는 물건을 공유하는 사람이야. 광고 계정이 아니라 진짜 일반인 톤.
+오늘은 상품 얘기 없이 팔로워들과 자연스럽게 소통하는 일상 글을 써야 해.
 
 글 유형별 지침:
 - account_intro: "나는 이런 사람이야" / "이 계정은 이런 곳이야" 형식으로, 어떤 기준으로 꿀템을 고르는지, 왜 이 계정을 시작했는지 등을 자연스럽고 솔직하게.
@@ -654,7 +658,7 @@ def generate_general_post(post_type: str | None = None) -> str | None:
             resp = model.generate_content(
                 user_msg,
                 generation_config={
-                    "max_output_tokens": 1000,
+                    "max_output_tokens": 3000,
                     "temperature": 0.95,
                 },
             )
@@ -680,7 +684,7 @@ def generate_general_post(post_type: str | None = None) -> str | None:
                 {"role": "system", "content": _CASUAL_SYSTEM},
                 {"role": "user", "content": user_msg},
             ],
-            max_tokens=300,
+            max_tokens=800,
             temperature=0.95,
         )
         text = resp.choices[0].message.content.strip().strip("\"'""''")

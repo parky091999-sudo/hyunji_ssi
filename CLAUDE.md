@@ -5,7 +5,9 @@
 GitHub Actions로 자동화, GitHub Pages로 상품 페이지 제공.
 
 **저장소:** https://github.com/parky091999-sudo/coupang-pipeline  
-**Threads 계정:** @kkul_pick711  
+**Threads 계정:** @hyunji_ssi (display name: 현지)  
+**컨셉:** 1인 가구 자취생 "현지"의 일상 + 가끔 좋은 거 공유 (광고 톤 X)  
+**프로필 링크:** https://bit.ly/hyunji-zip → GitHub Pages 리다이렉트  
 **상품 페이지:** GitHub Pages (docs/index.html)  
 **관리 페이지:** docs/admin.html (PAT: localStorage `kkul_pat`)
 

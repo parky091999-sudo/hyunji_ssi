@@ -103,7 +103,7 @@ def build_html(products: list[dict]) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>꿀픽 | 진짜 쓸만한 것들만 모았어요</title>
+<title>현지의 zip | 자취 살림 기록</title>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -193,7 +193,7 @@ def build_html(products: list[dict]) -> str:
     justify-content: space-between;
     margin-bottom: 10px;
   }}
-  /* 워드마크 — 한글 '꿀픽' 단독, 미세 그라데이션 + 그림자 */
+  /* 워드마크 — 한글 '현지의 zip' 단독, 미세 그라데이션 + 그림자 */
   .logo {{
     font-size: 1.65rem;
     font-weight: 800;
@@ -590,7 +590,7 @@ def build_html(products: list[dict]) -> str:
 <header>
   <div class="header-top">
     <div style="width:50px"></div>
-    <div class="logo">꿀픽</div>
+    <div class="logo">현지의 zip</div>
     <div class="header-btns">
       <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="다크/라이트">☀️</button>
       <button class="icon-btn" onclick="showQR()" title="QR코드">
@@ -656,7 +656,7 @@ def build_html(products: list[dict]) -> str:
       상품 가격 및 재고는 실시간으로 변동될 수 있으며, 쿠팡 페이지에서 최종 확인 후 구매해 주세요.
     </div>
   </div>
-  <div class="footer-copy">© 꿀픽</div>
+  <div class="footer-copy">© 현지의 zip</div>
 </footer>
 
 <div id="qr-modal" class="modal-overlay" onclick="hideQR()">
@@ -713,7 +713,7 @@ def build_html(products: list[dict]) -> str:
       firebase.initializeApp(_FB_CONFIG);
       _db = firebase.firestore();
     }} catch(e) {{
-      console.warn('[꿀픽] Firebase init error:', e);
+      console.warn('[현지zip] Firebase init error:', e);
     }}
   }}
 
@@ -739,7 +739,7 @@ def build_html(products: list[dict]) -> str:
       buildCarousel();
       if (currentSort === 'popular') setSort('popular');
     }} catch(e) {{
-      console.warn('[꿀픽] Firebase load error:', e);
+      console.warn('[현지zip] Firebase load error:', e);
     }}
   }}
 
@@ -763,7 +763,7 @@ def build_html(products: list[dict]) -> str:
       [`days.${{today}}`]: firebase.firestore.FieldValue.increment(1),
     }}).catch(() => {{
       ref.set({{ total: 1, days: {{ [today]: 1 }} }})
-         .catch(e => console.warn('[꿀픽] write error:', e));
+         .catch(e => console.warn('[현지zip] write error:', e));
     }});
   }}
 
@@ -1020,7 +1020,7 @@ def build_html(products: list[dict]) -> str:
   function sharePage() {{
     const url = window.location.href;
     if (navigator.share) {{
-      navigator.share({{ title: '꿀픽', text: '매일 하나씩, 진짜 쓸만한 것들만', url }}).catch(() => {{}});
+      navigator.share({{ title: '현지의 zip', text: '자취 살림 기록 + 가끔 좋은 거 공유', url }}).catch(() => {{}});
     }} else {{
       navigator.clipboard.writeText(url).then(showToast).catch(() => {{ prompt('링크를 복사하세요:', url); }});
     }}

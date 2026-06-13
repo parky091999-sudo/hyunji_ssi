@@ -187,8 +187,9 @@
       "name": "리드볼트 오딧 캐리어 24인치  04_(6/15 출고)펄스레드",
       "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9582452222&ctag=9582452222&lptag=P9582452222&itemId=28604157900&vendorItemId=95547714199&spec=10305199",
       "image_url": "https://shopping-phinf.pstatic.net/main_6029017/60290171407.jpg",
-      "category": "",
-      "registered_at": "2026-06-12T21:22:11.233446+09:00"
+      "category": "생활",
+      "registered_at": "2026-06-12T21:22:11.233446+09:00",
+      "short_name": "오딧 캐리어 24인치"
     },
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7485794615&ctag=7485794615&lpt": {
       "code": "020",
@@ -198,7 +199,7 @@
       "category": "생활",
       "registered_at": "2026-06-13T11:31:42.408837+09:00",
       "posted": true,
-      "short_name": "6인"
+      "short_name": "6인용 식기세척기"
     }
   }
 }

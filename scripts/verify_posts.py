@@ -34,8 +34,10 @@ def _is_truncated(text: str) -> bool:
         return False
     last_para = body.split('\n\n')[-1].strip()
     last_line = last_para.split('\n')[-1].strip()
-    # 해시태그·체크마크로 끝나면 완성된 것
+    # 해시태그·체크마크·URL 종결 패턴(spec=숫자 등)으로 끝나면 완성된 것
     if last_line.startswith('#') or last_line.startswith('✔') or last_line.startswith('•'):
+        return False
+    if re.search(r'(spec|itemId|vendorItemId|pageKey|ctag|lptag)=\d+\s*$', last_line):
         return False
     return not bool(_SENTENCE_END_RE.search(last_line))
 

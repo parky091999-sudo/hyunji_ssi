@@ -80,6 +80,16 @@ def run():
         logger.warning("일상글 생성 실패 — 종료")
         return
 
+    # 잘림 안전망: 100자 미만이거나 문장 미완성으로 끝나면 게시 차단
+    body = post_text.strip()
+    if len(body) < 100:
+        logger.warning(f"일상글 너무 짧음({len(body)}자) — 잘림 의심으로 게시 차단")
+        return
+    last_char = body.rstrip("#가-힣 \n").rstrip()[-1:] if body else ""
+    if last_char and last_char not in "다요임어야겠네봄않함봐!?~)♥.…":
+        logger.warning(f"일상글 문장 미완성('...{body[-15:]}') — 잘림 의심으로 게시 차단")
+        return
+
     logger.info(f"생성된 글:\n{post_text}")
 
     from poster.threads import post_thread_api

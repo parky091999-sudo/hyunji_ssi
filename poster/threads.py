@@ -201,7 +201,7 @@ def fetch_my_posts(limit: int = 100) -> list[dict]:
 
 def post_product_link_comment(post_id: str, code: str, product_url: str | None = None) -> str | None:
     """포스팅 직후 첫 댓글로 상품 링크 달기.
-    product_url 있으면 쿠팡 파트너스 URL 직접, 없으면 꿀픽 페이지 폴백."""
+    product_url 있으면 쿠팡 파트너스 URL 직접, 없으면 GitHub Pages 폴백."""
     if not post_id:
         return None
     if product_url and product_url.startswith("http"):

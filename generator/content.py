@@ -16,7 +16,7 @@ from config import COUPANG_PARTNERS_ACTIVE, GROQ_API_KEY, GOOGLE_API_KEY, DATA_D
 
 logger = logging.getLogger(__name__)
 
-_AD_DISCLOSURE = "이 게시물은 쿠팡파트너스 활동의 일환으로 수수료를 받을 수 있습니다"
+_AD_DISCLOSURE = "이 게시물은 쿠팡파트너스 활동의 일환으로 수수료를 받습니다"
 
 
 # ── 글1: Groq AI 생성 ────────────────────────────────────────────────────────

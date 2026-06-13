@@ -26,7 +26,7 @@ def load_firebase_config() -> str:
     except FileNotFoundError:
         return "null"
 
-_TICKER_MSG = "이 페이지의 링크는 쿠팡파트너스 활동의 일환으로, 구매 시 일정액의 수수료를 제공받을 수 있습니다"
+_TICKER_MSG = "이 페이지의 링크는 쿠팡파트너스 활동의 일환으로, 구매 시 일정액의 수수료를 제공받습니다"
 
 CATEGORIES = ["전체", "식품", "뷰티", "주방", "생활", "디지털/가전", "인테리어", "기타"]
 

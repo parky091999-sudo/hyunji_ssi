@@ -1,5 +1,5 @@
 {
-  "next_code": 23,
+  "next_code": 24,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -221,6 +221,16 @@
       "registered_at": "2026-06-13T20:22:16.034356+09:00",
       "posted": true,
       "short_name": "탄산버블 두피 스케일러"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=2988711166&ctag=2988711166&lpt": {
+      "code": "023",
+      "name": "오슬로 304 스텐 믹싱볼 야채탈수기5L + 채칼6종세트",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=2988711166&ctag=2988711166&lptag=l761528742073&itemId=36278174507&vendorItemId=90890856128&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5976748/59767486171.2.jpg",
+      "category": "주방",
+      "registered_at": "2026-06-14T19:12:50.296404+09:00",
+      "posted": true,
+      "short_name": "믹싱볼 야채탈수기"
     }
   }
 }

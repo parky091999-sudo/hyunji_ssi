@@ -243,7 +243,7 @@ async def run():
         product.get("name", ""),
         product.get("image_url", ""),
     ) or ""
-    if not code:
+    if not code or code == "preview":
         code = registered_code
         if code and "프로필 링크에서" not in post_text:
             post_text += f"\n\n제품 정보는 프로필 링크에서 [{code}] 검색 👆"

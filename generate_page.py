@@ -554,10 +554,9 @@ def build_html(products: list[dict]) -> str:
     color: var(--text);
     flex: 1;
     text-align: left;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
     letter-spacing: -0.04em;
   }}
 

@@ -1,5 +1,5 @@
 {
-  "scanned_at": "2026-06-14T02:19:15.376719+09:00",
+  "scanned_at": "2026-06-15T03:06:15.056471+09:00",
   "candidates": [
     {
       "product": {
@@ -7,7 +7,7 @@
         "price": "21,280원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5529149/55291493506.59.jpg",
+        "image_url": "https://shopping-phinf.pstatic.net/main_5529149/55291493506.61.jpg",
         "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6771300452&ctag=6771300452&lptag=l288260265771&itemId=08272617685&vendorItemId=74155114391&spec=10305198",
         "badge": "쿠팡",
         "brand": "",
@@ -15,7 +15,7 @@
         "category_hint": "생활/청소",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:37.679386"
+        "scraped_at": "2026-06-14T18:05:34.036482"
       },
       "source_account": "검색:세탁조클리너",
       "selected": false
@@ -34,7 +34,7 @@
         "category_hint": "주방",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:44.382204"
+        "scraped_at": "2026-06-14T18:05:41.309087"
       },
       "source_account": "검색:과일탈수기",
       "selected": false
@@ -53,7 +53,7 @@
         "category_hint": "디지털/가전",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:53.424744"
+        "scraped_at": "2026-06-14T18:05:51.264851"
       },
       "source_account": "검색:휴대용 의류건조기",
       "selected": false
@@ -72,7 +72,7 @@
         "category_hint": "먹는거",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:54.483491"
+        "scraped_at": "2026-06-14T18:05:52.420689"
       },
       "source_account": "검색:간식 추천 쿠팡",
       "selected": false
@@ -91,26 +91,7 @@
         "category_hint": "먹는거",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:54.483571"
-      },
-      "source_account": "검색:간식 추천 쿠팡",
-      "selected": false
-    },
-    {
-      "product": {
-        "name": "사무실간식개별포장 사무실과자 13종 (+1) 1세트 1개",
-        "price": "69,500원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_4546369/45463699115.1.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7413299408&ctag=7413299408&lptag=I19213312394&itemId=19213312394&vendorItemId=77042493999&spec=10305199",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "기타과자",
-        "category_hint": "먹는거",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:54.483693"
+        "scraped_at": "2026-06-14T18:05:52.420833"
       },
       "source_account": "검색:간식 추천 쿠팡",
       "selected": false
@@ -129,7 +110,26 @@
         "category_hint": "먹는거",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:54.483796"
+        "scraped_at": "2026-06-14T18:05:52.420983"
+      },
+      "source_account": "검색:간식 추천 쿠팡",
+      "selected": false
+    },
+    {
+      "product": {
+        "name": "사무실간식개별포장 사무실과자 13종 (+1) 1세트 1개",
+        "price": "69,500원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_4546369/45463699115.1.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7413299408&ctag=7413299408&lptag=I19213312394&itemId=19213312394&vendorItemId=77042493999&spec=10305199",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "기타과자",
+        "category_hint": "먹는거",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-14T18:05:52.421050"
       },
       "source_account": "검색:간식 추천 쿠팡",
       "selected": false
@@ -148,26 +148,7 @@
         "category_hint": "먹는거",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:54.483895"
-      },
-      "source_account": "검색:간식 추천 쿠팡",
-      "selected": false
-    },
-    {
-      "product": {
-        "name": "빈츠 하임 예감 빼빼로등 14종 구성 과자세트 1세트",
-        "price": "26,800원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_4515310/45153102172.5.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7792630745&ctag=7792630745&lptag=I21085996180&itemId=21085996180&vendorItemId=88148076465&spec=10305198",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "기타과자",
-        "category_hint": "먹는거",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:54.483977"
+        "scraped_at": "2026-06-14T18:05:52.421107"
       },
       "source_account": "검색:간식 추천 쿠팡",
       "selected": false
@@ -186,7 +167,26 @@
         "category_hint": "먹는거",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:54.484031"
+        "scraped_at": "2026-06-14T18:05:52.421172"
+      },
+      "source_account": "검색:간식 추천 쿠팡",
+      "selected": false
+    },
+    {
+      "product": {
+        "name": "진저원 하루편강 생강간식",
+        "price": "33,000원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_4708306/47083061938.1.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6619701503&ctag=6619701503&lptag=l121820504775&itemId=8521577140&vendorItemId=70845018448&spec=10305197",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "기타과자",
+        "category_hint": "먹는거",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-14T18:05:52.421227"
       },
       "source_account": "검색:간식 추천 쿠팡",
       "selected": false
@@ -194,18 +194,18 @@
     {
       "product": {
         "name": "올레놀샷 NMN 1개 15ml",
-        "price": "33,500원",
+        "price": "31,490원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5760148/57601483053.108.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9164207296&ctag=9164207296&lptag=I26998880761&itemId=26998880761&vendorItemId=95330435913&spec=10305199",
+        "image_url": "https://shopping-phinf.pstatic.net/main_5760148/57601483053.109.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9164207296&ctag=9164207296&lptag=I26998880761&itemId=26998880761&vendorItemId=95364967268&spec=10305199",
         "badge": "쿠팡",
         "brand": "",
         "category": "에센스/세럼/앰플",
         "category_hint": "뷰티",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:56.596698"
+        "scraped_at": "2026-06-14T18:05:54.728770"
       },
       "source_account": "검색:미백 앰플",
       "selected": false
@@ -224,47 +224,47 @@
         "category_hint": "뷰티",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:18:59.994411"
+        "scraped_at": "2026-06-14T18:05:58.362087"
       },
       "source_account": "검색:두피 스케일러",
       "selected": false
     },
     {
       "product": {
-        "name": "해피바잉스토어 빈티지 캔들 북유럽 210g 1개 소나무향",
-        "price": "36,000원",
+        "name": "힐링버드 티트리 피디알엔 탈모증상완화 기능성 두피 스케일러 250g 2개",
+        "price": "33,480원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_6031432/60314324360.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8266181566&ctag=8266181566&lptag=V95153111827&itemId=25093506692&vendorItemId=95153111827&spec=10305199",
+        "image_url": "https://shopping-phinf.pstatic.net/main_6019137/60191375730.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9537096530&ctag=9537096530&lptag=I28450957900&itemId=28450957900&vendorItemId=95401605013&spec=10305197",
         "badge": "쿠팡",
-        "brand": "뉴앙시에",
-        "category": "아로마/캔들용품",
-        "category_hint": "인테리어",
+        "brand": "힐링버드",
+        "category": "두피케어",
+        "category_hint": "뷰티",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:19:07.405775"
+        "scraped_at": "2026-06-14T18:05:58.364206"
       },
-      "source_account": "검색:북유럽 캔들",
+      "source_account": "검색:두피 스케일러",
       "selected": false
     },
     {
       "product": {
-        "name": "해피바잉스토어 빈티지 캔들 북유럽 210g 1개 소나무향",
-        "price": "67,100원",
+        "name": "오페라 미룩스 LED 마스크",
+        "price": "455,000원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_6027162/60271621570.1.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8266181566&ctag=8266181566&lptag=V94271956108&itemId=25093506692&vendorItemId=94271956108&spec=10305199",
+        "image_url": "https://shopping-phinf.pstatic.net/main_3863085/38630851673.152.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6239617459&ctag=6239617459&lptag=P6239617459&itemId=12586949221&vendorItemId=79854913981&spec=10305199",
         "badge": "쿠팡",
-        "brand": "뉴앙시에",
-        "category": "아로마/캔들용품",
-        "category_hint": "인테리어",
+        "brand": "지티지웰니스",
+        "category": "피부케어기기",
+        "category_hint": "뷰티",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-13T17:19:07.405852"
+        "scraped_at": "2026-06-14T18:05:59.527149"
       },
-      "source_account": "검색:북유럽 캔들",
+      "source_account": "검색:LED 마스크",
       "selected": false
     }
   ]

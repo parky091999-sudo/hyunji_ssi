@@ -472,6 +472,7 @@ def build_html(products: list[dict]) -> str:
     font-weight: 600;
     line-height: 1.35;
     color: var(--text);
+    text-align: center;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -547,15 +548,16 @@ def build_html(products: list[dict]) -> str:
   .badge-best {{ background: #d7e5cf; color: #6e9558; }}  /* 연 세이지 */
   .name {{
     font-family: 'Jua', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-    font-size: 1.15rem;
+    font-size: 0.85rem;
     font-weight: 400;
-    line-height: 1.4;
+    line-height: 1.35;
     color: var(--text);
     flex: 1;
     text-align: left;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
     letter-spacing: -0.04em;
   }}
 

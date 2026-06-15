@@ -7,6 +7,8 @@ Threads API 댓글 감지 및 대댓글
 import json
 import logging
 import os
+import random as _random
+import re
 import sys
 import time
 from datetime import datetime, timedelta
@@ -109,7 +111,6 @@ def _keyword_reply(product_code: str) -> str:
 _SHORT_REACTIONS = {"ㅋㅋ", "ㅎㅎ", "ㅠㅠ", "오오", "헐", "와", "대박", "굳", "ㄷㄷ", "진짜", "맞아", "맞지"}
 _SHORT_REPLY_EMOJIS = ["ㅎㅎ 😊", "ㅋㅋ", "😊", "ㅎㅎ", "그치 ㅎㅎ"]
 
-import random as _random
 
 
 def _classify_short_comment(text: str) -> str:
@@ -276,7 +277,7 @@ async def check_and_reply_comments():
             # ── 1) 키워드 댓글('나도/링크' 류): 각 댓글에 직접 코드 안내 ──
             product_code = post.get("product_code", "")
             kw_hits = [r for r in new_replies if _is_keyword_comment(r.get("text", ""))] if product_code else []
-            for r in kw_hits[:5]:  # 회당 최대 5개 (초과분은 다음 회차)
+            for r in kw_hits[:15]:  # 회당 최대 15개 (밀린 키워드 댓글 한 번에 소화)
                 if post_reply_to_thread(r.get("id", ""), _keyword_reply(product_code)):
                     post_replied.add(_comment_key(r.get("id", ""), r.get("text", "")))
                     replied[post_id] = list(post_replied)
@@ -286,35 +287,38 @@ async def check_and_reply_comments():
 
             # ── 2) 일반 댓글: 각 댓글에 개별 대댓글 (해당 댓글 id로 reply_to_id 지정) ──
             others = [r for r in new_replies if r not in kw_hits]
-            for r in others[:3]:  # 회당 최대 3개
-                raw_text   = r.get("text", "")
-                kind       = _classify_short_comment(raw_text)
+            for r in others[:10]:  # 회당 최대 10개 (초기 3개 한도 → 일상글 댓글 누락 원인)
+                # 댓글별 개별 try — 한 댓글에서 에러나도 다른 댓글 처리 계속
+                try:
+                    raw_text = r.get("text", "")
+                    kind     = _classify_short_comment(raw_text)
 
-                if kind == "skip":
-                    # 단순 감탄사("ㅋㅋ", "헐" 등) → 무응답, 처리 완료 마킹
-                    logger.info(f"  짧은 감탄사 스킵: '{raw_text}'")
-                    post_replied.add(_comment_key(r.get("id", ""), raw_text))
-                    replied[post_id] = list(post_replied)
-                    save_replied(replied)
-                    continue
-
-                if kind == "emoji":
-                    # 단어 하나 반응("카레", "냉장고" 등) → 이모지/짧은 반응
-                    reply_text = _short_reply()
-                    logger.info(f"  단어 댓글 → 짧게: '{raw_text}' → '{reply_text}'")
-                else:
-                    comment_text = f"@{r.get('username', '?')}: {raw_text}"
-                    reply_text   = generate_reply(comment_text)
-                    if not reply_text:
+                    if kind == "skip":
+                        logger.info(f"  짧은 감탄사 스킵: '{raw_text}'")
+                        post_replied.add(_comment_key(r.get("id", ""), raw_text))
+                        replied[post_id] = list(post_replied)
+                        save_replied(replied)
                         continue
 
-                success = post_reply_to_thread(r.get("id", ""), reply_text)
-                if success:
-                    post_replied.add(_comment_key(r.get("id", ""), raw_text))
-                    replied[post_id] = list(post_replied)
-                    save_replied(replied)
-                    reply_count += 1
-                    await asyncio.sleep(15)
+                    if kind == "emoji":
+                        reply_text = _short_reply()
+                        logger.info(f"  단어 댓글 → 짧게: '{raw_text}' → '{reply_text}'")
+                    else:
+                        comment_text = f"@{r.get('username', '?')}: {raw_text}"
+                        reply_text   = generate_reply(comment_text)
+                        if not reply_text:
+                            continue
+
+                    success = post_reply_to_thread(r.get("id", ""), reply_text)
+                    if success:
+                        post_replied.add(_comment_key(r.get("id", ""), raw_text))
+                        replied[post_id] = list(post_replied)
+                        save_replied(replied)
+                        reply_count += 1
+                        await asyncio.sleep(15)
+                except Exception as e:
+                    logger.error(f"  개별 댓글 처리 오류 (id={r.get('id')}): {e}")
+                    continue
 
         except Exception as e:
             logger.error(f"댓글 처리 오류 ({post_id}): {e}")

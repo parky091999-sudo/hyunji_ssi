@@ -633,6 +633,32 @@ async def run():
     rejected_data = _load_json(os.path.join(DATA_DIR, "rejected_products.json"), {"urls": []})
     rejected_urls: set[str] = set(rejected_data.get("urls", []))
 
+    # 이미 게시됐거나 수동 큐에 있는 상품도 후보에서 제외 (중복 노출 방지)
+    blocked_pids: set[str] = set()
+    reg = _load_json(os.path.join(DATA_DIR, "product_registry.json"), {"products": {}})
+    for k, v in reg.get("products", {}).items():
+        if not v.get("posted"):
+            continue
+        p = _product_id(v.get("url") or k)
+        if p:
+            blocked_pids.add(p)
+    queue = _load_json(os.path.join(DATA_DIR, "manual_queue.json"), [])
+    for it in queue:
+        p = _product_id(it.get("product", {}).get("product_url", ""))
+        if p:
+            blocked_pids.add(p)
+    existing_pids |= blocked_pids
+    logger.info(f"중복 차단 pid: {len(blocked_pids)}개 (게시됨 + 큐)")
+
+    # 누적 candidates에서도 이미 게시/큐에 있는 항목 제거
+    before_clean = len(candidates)
+    candidates = [
+        c for c in candidates
+        if _product_id(c.get("product", {}).get("product_url", "")) not in blocked_pids
+    ]
+    if len(candidates) < before_clean:
+        logger.info(f"기존 후보 정리: {before_clean - len(candidates)}개 중복 제거")
+
     total_added = 0
 
     for url in urls:

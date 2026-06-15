@@ -262,9 +262,10 @@ async def run():
         except Exception as e:
             logger.warning(f"이미지 보충 실패: {e}")
 
-    # 언어 게이트
-    from generator.content import ensure_korean
+    # 언어 + 잘림 게이트
+    from generator.content import ensure_korean, ensure_not_truncated
     post_text = ensure_korean(post_text, product, code)
+    post_text = ensure_not_truncated(post_text, product, code)
 
     # 이미지 구성: 원본 image_url(메인, 1번 자리) + AI 비스듬 보조 컷
     try:

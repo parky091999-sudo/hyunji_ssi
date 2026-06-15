@@ -105,6 +105,27 @@ def _has_foreign_chars(text: str) -> bool:
 has_foreign_chars = _has_foreign_chars  # 외부 모듈용 공개 별칭
 
 
+# ── 본문 잘림 감지 ──────────────────────────────────────────────────────────
+# 토큰 한도로 마지막 문장이 절단된 상태에서 그대로 게시되는 것을 막는 게이트.
+# verify_posts._is_truncated와 같은 휴리스틱(푸터/해시태그/체크마크 제외 후
+# 마지막 줄이 종결 어미로 끝나는지)을 게시 *전* 단계에서 적용한다.
+_FOOTER_RE = re.compile(r'\n\n제품 정보는 프로필 링크에서 \[(?:\d{3}|CODE)\] 검색 👆\s*$')
+_SENTENCE_END_RE = re.compile(r'[다요임어야겠네봄않함봐!?~\).♥]$')
+
+
+def looks_truncated(text: str) -> bool:
+    body = _FOOTER_RE.sub("", text or "").strip()
+    if not body:
+        return False
+    last_para = body.split('\n\n')[-1].strip()
+    last_line = last_para.split('\n')[-1].strip()
+    if last_line.startswith(('#', '✔', '•', '👉', '👆')):
+        return False
+    if re.search(r'(spec|itemId|vendorItemId|pageKey|ctag|lptag)=\d+\s*$', last_line):
+        return False
+    return not bool(_SENTENCE_END_RE.search(last_line))
+
+
 def _recent_first_lines(limit: int = 8) -> list[str]:
     """최근 상품 게시글들의 첫 문장 — 훅 반복 방지용 금지 목록"""
     try:
@@ -253,6 +274,9 @@ def _generate_with_gemini(product: dict, product_code: str) -> str | None:
             if _is_dup_hook(candidate):
                 logger.warning(f"Gemini 첫 문장 반복 감지 → 재시도 {attempt + 1}/3")
                 continue
+            if looks_truncated(candidate):
+                logger.warning(f"Gemini 본문 잘림 감지 → 재시도 {attempt + 1}/3")
+                continue
             body_and_tags = candidate
             break
         if not body_and_tags:
@@ -282,7 +306,7 @@ def _generate_with_groq(product: dict, product_code: str) -> str | None:
                     {"role": "system", "content": _POST1_SYSTEM},
                     {"role": "user", "content": user_msg + extra},
                 ],
-                max_tokens=800,
+                max_tokens=1600,
                 temperature=temp,
             )
             candidate = resp.choices[0].message.content.strip().strip("\"'""''")
@@ -293,6 +317,9 @@ def _generate_with_groq(product: dict, product_code: str) -> str | None:
                 continue
             if _is_dup_hook(candidate):
                 logger.warning(f"Groq 첫 문장 반복 감지 → 재시도 {attempt + 1}/3")
+                continue
+            if looks_truncated(candidate):
+                logger.warning(f"Groq 본문 잘림 감지 → 재시도 {attempt + 1}/3")
                 continue
             body_and_tags = candidate
             break
@@ -422,6 +449,27 @@ def generate_post(product: dict, assign_code_now: bool = True) -> dict:
         "style": style,
         "product_code": product_code,
     }
+
+
+def ensure_not_truncated(text: str, product: dict, product_code: str = "") -> str:
+    """포스팅 직전 잘림 게이트.
+    수동 큐 / pending_post 에 저장된 본문이 토큰 한도로 잘렸을 때
+    AI로 재생성해서 완성된 문장을 보장한다. 실패 시 폴백 템플릿."""
+    if not text or not looks_truncated(text):
+        return text
+    logger.warning("포스팅 직전 본문 잘림 감지 → 재생성 시도")
+    m = re.search(r"\[(\d{3})\] 검색", text)
+    code = product_code or (m.group(1) if m else "")
+    regen = _generate_post1_ai(product, code or "CODE")
+    if regen and not looks_truncated(regen):
+        if not code:
+            regen = re.sub(r"\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆", "", regen)
+        return regen
+    logger.warning("재생성 실패 → 안전 템플릿 사용")
+    fb = _post1_fallback(product.get("name", ""), code or "CODE")
+    if not code:
+        fb = re.sub(r"\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆", "", fb)
+    return fb
 
 
 def ensure_korean(text: str, product: dict, product_code: str = "") -> str:

@@ -175,7 +175,7 @@ def _build_prompt(product: dict) -> str:
 def _generate(product: dict) -> str | None:
     prompt = _build_prompt(product)
 
-    from generator.content import has_foreign_chars
+    from generator.content import has_foreign_chars, looks_truncated
     _KO = "\n\n[필수] 한국어로만 출력. 한자·일본어·태국어 등 어떤 외국어도 절대 사용 금지."
 
     if GOOGLE_API_KEY:
@@ -200,9 +200,12 @@ def _generate(product: dict) -> str | None:
                 if has_foreign_chars(text):
                     logger.warning(f"  Gemini 외국어 감지 → 재시도 {attempt + 1}/3")
                     continue
+                if looks_truncated(text):
+                    logger.warning(f"  Gemini 본문 잘림 감지 → 재시도 {attempt + 1}/3")
+                    continue
                 logger.info("  [Gemini] 생성 완료")
                 return text
-            logger.warning("  Gemini 3회 모두 외국어 포함 → Groq 폴백")
+            logger.warning("  Gemini 3회 모두 실패 → Groq 폴백")
         except Exception as e:
             logger.warning(f"  Gemini 오류 → Groq 폴백: {e}")
 
@@ -217,7 +220,7 @@ def _generate(product: dict) -> str | None:
                         {"role": "system", "content": _POST_SYSTEM},
                         {"role": "user", "content": prompt + (_KO if attempt > 0 else "")},
                     ],
-                    max_tokens=500,
+                    max_tokens=1600,
                     temperature=0.85,
                 )
                 text = resp.choices[0].message.content.strip()
@@ -226,8 +229,11 @@ def _generate(product: dict) -> str | None:
                 if has_foreign_chars(text):
                     logger.warning(f"  Groq 외국어 감지 → 재시도 {attempt + 1}/2")
                     continue
+                if looks_truncated(text):
+                    logger.warning(f"  Groq 본문 잘림 감지 → 재시도 {attempt + 1}/2")
+                    continue
                 return text
-            logger.warning("  Groq 외국어 포함 → 생성 보류 (빈 상태 유지)")
+            logger.warning("  Groq 외국어/잘림 포함 → 생성 보류 (빈 상태 유지)")
         except Exception as e:
             logger.warning(f"  Groq 생성 오류: {e}")
 

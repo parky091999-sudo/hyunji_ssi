@@ -104,7 +104,8 @@ _FOREIGN_RE = re.compile(
     "ݐ-ݿ"     # 아랍어 보조
     "Ѐ-ӿ"     # 키릴 (러시아어)
     "Ͱ-Ͽ"     # 그리스어 (Greek — ης 등)
-    "Ā-ɏ"     # 라틴 확장 A/B (베트남어 등)
+    "À-ɏ"     # Latin-1 Supplement + 라틴 확장 A/B
+              # (à é ñ ç ü ö 등 발음 부호 — 2026-06-16 'ngày' 누락 사고 보강)
     "ɐ-ʯ"     # IPA 확장
     "Ḁ-ỿ"     # 라틴 확장 추가 (베트남어 성조)
     "]"
@@ -130,6 +131,10 @@ def looks_truncated(text: str) -> bool:
     body = _FOOTER_RE.sub("", text or "").strip()
     if not body:
         return False
+    # 길이 게이트: 푸터 제외 본문이 비정상적으로 짧으면(목표 400~600자) 잘림 의심.
+    # 어미 종결 통과해도 길이 부족 사례 차단 (2026-06-16 오뚜기 식초 126자 '거임' 잘림 보강).
+    if len(body) < 200:
+        return True
     last_para = body.split('\n\n')[-1].strip()
     last_line = last_para.split('\n')[-1].strip()
     if last_line.startswith(('#', '✔', '•', '👉', '👆')):
@@ -463,26 +468,26 @@ def generate_post(product: dict, assign_code_now: bool = True) -> dict:
 
 
 def ensure_not_truncated(text: str, product: dict, product_code: str = "") -> str:
-    """포스팅 직전 잘림 게이트.
-    수동 큐 / pending_post 에 저장된 본문이 토큰 한도로 잘렸거나 비어있을 때
-    AI로 재생성해서 완성된 문장을 보장한다. 실패 시 폴백 템플릿."""
+    """포스팅 직전 본문 게이트 — 비어있음/잘림/외국어 모두 잡아 AI 재생성.
+    수동 큐 / pending_post 에 저장된 본문이 토큰 한도로 잘렸거나 외국어가 섞였을 때
+    완성된 한국어 문장을 보장한다. 실패 시 빈 문자열 반환 → 호출부에서 게시 skip."""
     is_empty = not (text and text.strip())
-    if not is_empty and not looks_truncated(text):
+    foreign = (not is_empty) and _has_foreign_chars(text)
+    truncated = (not is_empty) and looks_truncated(text)
+    if not (is_empty or foreign or truncated):
         return text
-    reason = "비어있음" if is_empty else "잘림"
+    reason = "비어있음" if is_empty else ("외국어" if foreign else "잘림")
     logger.warning(f"포스팅 직전 본문 {reason} 감지 → 재생성 시도")
     m = re.search(r"\[(\d{3})\] 검색", text or "")
     code = product_code or (m.group(1) if m else "")
     regen = _generate_post1_ai(product, code or "CODE")
-    if regen and not looks_truncated(regen):
+    if regen and not looks_truncated(regen) and not _has_foreign_chars(regen):
         if not code:
             regen = re.sub(r"\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆", "", regen)
         return regen
-    logger.warning("재생성 실패 → 안전 템플릿 사용")
-    fb = _post1_fallback(product.get("name", ""), code or "CODE")
-    if not code:
-        fb = re.sub(r"\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆", "", fb)
-    return fb
+    # fallback은 generic해서 게시 금지 — 빈 본문 반환, 호출부에서 skip 판단
+    logger.warning("본문 재생성 실패 → 빈 본문 반환 (호출부에서 게시 skip)")
+    return ""
 
 
 def ensure_korean(text: str, product: dict, product_code: str = "") -> str:

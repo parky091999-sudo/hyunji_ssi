@@ -62,19 +62,41 @@ def run():
 
     rejected = _load_rejected()
 
-    # 기존 선택된 항목 보존
+    # 이미 게시된 상품 + 수동 큐에 있는 상품은 후보에서 제외 (중복 노출 방지).
+    # 2026-06-16 보강: process_benchmark_urls와 동일한 차단을 여기에도 적용.
+    blocked_urls: set[str] = set()
+    try:
+        reg = json.load(open(os.path.join(DATA_DIR, "product_registry.json"), encoding="utf-8"))
+        for k, v in reg.get("products", {}).items():
+            if v.get("posted"):
+                blocked_urls.add(v.get("url") or k)
+    except Exception:
+        pass
+    try:
+        queue = json.load(open(os.path.join(DATA_DIR, "manual_queue.json"), encoding="utf-8"))
+        for it in queue if isinstance(queue, list) else []:
+            url = (it.get("product", {}) or {}).get("product_url", "")
+            if url:
+                blocked_urls.add(url)
+    except Exception:
+        pass
+    logger.info(f"차단 URL: {len(blocked_urls)}개 (게시됨 + 큐)")
+
+    # 기존 선택된 항목 보존 (단, 그 사이 게시된 건 제외)
     existing_selected = {}
     if os.path.exists(CANDIDATES_PATH):
         try:
             old = json.load(open(CANDIDATES_PATH, encoding="utf-8"))
             for c in old.get("candidates", []):
-                if c.get("selected") and c.get("product", {}).get("product_url"):
-                    url = c["product"]["product_url"]
+                url = c.get("product", {}).get("product_url", "")
+                if not url or url in blocked_urls:
+                    continue
+                if c.get("selected"):
                     existing_selected[url] = c
         except Exception:
             pass
 
-    seen_urls = set(existing_selected.keys())
+    seen_urls = set(existing_selected.keys()) | blocked_urls
     candidates = []
 
     # 카테고리별 할당량: 50개 ÷ 7개 ≈ 7개/카테고리 (균형잡힌 분포)

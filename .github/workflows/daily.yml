@@ -30,6 +30,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 동시 실행은 concurrency가 막지만, 순차 실행 시 checkout이 이전 워크플로 push를 못 본 채로
+      # 게이트를 통과해 중복 게시한 사고(2026-06-16 [027] 매직키보드/휴지통) 재발 방지.
+      - name: Pull latest before posting
+        run: git pull --rebase origin main
 
       - uses: actions/setup-python@v5
         with:

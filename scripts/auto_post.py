@@ -169,18 +169,18 @@ async def run():
     logger.info(f"자동 포스팅 시작: {datetime.now(KST).strftime('%Y-%m-%d %H:%M KST')}")
     logger.info("=" * 50)
 
-    # 오늘 이미 아침 자동 포스팅 완료했으면 건너뜀 (post_type이 "auto" 또는 "auto_evening")
+    # 오늘 이미 자동 포스팅 완료했으면 건너뜀 (auto/auto_evening 둘 다 잡음 — cron 4번 중복 발화 방지)
     today_str = datetime.now(KST).strftime("%Y-%m-%d")
     if os.path.exists(FEED_POSTS_PATH):
         feed = json.load(open(FEED_POSTS_PATH, encoding="utf-8"))
         auto_posted_today = any(
             p.get("timestamp", "")[:10] == today_str
-            and p.get("post_type") == "auto"
+            and p.get("post_type") in ("auto", "auto_evening")
             and p.get("status") == "posted"
             for p in feed
         )
         if auto_posted_today:
-            logger.info(f"오늘({today_str}) 아침 자동 포스팅 완료 — 건너뜀")
+            logger.info(f"오늘({today_str}) 자동 포스팅 완료 — 건너뜀")
             return
 
     # 1. pending_post.json 에서 후보 선택

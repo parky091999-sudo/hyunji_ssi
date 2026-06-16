@@ -1,5 +1,5 @@
 {
-  "next_code": 28,
+  "next_code": 29,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -272,6 +272,16 @@
       "registered_at": "2026-06-16T11:27:36.274317+09:00",
       "posted": true,
       "short_name": "자동센서 휴지통"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9164207296&ctag=9164207296&lpt": {
+      "code": "028",
+      "name": "올레놀샷 NMN 1개 15ml",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9164207296&ctag=9164207296&lptag=I26998880761&itemId=26998880761&vendorItemId=95113971937&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5760148/57601483053.106.jpg",
+      "category": "뷰티",
+      "registered_at": "2026-06-16T19:07:05.084171+09:00",
+      "posted": true,
+      "short_name": "올레놀샷 NMN"
     }
   }
 }

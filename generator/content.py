@@ -63,6 +63,19 @@ _POST1_SYSTEM = """
 게다가 방문설치 포함이라 사자마자 당일 바로 쓸 수 있더라고
 리뷰 보니까 산 사람들이 하나같이 왜 이제 샀냐고 하더라"
 
+━━━ 비살림 카테고리 (디지털/가전/뷰티/의류/테크 등) 처리 ━━━
+상품이 자취 살림템이 아니어도 1인 가구 일상 맥락으로 풀어쓸 것. 절대 generic하게
+"두고두고 쓰는 템" 같은 만능 문구만 쓰지 마. 그 상품의 구체적 기능·스펙·호환성을
+일상 상황에 묶어서 설명해.
+나쁜 예 (아이패드 매직키보드): "이거 왜 이제 알았지 / 두고두고 쓰는 템 / #테크템"
+   → 매직키보드의 어떤 점도 안 드러남. 휴지통이든 화장품이든 다 통할 문구.
+좋은 예 (아이패드 매직키보드 iPad Air M4용):
+   "카페에서 노트북 꺼내기 부담스러울 때 아이패드에 키보드만 붙이면 끝
+   트랙패드까지 있어서 마우스 없이도 작업 가능하더라
+   백라이트 들어와서 어두운 데서도 오타 안 남"
+상품명에 모델명·호환 기기·소재·용량이 있으면 반드시 본문에 활용. 그 상품이
+다른 상품으로 바꿔도 그대로 통하는 문구는 절대 금지.
+
 ━━━ 기타 규칙 ━━━
 - 이모지 1~2개만, 본문에 자연스럽게
 - 해시태그 총 4~5개, 상품 카테고리에 어울리게 (사용자 메시지의 추천 해시태그 풀에서 조합). 매번 #생활꿀템으로 시작하지 말고 카테고리마다 다르게
@@ -419,25 +432,23 @@ def generate_post(product: dict, assign_code_now: bool = True) -> dict:
     detail_images = _collect_detail_images(product)
     logger.info(f"  → {len(detail_images)}장 준비됨")
 
-    # 글1 생성 (코드 있으면 코드 라인 포함, 없으면 나중에 추가)
+    # 글1 생성 — AI 생성 성공 시에만 게시. fallback 본문은 generic해서
+    # 비살림 상품(매직키보드 등)에 부적합 → 사용자 불만 발생 (2026-06-16 [027] 사고).
+    # AI 실패 시 빈 dict 반환 → auto/manual_post는 다음 후보로 넘어가거나 skip.
     if product_code:
         post_text_1 = _generate_post1_ai(product, product_code)
-        if post_text_1:
-            style = "ai"
-        else:
-            post_text_1 = _post1_fallback(name, product_code)
-            style = "fallback"
+        if not post_text_1:
+            logger.warning(f"AI 본문 생성 실패 — 게시 skip [{product_code}]: {name[:40]}")
+            return {}
+        style = "ai"
     else:
         # 코드 없이 본문만 생성 (_CODE_LINE 제외)
         post_text_1 = _generate_post1_ai(product, "CODE")
-        if post_text_1:
-            # CODE 플레이스홀더 제거 (포스팅 시점에 실제 코드로 교체)
-            post_text_1 = re.sub(r'\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆', '', post_text_1)
-            style = "ai"
-        else:
-            body = _post1_fallback(name, "CODE")
-            post_text_1 = re.sub(r'\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆', '', body)
-            style = "fallback"
+        if not post_text_1:
+            logger.warning(f"AI 본문 생성 실패 — preselect skip: {name[:40]}")
+            return {}
+        post_text_1 = re.sub(r'\n\n제품 정보는 프로필 링크에서 \[CODE\] 검색 👆', '', post_text_1)
+        style = "ai"
 
     logger.info(f"생성 완료 [{style}]{('['+product_code+']') if product_code else '[코드미정]'}: {name[:30]}")
     return {

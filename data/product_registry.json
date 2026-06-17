@@ -1,5 +1,5 @@
 {
-  "next_code": 30,
+  "next_code": 31,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -292,6 +292,16 @@
       "registered_at": "2026-06-17T11:10:02.970394+09:00",
       "posted": true,
       "short_name": "콘디멘토"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6239617459&ctag=6239617459&lpt": {
+      "code": "030",
+      "name": "오페라 미룩스 LED 마스크",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6239617459&ctag=6239617459&lptag=P6239617459&itemId=12586949221&vendorItemId=79854913981&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_3863085/38630851673.152.jpg",
+      "category": "뷰티",
+      "registered_at": "2026-06-17T19:08:08.233279+09:00",
+      "posted": true,
+      "short_name": "LED 마스크"
     }
   }
 }

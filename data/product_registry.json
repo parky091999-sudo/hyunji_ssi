@@ -1,5 +1,5 @@
 {
-  "next_code": 29,
+  "next_code": 30,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -282,6 +282,16 @@
       "registered_at": "2026-06-16T19:07:05.084171+09:00",
       "posted": true,
       "short_name": "올레놀샷 NMN"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8658703328&ctag=8658703328&lpt": {
+      "code": "029",
+      "name": "레오나르디 오로 노빌레 화이트 콘디멘토 코스트코 1개 500ml",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8658703328&ctag=8658703328&lptag=I25876708056&itemId=25876708056&vendorItemId=92175414467&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5554388/55543882607.419.jpg",
+      "category": "생활",
+      "registered_at": "2026-06-17T11:10:02.970394+09:00",
+      "posted": true,
+      "short_name": "콘디멘토"
     }
   }
 }

@@ -1,141 +1,51 @@
 {
-  "for_date": "2026-06-18",
-  "generated_at": "2026-06-17T11:13:49.707073+09:00",
+  "for_date": "2026-06-19",
+  "generated_at": "2026-06-18T02:29:55.211112+09:00",
   "candidates": [
     {
       "product": {
-        "name": "페이스팩토리 전동 다이아필 각질제거기 화이트 FF-27",
-        "price": "40,880원",
+        "name": "아이리버 IYF-100 전동 충전식 발 각질 제거기",
+        "price": "27,800원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8327675475&ctag=8327675475&lptag=I24041145299&itemId=24041145299&vendorItemId=91061374698&spec=10305197",
+        "image_url": "https://shopping-phinf.pstatic.net/main_5896409/58964093768.2.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6089491943&ctag=6089491943&lptag=l352218700320&itemId=57230130802&vendorItemId=92678786577&spec=10305198",
         "badge": "쿠팡",
-        "brand": "페이스팩토리",
+        "brand": "",
         "category": "발각질제거기",
         "category_hint": "건강",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-16T18:42:55.583806"
+        "scraped_at": "2026-06-17T17:28:17.263453"
       },
-      "post_text": "내 피부가 이렇게 달라질 줄은 몰랐어\n그냥 얼굴에 붙였다가 뗐는데 Dead Skin Cells가 다 사라져있는 거야, 그럴 수도 있더라고\n근데 이거 쓰면 원래 피부 상태로 돌아가서 보통 피부 관리 제품도 더 잘 받아주더라고\n리뷰 보니까 산 사람들 하나같이 왜 이제 샀냐고 하더라, 확실히 좋은 것 같아\n✔ 피부 관리할 때 가장 중요한 건 꾸준함이니까, 이 친구랑 매일 함께하면 더 좋은 효과 기대할 수 있을 거야\n✔ 그리고 이건 화이트로만 나와서 깨끗하고 심플한 디자인이 마음에 든달까, 다른 색상도 나왔으면 좋겠어\n\n#건강 #뷰티템 #스킨케어 #화이트디자인 #테크추천",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg",
+      "post_text": "여름 다가오는데 발뒤꿈치 각질 때문에 샌들 신기 망설여지더라? 🤦‍♀️\n\n솔직히 발 관리실 갈 시간은 없고, 집에서 손으로 빡빡 문지르는 건 힘들고 한계가 있거든. 나처럼 굳은살 잘 생기는 발엔 진짜 필수템이더라.\n\n이건 그냥 대충 문지르는 게 아니라 전동으로 부드럽게 돌아가서 자극 없이 묵은 각질만 싹 정리해 줘. 게다가 충전식이니까 선 없이 자유롭게 쓸 수 있고, IPX7 방수 등급이라 샤워하면서도 안심하고 쓸 수 있는 거 알았어? 완전 편함.\n\n리뷰 보니까 산 사람들이 하나같이 '왜 이제 샀냐'고 후회하는 사람 진짜 많았음.\n\n✔ 샤워하고 나서 발이 살짝 불어있을 때 사용하면 각질이 더 잘 제거되더라고.\n✔ 마무리로 발 크림이나 오일 듬뿍 발라주면 부들부들 아기 발 완성임. 올여름 샌들 자신감 뿜뿜!\n\n#가전추천 #셀프케어 #발관리 #테크템",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5896409/58964093768.2.jpg",
       "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg"
+        "https://shopping-phinf.pstatic.net/main_5896409/58964093768.2.jpg"
       ],
       "product_code": "",
       "status": "pending"
     },
     {
       "product": {
-        "name": "하이얼 미니 76L 1도어 냉장고",
-        "price": "169,000원",
+        "name": "클렙튼 티에스트 더마 LED 마스크 피부관리기",
+        "price": "87,070원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=42566748&ctag=42566748&lptag=l3302710973&itemId=017397303&vendorItemId=4802326982&spec=10305197",
+        "image_url": "https://shopping-phinf.pstatic.net/main_5976751/59767510551.4.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=401847727&ctag=401847727&lptag=l8434391924&itemId=134984394&vendorItemId=4027752053&spec=10305197",
         "badge": "쿠팡",
-        "brand": "",
-        "category": "냉장고",
-        "category_hint": "생활",
+        "brand": "클렙튼",
+        "category": "피부케어기기",
+        "category_hint": "뷰티",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-16T18:41:44.420897",
-        "youtube_source": {
-          "title": "2026 삼성/LG 1도어 냉장고 비교! 딱 하나만 추천하라면?1도어 냉장고 고민 끝! 삼성 vs LG 실사용 비교 총정리",
-          "video_id": "SEPFLd4wnaQ",
-          "views": 15661,
-          "keyword": "주방 가전 추천"
-        }
+        "scraped_at": "2026-06-17T17:28:23.128325"
       },
-      "post_text": "자취방에 냉장고 들일 공간 없다고 포기했던 사람, 이거 진짜 괜찮은데? 😮\n\n원룸 살면 냉장고 놓을 자리도 마땅치 않고, 그렇다고 미니 냉장고는 음료수 몇 개 넣으면 끝이잖아. 근데 이건 76리터라 꽤 넉넉해서 간식이나 반찬 몇 가지는 충분히 들어가더라. 냉동실도 작게 따로 있어서 아이스크림도 보관 가능했음.\n\n후기 보니까 자취생들이나 혼자 사는 사람들한테 진짜 인기 많더라고.\n\n✔ 팁: 책상 옆이나 침대 옆에 두고 쓰기 딱 좋음. 물 마시러 주방까지 갈 필요 없어. 음료수나 간단한 과일 넣어두면 편하고, 배달음식 남은 거 보관하기도 좋더라.\n\n#자취템 #필수템 #살림템 #미니냉장고",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg",
+      "post_text": "피부 컨디션 왔다 갔다 할 때마다 병원 갈지 말지 고민하는 사람 나 말고 또 있어? 🤦‍♀️\n\n솔직히 매일 집에서 관리해도 뭔가 부족한 느낌 들 때 있잖아. 꾸준히 홈케어 하고 싶은데 딱히 방법 못 찾은 1인 가구한테 이거 진짜 딱임. 그냥 그저 그런 LED 마스크가 아니고, 여러 가지 파장의 빛이 피부 속 깊숙이 전달돼서 피부 톤이랑 결 개선에 도움을 많이 주더라. 착용감도 엄청 편해서 이거 쓰고 집안일하거나 드라마 봐도 전혀 불편함 없었어.\n\n써본 사람들 후기 보니까, 피부 속 건조함까지 싹 잡아주고 다음 날 화장도 쫀쫀하게 잘 먹는다고 입 모아 칭찬하더라고. 나도 써보면서 아침에 거울 보면 피부에 은은하게 속광 올라오는 거 보고 놀랐잖아.\n\n✔ 팁: 샤워하고 나와서 스킨케어 다 흡수시킨 다음, 침대에 누워서 드라마 한 편 보면서 20분 정도 쓰는 거 추천함. 매일 꾸준히 쓰는 게 진짜 중요하니까, 자기 전에 루틴으로 만들면 최고일 거야!\n\n#뷰티템 #피부관리 #셀프케어 #홈케어템 #현지추천템",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5976751/59767510551.4.jpg",
       "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "도도풋케어 발각질제거기 전동멀티케어 무선전동 1개 1개입",
-        "price": "69,000원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_4846115/48461153685.9.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8071086672&ctag=8071086672&lptag=I22717108244&itemId=22717108244&vendorItemId=90287969284&spec=10305198",
-        "badge": "쿠팡",
-        "brand": "도도풋케어",
-        "category": "발각질제거기",
-        "category_hint": "건강",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-16T18:42:55.583983"
-      },
-      "post_text": "맨발로 다니다가 발바닥 굳은살 보고 깜짝 놀란 사람 나 말고 또 있음? 🦶\n혼자 살다 보면 발 관리는 늘 뒷전이더라. 특히 요즘처럼 샌들 신을 일 많아지면 더 신경 쓰이잖아.\n이거 진짜 신세계인 게, 그냥 쓱 문지르기만 해도 묵은 각질이 파우더처럼 떨어져 나가는 거 알았어? 무선이라 욕실이나 방에서 편하게 쓸 수 있고, 부드럽게 돌아가서 자극적이지 않더라고.\n리뷰 보니까 다들 매끈해진 발 보면서 진작 살 걸 그랬다고 후회하더라.\n\n✔ 샤워하고 발이 살짝 불었을 때 쓰면 더 효과 좋았음!\n✔ 사용 후에는 꼭 로션 발라서 보습까지 마무리해 줘야 해. 발이 진짜 아기 발처럼 부들부들해지는 경험을 할 수 있을 거야.\n\n#가전추천 #건강관리 #발관리 #셀프케어 #현지템",
-      "image_url": "https://shopping-phinf.pstatic.net/main_4846115/48461153685.9.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_4846115/48461153685.9.jpg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "RC 남은음식보관 2단 음식보관 케이스 오렌지+그린",
-        "price": "17,090원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5857892/58578920493.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8416854126&ctag=8416854126&lptag=I27520921887&itemId=27520921887&vendorItemId=94485687682&spec=10305199",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "보관/밀폐용기",
-        "category_hint": "생활",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-16T19:57:54.100273",
-        "youtube_source": {
-          "title": "식품등급 남은음식 보관커버 #주방꿀템 #살림꿀템  #주방아이템#음식보관 #수박보관 #냉장고정리 #주방정리 #주방필수템#살림템추천 #생활용품추천 #자취꿀템 #집꾸미기",
-          "video_id": "6zJZF9LBiWA",
-          "views": 29772,
-          "keyword": "자취 필수템 추천"
-        }
-      },
-      "post_text": "냉장고에서 남은 음식을 찾을 때마다 식기류가랑 음식들이 뒤죽박죽으로 섞여 있어 짜증 나던데, 이거 있으면 해결될 문제였어 🙄\n그냥 음식 담고 덮으면 끝이고, 여러 개 있으면 스택도 가능하더라고\n이거 쓰니까 냉장고가 훨씬 깨끗해지고, 남은 음식 보관도 수월해졌어\n리뷰 보니까 대부분 만족한다고 하더라\n✔ 식기류마다 따로따로 담아야 했던 고민 이제 그만하면 되고, 식기세척기도 잘 안 들어가는 크기의 음식이라면 이 거에 담으면 되니까 편하더라고\n✔ 그리고 이거 쓰면 냉장고정리도 한번에 되니까 주말에 시간 쪼개서 정리할 필요 없어\n\n#살림템 #생활꿀템 #자취템 #음식보관 #주방정리",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5857892/58578920493.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5857892/58578920493.jpg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "포트메리온 보타닉가든 티스푼 세트",
-        "price": "38,400원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5984630/59846303973.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8786366727&ctag=8786366727&lptag=l9460866328&itemId=083664968&vendorItemId=3756882622&spec=10305197",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "식기",
-        "category_hint": "생활",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-16T19:58:00.793330",
-        "youtube_source": {
-          "title": "티스푼 안찾습니다~",
-          "video_id": "5IpTMYjUwFw",
-          "views": 2519,
-          "keyword": "자취 필수템 추천"
-        }
-      },
-      "post_text": "티스푼이 사라지는 집은 정말 이해가 안 가는 것 같아\n그런데 요즘은 티스푼을 찾지 않아도 되게 된 거 같더라고\n포트메리온 보타닉가든 티스푼 세트를 쓸 때마다 티스푼이 항상 같은 자리에 돌아오는 게 신기하더라고\n이건 백개가 넘은 후기에서 하나같이 만족한다는 거 보면 신뢰가 가더라고\n✔ 아침에 차 마실 때, ☕️ 티스푼을 찾지 않아도 되니까 편하더라고\n✔ 그리고 세트로 된 티스푼이라서 항상 같은 자리에 정리되어 있어서 좋더라고\n\n#살림꿀템 #자취템 #티스푼 #생활템 #필수템",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5984630/59846303973.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5984630/59846303973.jpg"
+        "https://shopping-phinf.pstatic.net/main_5976751/59767510551.4.jpg"
       ],
       "product_code": "",
       "status": "pending"

@@ -1,154 +1,93 @@
 {
-  "for_date": "2026-06-19",
-  "generated_at": "2026-06-18T04:32:07.439953+09:00",
+  "for_date": "2026-06-20",
+  "generated_at": "2026-06-19T02:43:20.768765+09:00",
   "candidates": [
     {
       "product": {
-        "name": "아이리버 IYF-100 전동 충전식 발 각질 제거기",
-        "price": "27,800원",
+        "name": "26년 new 무아스 진공 흡착 스팀 다리미 MICS1",
+        "price": "99,000원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5896409/58964093768.2.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6089491943&ctag=6089491943&lptag=l352218700320&itemId=57230130802&vendorItemId=92678786577&spec=10305198",
+        "image_url": "https://shopping-phinf.pstatic.net/main_6014788/60147881861.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9557479588&ctag=9557479588&lptag=I28519421842&itemId=28519421842&vendorItemId=95467361846&spec=10305199",
         "badge": "쿠팡",
-        "brand": "",
-        "category": "발각질제거기",
-        "category_hint": "건강",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-17T17:28:17.263453"
-      },
-      "post_text": "여름 다가오는데 발뒤꿈치 각질 때문에 샌들 신기 망설여지더라? 🤦‍♀️\n\n솔직히 발 관리실 갈 시간은 없고, 집에서 손으로 빡빡 문지르는 건 힘들고 한계가 있거든. 나처럼 굳은살 잘 생기는 발엔 진짜 필수템이더라.\n\n이건 그냥 대충 문지르는 게 아니라 전동으로 부드럽게 돌아가서 자극 없이 묵은 각질만 싹 정리해 줘. 게다가 충전식이니까 선 없이 자유롭게 쓸 수 있고, IPX7 방수 등급이라 샤워하면서도 안심하고 쓸 수 있는 거 알았어? 완전 편함.\n\n리뷰 보니까 산 사람들이 하나같이 '왜 이제 샀냐'고 후회하는 사람 진짜 많았음.\n\n✔ 샤워하고 나서 발이 살짝 불어있을 때 사용하면 각질이 더 잘 제거되더라고.\n✔ 마무리로 발 크림이나 오일 듬뿍 발라주면 부들부들 아기 발 완성임. 올여름 샌들 자신감 뿜뿜!\n\n#가전추천 #셀프케어 #발관리 #테크템",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5896409/58964093768.2.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5896409/58964093768.2.jpg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "Oyoson 360도 LED 무선 센서등 충전식 배터리형 2-in-1 회전 자석 탈부착, 따뜻한 빛, 따뜻한 빛",
-        "price": "",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://thumbnail.coupangcdn.com/thumbnails/remote/292x292ex/image/vendor_inventory/0ce6/97fc16d243f7277db8e5388ca40bdc0ae8efc4be80d18b63c56367c7c34d.jpeg",
-        "product_url": "https://www.coupang.com/vp/products/8586160002?vendorItemId=91899291758&sourceType=HOME_JIKGU_PROMOTION&searchId=feed-fe4cc5b94cdd4cefaea983d7eaa19eba-3.33.169:jikgu_promotion",
-        "badge": "",
-        "scraped_at": "2026-06-17T19:31:01.141762"
-      },
-      "post_text": "밤에 방을 밝히는 건데, 왜 불편해야 하는지 모르겠어\n그냥 손이 가는 대로 불을 켜면 되는데, 계단이나 현관 같은 곳은 항상 불편하더라\n근데 이거 발견하고 나선 그랬어, 센서로 자동으로 켜져서 편리하더라고\n리뷰 보니까 사자마자 바로 쓸 수 있어서 좋았다고 많더라\n✔ 계단이나 현관 같은 곳에 설치하면 좋고, 자석으로 탈부착 가능해서 필요할 때만 쓸 수 있음\n✔ 특히 방이 어두운 경우에 자동으로 켜져서 안전사고 예방에도 도움이 되더라\n\n#테크템 #전자기기 #IT템 #가전추천 #생활편리템",
-      "image_url": "https://thumbnail.coupangcdn.com/thumbnails/remote/292x292ex/image/vendor_inventory/0ce6/97fc16d243f7277db8e5388ca40bdc0ae8efc4be80d18b63c56367c7c34d.jpeg",
-      "detail_images": [
-        "//thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/0ce6/97fc16d243f7277db8e5388ca40bdc0ae8efc4be80d18b63c56367c7c34d.jpeg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "클렙튼 티에스트 더마 LED 마스크 피부관리기",
-        "price": "87,070원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5976751/59767510551.4.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=401847727&ctag=401847727&lptag=l8434391924&itemId=134984394&vendorItemId=4027752053&spec=10305197",
-        "badge": "쿠팡",
-        "brand": "클렙튼",
-        "category": "피부케어기기",
-        "category_hint": "뷰티",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-17T17:28:23.128325"
-      },
-      "post_text": "피부 컨디션 왔다 갔다 할 때마다 병원 갈지 말지 고민하는 사람 나 말고 또 있어? 🤦‍♀️\n\n솔직히 매일 집에서 관리해도 뭔가 부족한 느낌 들 때 있잖아. 꾸준히 홈케어 하고 싶은데 딱히 방법 못 찾은 1인 가구한테 이거 진짜 딱임. 그냥 그저 그런 LED 마스크가 아니고, 여러 가지 파장의 빛이 피부 속 깊숙이 전달돼서 피부 톤이랑 결 개선에 도움을 많이 주더라. 착용감도 엄청 편해서 이거 쓰고 집안일하거나 드라마 봐도 전혀 불편함 없었어.\n\n써본 사람들 후기 보니까, 피부 속 건조함까지 싹 잡아주고 다음 날 화장도 쫀쫀하게 잘 먹는다고 입 모아 칭찬하더라고. 나도 써보면서 아침에 거울 보면 피부에 은은하게 속광 올라오는 거 보고 놀랐잖아.\n\n✔ 팁: 샤워하고 나와서 스킨케어 다 흡수시킨 다음, 침대에 누워서 드라마 한 편 보면서 20분 정도 쓰는 거 추천함. 매일 꾸준히 쓰는 게 진짜 중요하니까, 자기 전에 루틴으로 만들면 최고일 거야!\n\n#뷰티템 #피부관리 #셀프케어 #홈케어템 #현지추천템",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5976751/59767510551.4.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5976751/59767510551.4.jpg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "냉티슈 바르는데오퍼퓸 땀닦는물티슈 쿨링티슈 쿨링바디티슈 2개 10g",
-        "price": "15,400원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5631352/56313524238.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8989891169&ctag=8989891169&lptag=I26331876104&itemId=26331876104&vendorItemId=93309122773&spec=10305199",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "데오드란트",
+        "brand": "무아스",
+        "category": "다리미",
         "category_hint": "생활",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-17T19:12:43.795851",
+        "scraped_at": "2026-06-18T17:39:35.936730",
         "youtube_source": {
-          "title": "올여름 삶의 질이 달라집니다! 다이소 추천 여름 필수템 7가지",
-          "video_id": "5ai0rfg_djk",
-          "views": 130770,
-          "keyword": "생활꿀템 추천"
+          "title": "코스트코 18년차 회원의 이번주 추천템😎",
+          "video_id": "ciTT8udSWgk",
+          "views": 84112,
+          "keyword": "살림템 추천"
         }
       },
-      "post_text": "점심 먹고 다시 사무실 들어가는데, 이미 땀으로 샤워한 것 같은 기분 아는 사람? 💦\n\n진짜, 밖에 잠깐만 나갔다 와도 끈적이는 피부 때문에 너무 찝찝하잖아. 특히 나처럼 땀 많은 사람들은 여름에 샤워를 하루에도 몇 번씩 하고 싶은데 그럴 수도 없으니 답답했음. 그럴 때 이거 하나 있으면 완전 신세계더라.\n\n그냥 물티슈가 아니라 닦는 순간 시원한 쿨링감이 확 올라오고, 데오도란트 효과까지 있어서 땀 냄새 걱정 없이 상쾌하게 만들어줘. 게다가 작아서 가방이나 주머니에 쏙 넣어 다니기 진짜 편하거든. 써본 사람들이 다들 '이거 없으면 여름 못 난다'고 하더라.\n\n✔ 운동 끝나고 나서 땀 식히는 데 최고고, 밖에 오래 서 있다가 지하철 타기 전에 팔다리 한번 슥 닦으면 진짜 개운함. 더워서 잠 못 잘 것 같을 때도 이걸로 몸 한번 닦으면 잠시나마 시원하게 잘 수 있었음!\n\n#자취템 #여름필수템 #쿨링템 #개운함 #휴대용",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5631352/56313524238.jpg",
+      "post_text": "요즘 다리미로 옷 고치다가 머리카락이 다리미판에 붙어버리면 진짜 스트레스받더라\n그런데 막상 다리미 청소하는 것도 귀찮고, 그래서 그냥 계속 쓰다가 옷에 또 붙어서 짜증나더라\n근데 이건 스팀 기능이 있는데, 그거 때문에 다리미판에 붙는 거 방지해주는 효과가 있어\n다리미판이 스팀으로 청소도 되고, 옷에 붙는 것도 방지되고, 진짜 편리하더라\n✔ 아침에 출근할 때 nhanh하게 다리미로 옷 ironing하면, 스팀으로 머리카락을 제거할 수 있고,\n✔ 여행갈 때도 작고 가벼워서 가지고 다니기 좋더라\n\n#살림꿀템 #자취템 #필수템 #생활꿀템 #다리미추천",
+      "image_url": "https://shopping-phinf.pstatic.net/main_6014788/60147881861.jpg",
       "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5631352/56313524238.jpg"
+        "https://shopping-phinf.pstatic.net/main_6014788/60147881861.jpg"
       ],
       "product_code": "",
       "status": "pending"
     },
     {
       "product": {
-        "name": "페이스팩토리 전동 다이아필 각질제거기 화이트 FF-27",
-        "price": "40,880원",
+        "name": "KOOZA 쿠도 316 스테인리스 아시안 셰프 나이프 P-01",
+        "price": "83,000원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8327675475&ctag=8327675475&lptag=I24041145299&itemId=24041145299&vendorItemId=91061374698&spec=10305197",
-        "badge": "쿠팡",
-        "brand": "페이스팩토리",
-        "category": "발각질제거기",
-        "category_hint": "건강",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-17T19:13:23.462630"
-      },
-      "post_text": "내가 피부 관리를 제대로 시작한 건, 친구가 내 피부를 보고 충격받았다는 말을 듣고부터야\n그 때부터 집에서 간단하게 피부 관리를 할 수 있는 방법을 찾게 됐어. 그리고 전동 다이아필 각질제거기를 알게 됐는데, 이건 정말 특별해. 각질 제거뿐만 아니라 피부를 섬세하게 관리할 수 있어.\n이거 사용하고 나서 피부결이 좋아졌다는 후기를 본 사람도 많더라고.\n✔ 밤에 세안 후, 각질 제거기를 사용해서 피부를 정리하고, ✔ 아침에 화장품을 발라주면 피부가 더 환해지는 것 같아.\n\n#건강관리 #테크템 #전자기기 #IT템 #뷰티템",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "RC 남은음식보관 2단 음식보관 케이스 오렌지+그린",
-        "price": "17,090원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5857892/58578920493.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8416854126&ctag=8416854126&lptag=I27520921887&itemId=27520921887&vendorItemId=94485687682&spec=10305199",
+        "image_url": "https://shopping-phinf.pstatic.net/main_5807030/58070309180.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=4786303282&ctag=4786303282&lptag=l430942204532&itemId=40224530439&vendorItemId=91427680407&spec=10305199",
         "badge": "쿠팡",
         "brand": "",
-        "category": "보관/밀폐용기",
+        "category": "칼/커팅기구",
         "category_hint": "생활",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-17T19:30:35.173730",
+        "scraped_at": "2026-06-18T17:39:49.937500",
         "youtube_source": {
-          "title": "식품등급 남은음식 보관커버 #주방꿀템 #살림꿀템  #주방아이템#음식보관 #수박보관 #냉장고정리 #주방정리 #주방필수템#살림템추천 #생활용품추천 #자취꿀템 #집꾸미기",
-          "video_id": "6zJZF9LBiWA",
-          "views": 29769,
+          "title": "&quot;맨날 물어보시는 주방템 5가지 딱 정리합니다&quot; ​#주방템추천​#요리꿀팁​#살림추천템",
+          "video_id": "l8l6AsjmST8",
+          "views": 299078,
           "keyword": "주방 가전 추천"
         }
       },
-      "post_text": "냉장고에 넣어둔 음식이 다음 날만 되면 마르는 마법 경험해본 사람? ✨\n\n1인 가구라 반찬 조금씩 만들면 늘 남는데, 그걸 또 따로 통에 옮겨 담기 귀찮을 때 많잖아. 그럴 때마다 비닐 랩 씌우고 고무줄로 묶는 게 은근히 번거롭고 환경에도 안 좋았거든.\n\n근데 이 보관 케이스는 2단으로 쌓을 수 있어서 냉장고 공간을 진짜 효율적으로 쓰게 해주더라. 오렌지랑 그린 컬러 조합이라 냉장고 문 열 때마다 기분도 화사해지는 느낌이야. 게다가 식품 등급 소재라 오래 써도 냄새 배거나 변색되는 것도 덜하고, 밀폐력도 좋아서 음식이 신선하게 유지되는 게 느껴졌어.\n\n나만 그런가 했는데, 이거 써본 사람들 후기 보니까 다들 '냉장고의 신세계'라고 극찬하더라.\n\n✔ 밥 한 끼 먹고 남은 반찬이나, 과일 자투리 보관할 때 진짜 딱임.\n✔ 색깔별로 오렌지에는 채소, 그린에는 과일처럼 구분해서 쓰면 냉장고 속 식재료 찾기도 훨씬 쉬워질 거야!\n\n#살림꿀템 #자취템 #음식보관 #냉장고정리 #주방정리",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5857892/58578920493.jpg",
+      "post_text": "칼 하나 제대로 된 거 없어서 맨날 요리하다 승질 나는 사람 손! 🙋‍♀️ 나도 그랬거든.\n\n자취하면서 이것저것 요리 해먹고 싶은데, 칼이 너무 안 들어서 야채 써는 것도 일이었음. 채소 써는데 손목 아프고, 고기는 잘 안 잘려서 뭉개지고 난리도 아니었어.\n\n근데 이 칼은 316 스테인리스라 녹슬 걱정 없이 위생적으로 쓸 수 있더라. 게다가 아시안 셰프 나이프라서 채소부터 고기, 과일까지 이거 하나로 다 해결돼. 단단한 무나 부드러운 토마토도 쓱쓱 잘려서 칼질이 너무 편해졌음. 한 번만 써봐도 왜 이렇게 인기가 많은지 바로 알게 될 거야.\n\n나뿐만 아니라 후기 보면 다들 왜 이제야 이걸 알았냐고 하더라니까.\n\n✔ 혼자 살면 이것저것 칼 여러 개 두기 애매한데, 이거 하나면 진짜 만능이야.\n✔ 요리 초보도 이거 쓰면 칼질이 어렵지 않다는 걸 알게 될 거야.\n\n#자취템 #주방용품 #필수템 #살림템 #요리도구",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5807030/58070309180.jpg",
       "detail_images": [
-        "//thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/2b4b/ee880fbd3097b540ddaf8357b2f86fb05986d1ff7d8eb8a9ac7e61e7824e.jpg"
+        "https://shopping-phinf.pstatic.net/main_5807030/58070309180.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "하이얼 미니 76L 1도어 냉장고",
+        "price": "169,000원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=42566748&ctag=42566748&lptag=l3302710973&itemId=017397303&vendorItemId=4802326982&spec=10305197",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "냉장고",
+        "category_hint": "생활",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-18T17:40:18.145566",
+        "youtube_source": {
+          "title": "2026 삼성/LG 1도어 냉장고 비교! 딱 하나만 추천하라면?1도어 냉장고 고민 끝! 삼성 vs LG 실사용 비교 총정리",
+          "video_id": "SEPFLd4wnaQ",
+          "views": 16616,
+          "keyword": "주방 가전 추천"
+        }
+      },
+      "post_text": "방에 나만의 홈카페나 간식 창고 만들고 싶었던 사람 여기 모여봐 🙋‍♀️\n\n나 진짜 메인 냉장고까지 왔다 갔다 하는 게 귀찮아서 내 방에 딱 둘 미니 냉장고 찾고 있었거든. 특히 밤에 잠결에 목마를 때 주방까지 가기 너무 힘들잖아.\n\n이 76L짜리 1도어 냉장고는 공간 차지 많이 안 하면서도 캔 음료나 마스크팩, 영양제 같은 거 넣어두기 딱 좋더라고. 소음도 거의 없어서 밤에 자는데 방해 안 돼서 좋았어. 밤에 냉장고 소리 들리면 은근 신경 쓰이는데 이건 진짜 조용함.\n\n내가 후기 찾아보니까 다들 왜 이제 샀냐고 하던데, 직접 써보니까 그 이유를 알겠더라.\n\n✔ 책상 옆이나 침대 옆에 두고 시원한 물이나 음료 바로 마시고 싶을 때 진짜 편해.\n✔ 화장품이나 마스크팩 넣어두고 차갑게 쓰기에도 용량이 딱이라 유용함!\n\n#자취템 #살림꿀템 #미니냉장고 #1인가구 #내돈내산",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg",
+      "detail_images": [
+        "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg"
       ],
       "product_code": "",
       "status": "pending"

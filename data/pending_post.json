@@ -1,6 +1,6 @@
 {
   "for_date": "2026-06-21",
-  "generated_at": "2026-06-20T03:21:18.109148+09:00",
+  "generated_at": "2026-06-20T04:13:09.868100+09:00",
   "candidates": [
     {
       "product": {
@@ -112,6 +112,36 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "보나메두사 오렌지 스킨 딜리트 소프트 그린 미니 10g 1개",
+        "price": "18,500원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_5413093/54130930669.2.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8372546006&ctag=8372546006&lptag=I24194092285&itemId=24194092285&vendorItemId=95283707870&spec=10305199",
+        "badge": "쿠팡",
+        "brand": "보나메두사",
+        "category": "프라이머",
+        "category_hint": "생활",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-19T19:11:59.220773",
+        "youtube_source": {
+          "title": "🔥이 작은 기계가 2천만 대 팔린 이유",
+          "video_id": "WqZEfa0tSn0",
+          "views": 4581,
+          "keyword": "자취 필수템 추천"
+        }
+      },
+      "post_text": "오늘도 화장솜으로 얼굴 닦다가 기름기랑 각질이랑 다 묻어나는 거 보면서 속터졌어\n그런데 이런 고민이 없는 사람도 많더라고, 왜냐면 이거 쓰는 사람들은 이미 이런 걱정을 안 하니까\n이건 각질 제거도 되고, 세안 후 닦을 때도 부드러워서 자극이 없더라고\n리뷰 보니까 거의 모든 사람이 만족한다고 하더라\n✔ 아침 세안할 때, 밤에 클렌징할 때 이거 사용하면 피부 결이 예쁘게 유지되는 거 알아?\n✔ 여행 갈 때도 이 작은 크기 때문에 가방에 넣고 다니기도 좋더라고\n\n#자취템 #살림템 #생활꿀템 #필수템 #뷰티템",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5413093/54130930669.2.jpg",
+      "detail_images": [
+        "https://shopping-phinf.pstatic.net/main_5413093/54130930669.2.jpg"
       ],
       "product_code": "",
       "status": "pending"

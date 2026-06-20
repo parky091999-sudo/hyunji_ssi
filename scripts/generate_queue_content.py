@@ -138,10 +138,40 @@ def _fetch_coupang_info_playwright(url: str) -> dict:
         return {}
 
 
+_INSANE_ENGINE_PATH = (
+    r"C:\Users\박관용\.claude\plugins\cache\insane-search"
+    r"\insane-search\0.5.0\skills\insane-search"
+)
+
+
 def _fetch_coupang_info(url: str) -> dict:
     """Coupang 상품 URL에서 이름·이미지·가격 추출"""
     import urllib3
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    # 0차: insane-search engine (TLS impersonation — 403 우회)
+    try:
+        if _INSANE_ENGINE_PATH not in sys.path:
+            sys.path.insert(0, _INSANE_ENGINE_PATH)
+        from engine import fetch as insane_fetch
+        result = insane_fetch(
+            url,
+            success_selectors=["[class*='prod-buy-header']", "h1", "[class*='prod-title']"],
+            device_class="mobile",
+            timeout=10,
+            max_attempts=4,
+            enable_playwright=False,  # 우리 코드에 별도 Playwright 폴백 있음
+        )
+        if result.ok:
+            info = _parse_coupang_html(result.content)
+            if _is_valid_name(info.get("name", "")):
+                logger.info(f"  [insane] 완료: {info['name'][:40]} / {info.get('price','')}")
+                return info
+            logger.info(f"  [insane] 200 받았지만 상품명 미추출 → requests 시도")
+        else:
+            logger.info(f"  [insane] 실패({result.verdict}) → requests 시도")
+    except Exception as e:
+        logger.warning(f"  [insane] 오류: {e} → requests 시도")
 
     # 1차: requests (빠름)
     try:

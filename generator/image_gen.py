@@ -52,6 +52,22 @@ _PROMPTS = [
 ]
 
 
+def _is_plain_background(pil_image) -> bool:
+    """원본이 흰색/단색 배경인지 판별. 테두리 20% 픽셀의 70%↑가 밝은 색이면 True.
+    True → Prompt 1 (3/4 각도 클린샷) 건너뜀 (원본과 거의 동일해 역효과)."""
+    try:
+        import numpy as np
+        arr = np.array(pil_image.convert("RGB"))
+        h, w = arr.shape[:2]
+        b = min(h, w) // 5
+        mask = np.zeros((h, w), dtype=bool)
+        mask[:b, :] = mask[-b:, :] = mask[:, :b] = mask[:, -b:] = True
+        px = arr[mask]
+        return bool(((px[:, 0] > 230) & (px[:, 1] > 230) & (px[:, 2] > 230)).mean() >= 0.70)
+    except Exception:
+        return False
+
+
 def _download_image(url: str) -> bytes | None:
     try:
         r = requests.get(url, timeout=20, headers={"User-Agent": "Mozilla/5.0"})
@@ -137,7 +153,13 @@ def generate_and_upload_images(product: dict, post_text: str = "") -> list[str]:
     client = genai.Client(api_key=GEMINI_API_KEY)
     results = []
 
-    for i, prompt in enumerate(_PROMPTS):
+    # 원본이 이미 흰 배경이면 Prompt 0 (3/4 각도 클린샷) 건너뜀 (원본과 거의 동일)
+    plain_bg = _is_plain_background(pil_image)
+    if plain_bg:
+        logger.info("  원본이 흰/단색 배경 → 3/4 클린샷 건너뜀, 라이프스타일 컷만 생성")
+    prompts = _PROMPTS[1:] if plain_bg else _PROMPTS
+
+    for i, prompt in enumerate(prompts):
         try:
             logger.info(f"  이미지 {i+1}/{len(_PROMPTS)} 생성 중...")
             response = client.models.generate_content(
@@ -167,5 +189,5 @@ def generate_and_upload_images(product: dict, post_text: str = "") -> list[str]:
         except Exception as e:
             logger.warning(f"  이미지 {i+1} 생성 실패: {e}")
 
-    logger.info(f"이미지 생성 결과: {len(results)}장 성공 / {len(_PROMPTS)}장 시도")
+    logger.info(f"이미지 생성 결과: {len(results)}장 성공 / {len(prompts)}장 시도")
     return results

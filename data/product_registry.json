@@ -1,5 +1,5 @@
 {
-  "next_code": 34,
+  "next_code": 35,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -332,6 +332,16 @@
       "registered_at": "2026-06-19T13:35:14.265940+09:00",
       "posted": true,
       "short_name": "의류관리기 에어"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8372546006&ctag=8372546006&lpt": {
+      "code": "034",
+      "name": "보나메두사 오렌지 스킨 딜리트 소프트 그린 미니 10g 1개",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8372546006&ctag=8372546006&lptag=I24194092285&itemId=24194092285&vendorItemId=95283707870&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5413093/54130930669.2.jpg",
+      "category": "생활",
+      "registered_at": "2026-06-20T11:03:01.813882+09:00",
+      "posted": true,
+      "short_name": "스킨 딜리트"
     }
   }
 }

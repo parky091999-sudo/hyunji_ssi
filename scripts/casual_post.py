@@ -5,6 +5,7 @@
 import json
 import logging
 import os
+import random
 import sys
 from datetime import datetime, timezone, timedelta
 
@@ -56,10 +57,12 @@ def _should_post() -> bool:
 
 def _pick_post_type() -> str | None:
     """KST 시간대 기반 일상글 타입 선택.
-    저녁(18시 이후) → question 강제 (댓글 골든타임에 질문형으로 참여 유도).
+    저녁(18시 이후) → question 2/3, F(이슈/논란) 1/3 (댓글 골든타임).
     그 외 → 랜덤 (None 반환, generate_general_post가 알아서 선택)."""
     hour = datetime.now(KST).hour
-    return "question" if hour >= 18 else None
+    if hour >= 18:
+        return random.choice(["question", "question", "F"])
+    return None
 
 
 def run():
@@ -80,10 +83,17 @@ def run():
         logger.warning("THREADS_ACCESS_TOKEN 미설정 — 건너뜀")
         return
 
+    trending = []
+    try:
+        from scraper.trending_news import get_trending_topics
+        trending = get_trending_topics()
+    except Exception as e:
+        logger.warning(f"트렌딩 수집 실패: {e}")
+
     forced_type = _pick_post_type()
     logger.info(f"{INTERVAL_HOURS}시간 경과 — 일상글 생성 시작 (타입: {forced_type or 'random'})")
     from generator.content import generate_general_post
-    post_text = generate_general_post(post_type=forced_type)
+    post_text = generate_general_post(post_type=forced_type, trending=trending)
 
     if not post_text:
         logger.warning("일상글 생성 실패 — 종료")

@@ -266,24 +266,22 @@ _KOREAN_ONLY = "\n\n[필수] 한국어로만 출력. 태국어·중국어·일�
 
 def _generate_with_gemini(product: dict, product_code: str) -> str | None:
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=GOOGLE_API_KEY)
-        model = genai.GenerativeModel(
-            "gemini-2.5-flash",
-            system_instruction=_POST1_SYSTEM,
-        )
+        from google import genai
+        client = genai.Client(api_key=GOOGLE_API_KEY)
         user_msg = _build_user_msg(product)
         body_and_tags = None
         for attempt in range(3):
             extra = (_KOREAN_ONLY + _VARIETY_ONLY) if attempt > 0 else ""
-            resp = model.generate_content(
-                user_msg + extra,
-                generation_config={
-                    "max_output_tokens": 2000,
-                    "temperature": 0.9,
-                },
+            resp = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=user_msg + extra,
+                config=genai.types.GenerateContentConfig(
+                    system_instruction=_POST1_SYSTEM,
+                    max_output_tokens=2000,
+                    temperature=0.9,
+                ),
             )
-            candidate = resp.text.strip().strip("\"'""''") if resp.text else ""
+            candidate = (resp.text or "").strip().strip("\"'""''")
             if not candidate:
                 continue
             if _has_foreign_chars(candidate):
@@ -607,15 +605,15 @@ def generate_short_name(product: dict) -> str:
     )
     if GOOGLE_API_KEY:
         try:
-            import google.generativeai as genai
-            genai.configure(api_key=GOOGLE_API_KEY)
-            model = genai.GenerativeModel("gemini-2.5-flash")
-            resp = model.generate_content(
-                prompt,
-                generation_config={
-                    "max_output_tokens": 200,
-                    "temperature": 0.2,
-                },
+            from google import genai
+            client = genai.Client(api_key=GOOGLE_API_KEY)
+            resp = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt,
+                config=genai.types.GenerateContentConfig(
+                    max_output_tokens=200,
+                    temperature=0.2,
+                ),
             )
             result = (resp.text or "").strip().strip("\"'")
             if _short_name_ok(result, name):
@@ -676,8 +674,9 @@ _CASUAL_SYSTEM = """
 글 유형별 지침:
 - account_intro: "나는 이런 사람이야" / "이 계정은 이런 곳이야" 형식으로, 어떤 기준으로 꿀템을 고르는지, 왜 이 계정을 시작했는지 등을 자연스럽고 솔직하게.
 - daily_life: 오늘 겪은 작은 공감 가는 일상 순간, 생활 속 불편함이나 소소한 발견 등. 사람들이 "나도 그래!" 하고 공감할 수 있게.
-- tip: 상품 없이도 살림·생활에 도움 되는 꿀팁 1~2개. 실용적이고 즉시 써먹을 수 있는 것.
+- tip: 상품 없이도 살림·생활에 도움 되는 꿀팁 1~2개. 실용적이고 즉시 써먹을 수 있는 것. 계절·날씨와 연결된 생활 상식이면 더 자연스러움.
 - question: 진짜 궁금한 거 다른 사람한테 묻는 글. "나 이거 해보고 싶은데 다들 어떻게 해?" / "이런 경험 다들 한 번씩 있지 않나?" / "솔직히 이런 거 어디서 사?" 같은 톤. 반드시 글 끝에 물음표로 끝내고, 댓글로 자기 경험·의견 적고 싶게 만들어야 함. 광고스럽거나 추천 톤 절대 금지. 진짜 내 일상 고민/궁금증을 친구한테 묻는 것처럼.
+- F: 요즘 사람들 의견이 갈리는 가벼운 주제로 글 써줘. 연애/직장/소비/라이프스타일 가치관에서 "이게 맞아? 저게 맞아?" 하고 의견이 나뉠 수 있는 주제. 반드시 어느 한쪽을 강하게 주장하지 말고, 살짝 의문을 던지거나 경험을 공유하는 방식으로. 댓글로 자기 생각 달고 싶게 만들어야 함. 공유하고 싶은 내용으로. 반드시 물음표나 공감 구하는 문장으로 끝낼 것. 정치/젠더/혐오 주제 절대 금지.
 
 출력 형식 (각 블록 사이에 빈 줄 1개):
 
@@ -698,36 +697,47 @@ _CASUAL_FALLBACKS = [
     "오늘도 쓸데없이 쇼핑몰 들어갔다가 30분 날렸어\n근데 이상하게 그 시간이 행복함 ✨\n가끔은 그냥 구경만 해도 힐링되는 거 나만 그런 거 아니지?",
     "살림하면서 제일 뿌듯할 때가\n없던 공간이 딱 정리됐을 때인데\n근데 그게 또 2~3일 지나면 원상복구 됨 ㅋㅋ\n이 계절의 저주 언제 끝나냐",
     "이 계정 시작한 이유가 사실\n나 혼자만 쓰기 아까운 거 발견할 때마다 어딘가에 기록하고 싶어서야\n꿀템 찾는 거 취미인 사람들 여기 다 모여라 🙌",
+    "이거 나만 이렇게 생각하는 건지 모르겠는데\n자취하면 집에 손님 자주 부르는 편이야, 아니면 거의 안 부르는 편이야?\n솔직히 나는 내 공간 남한테 보여주는 게 좀 어색하더라ㅋㅋ",
 ]
 
 
-def generate_general_post(post_type: str | None = None) -> str | None:
+def generate_general_post(post_type: str | None = None, trending: list[str] | None = None) -> str | None:
     """일상/일반 포스트 생성 (상품 없음)"""
     chosen_type = post_type or random.choice(_CASUAL_POST_TYPES)
-    user_msg = (
-        f"글 유형: {chosen_type}\n\n"
-        "위 유형에 맞는 Threads 일상 게시글을 써줘. "
-        "진짜 사람이 쓴 것처럼 자연스럽고 재치 있게."
-    )
+
+    if chosen_type == "F":
+        if trending:
+            issue_hint = (
+                f"오늘 한국 이슈/트렌딩: {', '.join(trending[:5])}\n"
+                "정치/젠더/혐오 제외하고 가볍게 논란이 될 수 있는 주제가 있으면 활용해. "
+                "없으면 연애/직장/소비/라이프스타일 가치관에서 의견이 갈리는 주제로 써줘."
+            )
+        else:
+            issue_hint = "연애/직장/소비/라이프스타일 중 요즘 사람들 의견이 갈리는 가벼운 주제로 써줘."
+        user_msg = f"글 유형: F\n\n{issue_hint}"
+    else:
+        user_msg = (
+            f"글 유형: {chosen_type}\n\n"
+            "위 유형에 맞는 Threads 일상 게시글을 써줘. "
+            "진짜 사람이 쓴 것처럼 자연스럽고 재치 있게."
+        )
 
     if GOOGLE_API_KEY:
         try:
-            import google.generativeai as genai
-            genai.configure(api_key=GOOGLE_API_KEY)
-            model = genai.GenerativeModel(
-                "gemini-2.5-flash",
-                system_instruction=_CASUAL_SYSTEM,
+            from google import genai
+            client = genai.Client(api_key=GOOGLE_API_KEY)
+            resp = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=user_msg,
+                config=genai.types.GenerateContentConfig(
+                    system_instruction=_CASUAL_SYSTEM,
+                    max_output_tokens=3000,
+                    temperature=0.95,
+                ),
             )
-            resp = model.generate_content(
-                user_msg,
-                generation_config={
-                    "max_output_tokens": 3000,
-                    "temperature": 0.95,
-                },
-            )
-            text = resp.text.strip().strip("\"'""''") if resp.text else ""
+            text = (resp.text or "").strip().strip("\"'""''")
             if text and not _has_foreign_chars(text):
-                logger.info("  [Gemini 2.0 Flash] 일상글 생성 완료")
+                logger.info("  [Gemini] 일상글 생성 완료")
                 return _fix_linebreaks(text)
             logger.warning("Gemini 일상글 외국어 포함 또는 빈 응답 → Groq 폴백")
         except Exception as e:
@@ -740,8 +750,8 @@ def generate_general_post(post_type: str | None = None) -> str | None:
         import httpx, urllib3
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         from groq import Groq
-        client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
-        resp = client.chat.completions.create(
+        groq_client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
+        resp = groq_client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": _CASUAL_SYSTEM},

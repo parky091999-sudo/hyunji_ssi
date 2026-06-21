@@ -1,6 +1,6 @@
 {
-  "for_date": "2026-06-22",
-  "generated_at": "2026-06-21T03:00:14.156210+09:00",
+  "for_date": "2026-06-23",
+  "generated_at": "2026-06-22T01:17:13.379825+09:00",
   "candidates": [
     {
       "product": {
@@ -16,9 +16,9 @@
         "category_hint": "건강",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-20T15:57:06.937401"
+        "scraped_at": "2026-06-21T16:14:13.347518"
       },
-      "post_text": "내 피부 상태가 왜 이럴까 싶었어, 계속 좁쌀 같은게 났었거든\n그런데 피부과 가보니까 각질 제거 안 하면 안 된다고 하더라\n근데 손으로 하다 보니까 너무 힘들고, 효율도 안 좋더라고\n그래서 전동 다이아필 각질제거기 써봤는데, 진짜 편하더라고\n리뷰 보니까 산 사람들이 하나같이 왜 이제 샀냐고 하더라\n✔ 아침 세안할 때 사용하거나, 밤에 클렌징 후에 사용하면 좋은 거 알아?\n✔ 각질 제거 후에 마스크 팩이나 보습 크림 바르면 더 좋더라고\n\n#건강관리 #스킨케어 #뷰티템 #전동다이아필 #각질제거기",
+      "post_text": "내 피부가 갑자기 왜 이렇게 건조해졌을까, 생각했었는데_recently 알게 된 게 있어\n그냥 물로만 세안하고 수분크림 바르면 끝인 줄 알았는데, 각질 제거가 중요하더라고\n특히 전동으로 각질을 제거해 주는 제품은 다른 방법보다 훨씬 더 깔끔하게 관리가 가능하더라\n리뷰 보니까 진짜 잘 산다고 다들 만족해 하더라\n✔ 전동 다이아필 각질제거기는 물세안 후, 피부가 촉촉할 때 사용하면 더 좋은 것 같아\n✔ 그리고 각질 제거 후에 수분크림을 발라주면 피부가 더 환해보여\n\n#테크템 #가전추천 #전자기기 #IT템 #건강관리",
       "image_url": "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg"
@@ -28,138 +28,54 @@
     },
     {
       "product": {
-        "name": "이케아 키친크로스 행주 주방행주 마리아테레스행주 타올 1개",
-        "price": "29,900원",
+        "name": "냉티슈 바르는데오퍼퓸 땀닦는물티슈 쿨링티슈 쿨링바디티슈 2개 10g",
+        "price": "15,400원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_6000675/60006758794.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7027501732&ctag=7027501732&lptag=I19680494228&itemId=19680494228&vendorItemId=86785964224&spec=10305199",
+        "image_url": "https://shopping-phinf.pstatic.net/main_5631352/56313524238.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8989891169&ctag=8989891169&lptag=I26331876104&itemId=26331876104&vendorItemId=93309122773&spec=10305199",
         "badge": "쿠팡",
-        "brand": "이케아",
-        "category": "주방수납장",
+        "brand": "",
+        "category": "데오드란트",
         "category_hint": "생활",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-20T17:58:04.658023",
+        "scraped_at": "2026-06-21T16:13:45.584546",
         "youtube_source": {
-          "title": "구축 아파트 주방 리모델링 추천 #구축아파트 #인테리어",
-          "video_id": "f7h3IFwbKSU",
-          "views": 45726,
-          "keyword": "주방 가전 추천"
+          "title": "올여름 삶의 질이 달라집니다! 다이소 추천 여름 필수템 7가지",
+          "video_id": "5ai0rfg_djk",
+          "views": 156797,
+          "keyword": "생활꿀템 추천"
         }
       },
-      "post_text": "요리하다가 행주 하나 때문에 시간 다 버리는 사람 있지? 🤦‍♀️\n그럴 때마다 왜 이제까지 이런 행주를 안 썼을까 싶더라고\n이 행주는 물기를 엄청 잘 흡수하고 빨리 마르니까 세탁하기도 편리하고, 부엌이 더러워지는 것도 막아주더라고\n리뷰 보니까 대부분이 만족도 높게 평가하더라\n✔ 행주를 자주 교체해야 하는데, 이건 세탁기에도 넣을 수 있고 건조도 빠르더라\n✔ 요리할 때마다 행주를 쓸데없는 곳에 두고 다니는 사람이라면, 이 행주 하나면 부엌 정리도 쉬워질 거 같애\n\n#생활꿀템 #살림템 #자취템 #필수템 #주방용품",
-      "image_url": "https://shopping-phinf.pstatic.net/main_6000675/60006758794.jpg",
+      "post_text": "퇴근하고 집에 오면 끈적한 몸, 샤워하기 귀찮을 때 많지? 🥵\n\n특히 잠깐 밖에 나갔다 와도 땀이 줄줄 흐르는데, 바로 씻기 좀 그럴 때 딱이더라. 뭔가 상쾌해지고 싶긴 한데, 샤워는 엄두가 안 나는 그런 순간에 말이야.\n\n이게 그냥 땀만 닦는 물티슈가 아님. 닦는 순간 몸이 싸~하게 시원해지는 쿨링감이 대박이야. 게다가 은은한 향수 향까지 남아서 꿉꿉한 땀냄새도 싹 잡아주더라고.\n\n나도 반신반의했는데, 왜 사람들이 여름 필수템이라고 하는지 써보니까 바로 알았잖아. 진짜 삶의 질이 달라지는 경험이었음.\n\n✔️ 운동하고 나서 땀 식힐 때나, 자기 전에 침대 위에서 꿉꿉함 때문에 잠 안 올 때 닦아주면 진짜 좋더라. 10g짜리라 한 장씩 개별 포장이라 가방에 쏙 넣어 다니기 편해서 필요할 때마다 꺼내 쓰기 딱임!\n\n#여름필수템 #쿨링템 #자취필수템 #향기템 #현지추천",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5631352/56313524238.jpg",
       "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_6000675/60006758794.jpg"
+        "https://shopping-phinf.pstatic.net/main_5631352/56313524238.jpg"
       ],
       "product_code": "",
       "status": "pending"
     },
     {
       "product": {
-        "name": "위드샨 전동 충전식 발각질제거기 자동 굳은살제거 풋파일",
-        "price": "28,900원",
+        "name": "아이리버 IYF-100 전동 충전식 발 각질 제거기",
+        "price": "27,800원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_6038947/60389474222.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=0992902612&ctag=0992902612&lptag=l457707465222&itemId=64257574027&vendorItemId=93733652641&spec=10305198",
+        "image_url": "https://shopping-phinf.pstatic.net/main_5896409/58964093768.2.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=6089491943&ctag=6089491943&lptag=l352218700320&itemId=57230130802&vendorItemId=92678786577&spec=10305198",
         "badge": "쿠팡",
         "brand": "",
         "category": "발각질제거기",
         "category_hint": "건강",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-20T15:57:06.937668"
+        "scraped_at": "2026-06-21T16:14:13.348049"
       },
-      "post_text": "발바닥 딱딱한 굳은살 때문에 거슬려서 잠 못 이뤄본 적 있을 거야. 😖\n\n건조한 날씨에 발은 더 거칠어지고, 여름엔 샌들 신을 일도 많아지잖아. 그렇다고 매번 샵에 갈 시간도 없고 집에서 관리하긴 귀찮았을 걸? 그냥 대충 쓰던 풋파일로는 한계가 있었음.\n\n근데 이건 그냥 발에 갖다 대기만 하면 알아서 부드럽게 싹 밀어주더라. 거친 각질부터 자잘한 굳은살까지 깨끗하게 정리해주는 게 신기했어. 여러 헤드가 있어서 원하는 대로 갈아 끼울 수도 있고, 충전식이라 선 없이 어디든 편하게 쓸 수 있었음. 게다가 물로 씻을 수 있게 나와서 위생적으로 관리하기도 좋더라.\n\n나도 처음엔 '이게 효과가 있겠어?' 했는데, 써본 사람들이 하나같이 '왜 이제 알았지?' 하더라고. 나도 써보니 그 말이 뭔지 알겠더라.\n\n✔️ 팁: 샤워하고 발이 살짝 불어있을 때 사용하면 각질이 더 잘 제거되는 느낌임. 각질 제거 후엔 꼭 보습크림 발라주는 거 잊지 마! 훨씬 부드러워질 거야.\n\n#건강템 #뷰티템 #자기관리 #홈케어 #발관리",
-      "image_url": "https://shopping-phinf.pstatic.net/main_6038947/60389474222.jpg",
+      "post_text": "발 각질 때문에 자꾸 신발이 불편한 사람, 이거 알아?\n그냥 각질 제거기만 쓰면 될 때가 있지만, 발이 예민해서 그런 건 손대기 힘든 사람도 많더라고.\n근데 전동 충전식으로 된 걸 쓰면 훨씬 간편하고, 각질 제거도 더 효과적으로 되더라.\n리뷰 보니까 대부분 사람들이 만족한다고 하더라고.\n✔ 아침에 일어나서 발을 씻고, 전동 충전식 각질 제거기를 사용해서 각질을 제거하면, 하루종일 발이 편안하더라고.\n✔ 특히 여름에 신는 샌들이나 구두 같은 경우, 발 각질이 더 많이 생기는 거 알아? 그럴 때 이 전동 충전식 각질 제거기를 사용하면, 발이 더 상쾌하고 깨끗하게 유지할 수 있더라고.\n\n#건강관리 #스킨케어 #테크 #전자기기 #생활꿀템",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5896409/58964093768.2.jpg",
       "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_6038947/60389474222.jpg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "삼성전자 BESPOKE 스팀 9600 로봇청소기 방문설치",
-        "price": "984,000원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5528740/55287408519.78.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9977858988&ctag=9977858988&lptag=l292251820802&itemId=21282829005&vendorItemId=89258830163&spec=10305197",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "로봇청소기",
-        "category_hint": "생활",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-20T17:58:09.744438",
-        "youtube_source": {
-          "title": "&quot;그냥 사면 절대 못받아요!&quot; 삼성 감사 페스티벌 20% 환급! 이건 알고 사세요🔥 삼성가전추천┃TV추천┃냉장고추천┃에어컨추천┃로봇청소기추천┃세탁기┃건조기┃노트북┃태블릿┃",
-          "video_id": "LKVp01CgiuQ",
-          "views": 17922,
-          "keyword": "주방 가전 추천"
-        }
-      },
-      "post_text": "일상이 너무 똑같아질 때마다, 가끔은 집 안을 청소하거나 요리하는 것만으로도 스트레스가 풀리더라\n그런데 청소기 하나 때문에 내 생활이 확 달라졌어\n그냥 바닥을 쓸어내리거나 먼지를 제거하는 게 아니라, 스팀 기능이 있어서 바닥을 완전히 청소할 수 있더라고\n게다가 로봇청소기라서 자동으로 돌아다니면서 청소해주니까, 내가 따로 신경 쓸 필요가 없더라\n리뷰 보니까 이거 쓰고 나서 청소에 시간을 많이 들이지 않는다고 하더라\n✔ 이거 쓰면 청소 시간을 줄일 수 있고, 바닥도 깨끗하게 청소할 수 있어. 특히나 방문설치가 포함되어 있어서, 당일 바로 쓸 수 있더라고\n✔ 아침에 출근하기 전에 이거 돌리면, 집 안이 깨끗하게 청소된 상태로 집을 나설 수 있어\n\n#생활꿀템 #살림템 #로봇청소기 #청소템 #집꾸미기",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5528740/55287408519.78.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5528740/55287408519.78.jpg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "나디 해피바디 발 종아리 마사지기 BM-508 온열 전동 홈케어",
-        "price": "122,550원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_4005221/40052215030.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7251231516&ctag=7251231516&lptag=I18446204222&itemId=18446204222&vendorItemId=85587127094&spec=10305197",
-        "badge": "쿠팡",
-        "brand": "나디",
-        "category": "다리/발마사지기",
-        "category_hint": "건강",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-20T15:57:07.761108"
-      },
-      "post_text": "밤마다 다리가 퉁퉁 붓고 아파서 잠 못 이루는 사람 손🙋‍♀️\n\n퇴근하고 집에 오면 녹초되는데, 그때 내 다리는 그냥 돌덩이가 되어 있더라고. 매번 마사지 받으러 가기도 힘들고, 집에서 편하게 시원하게 풀어줄 수 있는 거 없을까 맨날 고민했었음.\n\n근데 이거 진짜 물건이더라. 발바닥부터 종아리까지 시원하게 주물러주고, 게다가 따뜻한 온열 기능까지 있어서 피로가 싸악 풀리는 거 있지? 전동이라 힘들이지 않아도 되고, 이 BM-508 모델은 강도랑 모드도 다양하게 조절할 수 있어서 딱 내가 원하는 대로 쓸 수 있었어.\n\n나만 좋은 게 아닌지, 후기 보니까 산 사람들이 하나같이 '왜 이제 샀지?' 하면서 만족하는 글이 넘치더라.\n\n✔ 퇴근하고 소파에 앉아서 드라마 보면서 딱 20분만 써봐. 다음 날 아침이 달라져 있을 거야.\n✔ 잠들기 전에 따뜻한 차 한 잔이랑 같이 사용하면 잠도 더 솔솔 잘 옴.\n\n#가전추천 #건강템 #홈케어 #전자기기 #내돈내산",
-      "image_url": "https://shopping-phinf.pstatic.net/main_4005221/40052215030.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_4005221/40052215030.jpg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "하이얼 미니 76L 1도어 냉장고",
-        "price": "173,300원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=42566748&ctag=42566748&lptag=l3302710973&itemId=017397303&vendorItemId=4802326982&spec=10305197",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "냉장고",
-        "category_hint": "생활",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-20T17:58:10.824536",
-        "youtube_source": {
-          "title": "2026 삼성/LG 1도어 냉장고 비교! 딱 하나만 추천하라면?1도어 냉장고 고민 끝! 삼성 vs LG 실사용 비교 총정리",
-          "video_id": "SEPFLd4wnaQ",
-          "views": 17515,
-          "keyword": "주방 가전 추천"
-        }
-      },
-      "post_text": "오늘은 내가 일상에서 정말 많이 쓰는 물건을 소개할 거야\n내 방이랑 작은 공간에 딱인 1도어 냉장고야\n이거덕분에 요리하고 먹는 걸 더 편하게 할 수 있더라고\n게다가 작아 보이지만 은근히 많이 들어가더라고\n리뷰 보니까 다른 1도어 냉장고랑 비교해도 이게 가장 만족도가 높았어\n✔ 아침에 일어나서 우유랑 요거트를 꺼내 먹을 때,\n✔ 밤에 맥주랑 음료를 꺼내 먹을 때 이 냉장고가 정말 유용하더라고\n\n#생활꿀템 #자취템 #살림템 #필수템 #1도어냉장고",
-      "image_url": "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_5528966/55289665261.26.jpg"
+        "https://shopping-phinf.pstatic.net/main_5896409/58964093768.2.jpg"
       ],
       "product_code": "",
       "status": "pending"

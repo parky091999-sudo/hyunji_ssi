@@ -1,6 +1,6 @@
 {
   "for_date": "2026-06-23",
-  "generated_at": "2026-06-22T06:44:56.490674+09:00",
+  "generated_at": "2026-06-22T11:20:26.540561+09:00",
   "candidates": [
     {
       "product": {
@@ -52,30 +52,6 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_5631352/56313524238.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_5631352/56313524238.jpg"
-      ],
-      "product_code": "",
-      "status": "pending"
-    },
-    {
-      "product": {
-        "name": "미풀 자동 캔 오프너 전동캔따개 1개",
-        "price": "16,000원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_6046129/60461293703.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9600530560&ctag=9600530560&lptag=I28659929695&itemId=28659929695&vendorItemId=95602123100&spec=10305199",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "조리기구",
-        "category_hint": "주방",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-21T21:43:57.448185"
-      },
-      "post_text": "캔으로 된 음식만 못 먹어서 식단이 제한된 느낌이였는데\n그럴 때 이런 게 딱이야. 그냥 캔에만 붙여놓고 버튼 누르면 알아서 뚜껑 열어주더라고\n게다가 전동으로 작동해서 힘 안들이고 편했음. 리뷰 보니까 산 사람들이 하나같이 요리하기 편해졌다고 하더라고\n✔ 밤에 혼자서도 쉽게 캔 따고, 식사 준비할 때도 큰 도움돼. 캔 따다가 손 다치거나 하는 일도 없게끔 해줌\n✔ 캔 따개로만 쓰지 말고, 요리 도구로 생각해봐. 예를 들면, 스테이크나 구이용 캔을 열 때도 사용 가능해\n\n#주방꿀템 #요리템 #자취요리 #살림템 #주방템",
-      "image_url": "https://shopping-phinf.pstatic.net/main_6046129/60461293703.jpg",
-      "detail_images": [
-        "https://shopping-phinf.pstatic.net/main_6046129/60461293703.jpg"
       ],
       "product_code": "",
       "status": "pending"

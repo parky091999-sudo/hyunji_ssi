@@ -1,5 +1,5 @@
 {
-  "next_code": 36,
+  "next_code": 37,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -352,6 +352,16 @@
       "registered_at": "2026-06-20T20:31:33.614356+09:00",
       "posted": true,
       "short_name": "UV 렌즈세"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9600530560&ctag=9600530560&lpt": {
+      "code": "036",
+      "name": "미풀 자동 캔 오프너 전동캔따개 1개",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9600530560&ctag=9600530560&lptag=I28659929695&itemId=28659929695&vendorItemId=95602123100&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_6046129/60461293703.jpg",
+      "category": "주방",
+      "registered_at": "2026-06-22T11:16:02.443699+09:00",
+      "posted": true,
+      "short_name": "자동 캔 오프너"
     }
   }
 }

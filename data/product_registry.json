@@ -1,5 +1,5 @@
 {
-  "next_code": 39,
+  "next_code": 40,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -380,6 +380,16 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_6056393/60563931305.jpg",
       "category": "",
       "registered_at": "2026-06-23T21:11:15.231582+09:00"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9977858988&ctag=9977858988&lpt": {
+      "code": "039",
+      "name": "삼성전자 BESPOKE 스팀 9600 로봇청소기 방문설치",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9977858988&ctag=9977858988&lptag=l292251820802&itemId=21282829005&vendorItemId=89258830163&spec=10305197",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5528740/55287408519.78.jpg",
+      "category": "생활",
+      "registered_at": "2026-06-24T11:03:39.618533+09:00",
+      "posted": true,
+      "short_name": "로봇청소기"
     }
   }
 }

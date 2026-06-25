@@ -1,5 +1,5 @@
 {
-  "next_code": 41,
+  "next_code": 42,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -400,6 +400,16 @@
       "registered_at": "2026-06-24T20:48:56.017738+09:00",
       "posted": true,
       "short_name": "전동 소금 후추 그라인더"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7461807251&ctag=7461807251&lpt": {
+      "code": "041",
+      "name": "쿠쿠 전자레인지 다이얼식 20L",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7461807251&ctag=7461807251&lptag=l7209719336553&itemId=56139373975&vendorItemId=5493101444&spec=10305197",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5085538/50855380395.121.jpg",
+      "category": "생활",
+      "registered_at": "2026-06-25T20:44:22.432150+09:00",
+      "posted": true,
+      "short_name": "전자레인지 다이얼식"
     }
   }
 }

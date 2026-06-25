@@ -1,6 +1,6 @@
 {
   "for_date": "2026-06-27",
-  "generated_at": "2026-06-26T03:38:05.794309+09:00",
+  "generated_at": "2026-06-26T04:18:33.885976+09:00",
   "candidates": [
     {
       "product": {
@@ -22,6 +22,36 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "쿠쿠 제빵기 세트",
+        "price": "104,400원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_5406836/54068361382.1.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8867285435&ctag=8867285435&lptag=l9262001342201&itemId=60102943122&vendorItemId=83398544838&spec=10305197",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "제빵기",
+        "category_hint": "생활",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-25T19:17:40.868360",
+        "youtube_source": {
+          "title": "진짜 잘샀다 싶은 꿀템 7가지 #생활꿀템 #살림템추천 #주방꿀템",
+          "video_id": "57Tl-x2YCzY",
+          "views": 34300,
+          "keyword": "주방 가전 추천"
+        }
+      },
+      "post_text": "내가 제일 좋아하는 아침 메뉴를 만들 때마다, 가장 큰 고민이 뭔지 알아? 🥐\n그건 바로 집에서 직접 빵을 만드는 거야. 근데 직접 제빵하기에는 시간도 오래 걸리고, 재료 준비도 해야 하고, 제대로 안 되면 실패할 수도 있고, 그래서 항상 외식하거나 샵에서 사 먹었지.\n근데 내가 최근에 발견한 것들이 있는데, 그중 하나가 바로 이 제빵기야. 이건 그냥 넣고 버튼 누르면 끝인 거 알아?\n리뷰 보니까 산 사람들이 거의 다 만족하더라.\n✔ 이거 쓰면 좋은 점은, 일단 시간 절약이 제일 큰 것 같아. 아침에 일어나서 넣어놓고, 출근하기 전까지면 바로 먹을 수 있잖아? 또, 내가 원하는 재료와 양으로 빵을 만들 수 있으니까, 건강에도 좋고.\n✔ 그리고, 이 제빵기는 세트로 사면, 다양한 종류의 빵을 만들 수 있는 도구들이 같이 들어있어. 그래서, 나는 이거 하나로 여러 가지 종류의 빵을 만들어 먹을 수 있어.\n\n#생활꿀템 #살림템 #자취템 #필수템 #제빵기추천",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5406836/54068361382.1.jpg",
+      "detail_images": [
+        "https://shopping-phinf.pstatic.net/main_5406836/54068361382.1.jpg"
       ],
       "product_code": "",
       "status": "pending"

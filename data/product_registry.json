@@ -1,5 +1,5 @@
 {
-  "next_code": 43,
+  "next_code": 44,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -420,6 +420,14 @@
       "registered_at": "2026-06-26T11:02:03.492388+09:00",
       "posted": true,
       "short_name": "제빵기 세트"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8553777490&ctag=8553777490&lpt": {
+      "code": "043",
+      "name": "냉장고 자석부착 후크 5구 주방소품거는 정리고리",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8553777490&ctag=8553777490&lptag=I18986111939&itemId=18986111939&vendorItemId=90824167698&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_6033461/60334615713.jpg",
+      "category": "",
+      "registered_at": "2026-06-26T21:17:46.002198+09:00"
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "for_date": "2026-06-29",
-  "generated_at": "2026-06-28T03:21:22.619555+09:00",
+  "generated_at": "2026-06-28T06:21:58.029600+09:00",
   "candidates": [
     {
       "product": {
@@ -106,6 +106,30 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_6033461/60334615713.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_6033461/60334615713.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "탐사 매직폼 클리너 550ml 폼타입 욕실 세정제 550ml",
+        "price": "28,470원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_5814823/58148237362.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8194493921&ctag=8194493921&lptag=I24239394935&itemId=24239394935&vendorItemId=91256455081&spec=10305197",
+        "badge": "쿠팡",
+        "brand": "탐사",
+        "category": "세제/세정제",
+        "category_hint": "생활",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-27T21:20:58.085915"
+      },
+      "post_text": "욕실을 청소할 때마다 비누 거품과 물때 때문에 스트레스 받는 사람 많을 텐데\n그럴 때마다 손이 부들부들 떨면서 닦아내는 나 같아\n근데 요즘은 그냥 비누 거품이나 물때를 닦아내는 게 아니라, 표면에 붙은 때를 녹여버리는 거로 바꿨어\n리뷰 보니까 산 사람들이 하나같이 왜 이제 샀냐고 하더라\n✔ 물기가 많은 곳에서 자주 사용하면 더 좋아. 예를 들어, 샤워기나 세면기 주변에 뿌려주면 좋을 거야\n✔ 그리고 표면을 닦아낼 때는 마른 수건으로 닦아내면 더 깨끗해\n\n#생활꿀템 #살림꿀템 #자취템 #필수템 #욕실청소",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5814823/58148237362.jpg",
+      "detail_images": [
+        "https://shopping-phinf.pstatic.net/main_5814823/58148237362.jpg"
       ],
       "product_code": "",
       "status": "pending"

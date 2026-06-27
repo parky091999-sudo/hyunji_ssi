@@ -1,5 +1,5 @@
 {
-  "next_code": 44,
+  "next_code": 45,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -428,6 +428,16 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_6033461/60334615713.jpg",
       "category": "",
       "registered_at": "2026-06-26T21:17:46.002198+09:00"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7737919583&ctag=7737919583&lpt": {
+      "code": "044",
+      "name": "셰프토프 전동 소금 후추 그라인더 1개",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7737919583&ctag=7737919583&lptag=I20810714429&itemId=20810714429&vendorItemId=94863152668&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5802855/58028555315.1.jpg",
+      "category": "주방",
+      "registered_at": "2026-06-27T11:07:33.747684+09:00",
+      "posted": true,
+      "short_name": "전동 소금 후추 그라인"
     }
   }
 }

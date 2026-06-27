@@ -1,6 +1,6 @@
 {
   "for_date": "2026-06-29",
-  "generated_at": "2026-06-28T02:44:48.795694+09:00",
+  "generated_at": "2026-06-28T03:21:22.619555+09:00",
   "candidates": [
     {
       "product": {
@@ -76,6 +76,36 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_5027322/50273223171.12.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "냉장고 자석부착 후크 5구 주방소품거는 정리고리",
+        "price": "17,500원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_6033461/60334615713.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8553777490&ctag=8553777490&lptag=I18986111939&itemId=18986111939&vendorItemId=90824167698&spec=10305199",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "소품걸이",
+        "category_hint": "생활",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-27T18:19:58.958416",
+        "youtube_source": {
+          "title": "갈때마다 품절 하루종일 겨우 찾은 다이소 추천꿀템 3가지",
+          "video_id": "Ai3OTVrQJR4",
+          "views": 122573,
+          "keyword": "생활꿀템 추천"
+        }
+      },
+      "post_text": "냉장고 문 열면 우당탕탕하게 여기저기 걸려있는 그릇과 용기들이 보이면 당황하는 사람 있지?\n그럴 때마다 정리해야 하는 생각은 항상 하지만 일일이 하나씩 걸고 지우고 하는 것도 귀찮고, 그래서 그냥 두고 끝내면 더 큰 문제가 생기기도 해서요.\n게다가 이런 거 하나만 있으면 냉장고 문에붙이고 사용할 수 있더라고, 5개의 후크가 있어서 여러 가지 걸 수 있어.\n여기서 좋은 점은 붙였다가 쉽게 떼낼 수 있고, 자석이라고 해서 자칫하면 너무 무거운 걸 걸면 떨어질 걱정도 없더라고.\n리뷰 보니까 사용하는 사람들 만족도가 진짜 높더라.\n✔ 그리고 이거 사용하면 냉장고문이 더 깔끔해지고, 다른 물건을 넣기도 편해\n✔ 예를 들어, 소스병이나 양념 가루 같은거 한 번에 보지 않고 하나씩 찾는 것도 힘들어서 이래도 될까 싶었는데, 이제는 냉장고 문에 다 걸어놔서 좋긴 하더라.\n\n#생활꿀템 #살림꿀템 #자취템 #필수템 #살림템",
+      "image_url": "https://shopping-phinf.pstatic.net/main_6033461/60334615713.jpg",
+      "detail_images": [
+        "https://shopping-phinf.pstatic.net/main_6033461/60334615713.jpg"
       ],
       "product_code": "",
       "status": "pending"

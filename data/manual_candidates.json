@@ -1,63 +1,6 @@
 {
-  "scanned_at": "2026-06-22T00:30:48.090353+09:00",
+  "scanned_at": "2026-06-29T00:06:14.815330+09:00",
   "candidates": [
-    {
-      "product": {
-        "name": "미스티파이 야채탈수기 마스터 샐러드 스피너 8세트",
-        "price": "39,900원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5463597/54635975242.31.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=5984019186&ctag=5984019186&lptag=l642222425923&itemId=43226422925&vendorItemId=92229516425&spec=10305198",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "조리기구",
-        "category_hint": "주방",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:11.350151"
-      },
-      "source_account": "검색:과일탈수기",
-      "selected": false
-    },
-    {
-      "product": {
-        "name": "리안모어 전동 소금 후추그라인더 무선 자동 글라인더 1개 142ml",
-        "price": "29,000원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5991342/59913420657.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9373513529&ctag=9373513529&lptag=I27822209120&itemId=27822209120&vendorItemId=94855413733&spec=10305198",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "보관/밀폐용기",
-        "category_hint": "주방",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:13.933049"
-      },
-      "source_account": "검색:자동 소금 후추 그라인더",
-      "selected": false
-    },
-    {
-      "product": {
-        "name": "금풍제과 보리건빵",
-        "price": "25,980원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5885463/58854637269.62.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=2591853059&ctag=2591853059&lptag=l41507713221&itemId=3120547711&vendorItemId=70348203523&spec=10305197",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "기타과자",
-        "category_hint": "먹는거",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:23.223638"
-      },
-      "source_account": "검색:간식 추천 쿠팡",
-      "selected": false
-    },
     {
       "product": {
         "name": "해태제과 종합선물세트 11종 1세트",
@@ -72,83 +15,7 @@
         "category_hint": "먹는거",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:23.223732"
-      },
-      "source_account": "검색:간식 추천 쿠팡",
-      "selected": false
-    },
-    {
-      "product": {
-        "name": "곡물그대로21 크리스피롤",
-        "price": "41,130원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5976733/59767332105.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=4098054850&ctag=4098054850&lptag=l880162390209&itemId=83160980209&vendorItemId=85192997619&spec=10305197",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "기타과자",
-        "category_hint": "먹는거",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:23.223816"
-      },
-      "source_account": "검색:간식 추천 쿠팡",
-      "selected": false
-    },
-    {
-      "product": {
-        "name": "빈츠 하임 예감 빼빼로등 14종 구성 과자세트 1세트",
-        "price": "24,800원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_4515310/45153102172.5.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7792630745&ctag=7792630745&lptag=I21085996180&itemId=21085996180&vendorItemId=88148076465&spec=10305198",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "기타과자",
-        "category_hint": "먹는거",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:23.223924"
-      },
-      "source_account": "검색:간식 추천 쿠팡",
-      "selected": false
-    },
-    {
-      "product": {
-        "name": "원조풍년 곤약쫀드기 220g 5개",
-        "price": "16,500원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_4641210/46412105560.5.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7662550918&ctag=7662550918&lptag=I19594679776&itemId=19594679776&vendorItemId=88915749906&spec=10305199",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "기타과자",
-        "category_hint": "먹는거",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:23.224036"
-      },
-      "source_account": "검색:간식 추천 쿠팡",
-      "selected": false
-    },
-    {
-      "product": {
-        "name": "초코과자 15종 2호",
-        "price": "24,730원",
-        "original_price": "",
-        "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_6049576/60495763165.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=1873878106&ctag=1873878106&lptag=l211871151466&itemId=84171151616&vendorItemId=85295824768&spec=10305198",
-        "badge": "쿠팡",
-        "brand": "",
-        "category": "기타과자",
-        "category_hint": "먹는거",
-        "mall_name": "쿠팡",
-        "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:23.224105"
+        "scraped_at": "2026-06-28T15:05:52.845895"
       },
       "source_account": "검색:간식 추천 쿠팡",
       "selected": false
@@ -167,7 +34,102 @@
         "category_hint": "먹는거",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:23.224175"
+        "scraped_at": "2026-06-28T15:05:52.846042"
+      },
+      "source_account": "검색:간식 추천 쿠팡",
+      "selected": false
+    },
+    {
+      "product": {
+        "name": "금풍제과 보리건빵",
+        "price": "25,160원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_5885463/58854637269.62.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=2591853059&ctag=2591853059&lptag=l41507713221&itemId=3120547711&vendorItemId=70348203523&spec=10305197",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "기타과자",
+        "category_hint": "먹는거",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-28T15:05:52.846171"
+      },
+      "source_account": "검색:간식 추천 쿠팡",
+      "selected": false
+    },
+    {
+      "product": {
+        "name": "빈츠 하임 예감 빼빼로등 14종 구성 과자세트 1세트",
+        "price": "25,900원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_4515310/45153102172.5.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7792630745&ctag=7792630745&lptag=I21085996180&itemId=21085996180&vendorItemId=88148076465&spec=10305198",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "기타과자",
+        "category_hint": "먹는거",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-28T15:05:52.846343"
+      },
+      "source_account": "검색:간식 추천 쿠팡",
+      "selected": false
+    },
+    {
+      "product": {
+        "name": "원조풍년 곤약쫀드기 220g 5개",
+        "price": "16,500원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_4641210/46412105560.5.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=7662550918&ctag=7662550918&lptag=I19594679776&itemId=19594679776&vendorItemId=88915749906&spec=10305199",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "기타과자",
+        "category_hint": "먹는거",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-28T15:05:52.846485"
+      },
+      "source_account": "검색:간식 추천 쿠팡",
+      "selected": false
+    },
+    {
+      "product": {
+        "name": "국산 콩으로 만든 잣 두부과자",
+        "price": "17,920원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_5984484/59844846509.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8372604778&ctag=8372604778&lptag=l464715839222&itemId=16284234957&vendorItemId=86204448370&spec=10305199",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "기타과자",
+        "category_hint": "먹는거",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-28T15:05:52.846603"
+      },
+      "source_account": "검색:간식 추천 쿠팡",
+      "selected": false
+    },
+    {
+      "product": {
+        "name": "곡물그대로21 크리스피롤",
+        "price": "41,130원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_5976733/59767332105.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=4098054850&ctag=4098054850&lptag=l880162390209&itemId=83160980209&vendorItemId=85192997619&spec=10305197",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "기타과자",
+        "category_hint": "먹는거",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-06-28T15:05:52.846702"
       },
       "source_account": "검색:간식 추천 쿠팡",
       "selected": false
@@ -178,15 +140,15 @@
         "price": "29,900원",
         "original_price": "",
         "discount_rate": 0,
-        "image_url": "https://shopping-phinf.pstatic.net/main_5760148/57601483053.116.jpg",
-        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9164207296&ctag=9164207296&lptag=I26998880761&itemId=26998880761&vendorItemId=95536654417&spec=10305199",
+        "image_url": "https://shopping-phinf.pstatic.net/main_5760148/57601483053.123.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9164207296&ctag=9164207296&lptag=I26998880761&itemId=26998880761&vendorItemId=95364967268&spec=10305199",
         "badge": "쿠팡",
         "brand": "",
         "category": "에센스/세럼/앰플",
         "category_hint": "뷰티",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:25.932964"
+        "scraped_at": "2026-06-28T15:05:55.338107"
       },
       "source_account": "검색:미백 앰플",
       "selected": false
@@ -194,7 +156,7 @@
     {
       "product": {
         "name": "힐링버드 티트리 피디알엔 탈모증상완화 기능성 두피 스케일러 250g 2개",
-        "price": "32,300원",
+        "price": "39,800원",
         "original_price": "",
         "discount_rate": 0,
         "image_url": "https://shopping-phinf.pstatic.net/main_6019137/60191375730.1.jpg",
@@ -205,7 +167,7 @@
         "category_hint": "뷰티",
         "mall_name": "쿠팡",
         "source": "naver_shopping",
-        "scraped_at": "2026-06-21T15:30:29.906398"
+        "scraped_at": "2026-06-28T15:05:58.804385"
       },
       "source_account": "검색:두피 스케일러",
       "selected": false

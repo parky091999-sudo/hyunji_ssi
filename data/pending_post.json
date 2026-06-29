@@ -1,7 +1,26 @@
 {
   "for_date": "2026-07-01",
-  "generated_at": "2026-06-30T03:33:33.315062+09:00",
+  "generated_at": "2026-06-30T04:19:08.177757+09:00",
   "candidates": [
+    {
+      "product": {
+        "name": "울팜 아삭 달달 국내산 친환경 양배추 제주 무안 밀양, 3kg, 1박스",
+        "price": "7,360원",
+        "original_price": "",
+        "discount_rate": 53,
+        "image_url": "https://thumbnail.coupangcdn.com/thumbnails/remote/292x292ex/image/vendor_inventory/8a34/741a87cec98a43927698a385ebe91516bdeca50eae559a07f35c80fba258.jpg",
+        "product_url": "https://www.coupang.com/vp/products/8795096974?vendorItemId=92213254126&sourceType=HOME_GW_PROMOTION&searchId=feed-90348f334eda454fa3dfef911948226a-3.33.107:gw_promotion",
+        "badge": "특가진행중",
+        "scraped_at": "2026-06-29T19:17:18.153784"
+      },
+      "post_text": "요즘 집에서 혼자 먹을 때, 먹는 걸로 스트레스 받는 사람 많을 것 같아\n그럴 때마다 가벼운 국물이나 샐러드를 먹게 되는데, 그럴 때 양배추가 꼭 있어야 더 맛있더라고\n게다가 양배추는 다른 채소에 비해 보관이 비교적 쉽고, 다양한 요리에도 활용할 수 있어 좋은데, 최근에 발견한 친환경 양배추가 진짜 좋더라\n리뷰 보니까 다른 곳에서 산 사람들은 비슷한 양에 두세 배는 더 비싸게 산 거 같았어\n✔ 국물 요리할 때 넣어도 좋고, 샐러드용으로도 좋을 것 같아\n✔ 요리가 아니라 그냥 간단하게 먹을 때도 양배추를 크게 썰어서 소금과 후추만 뿌려 먹어도 맛있더라고\n\n#친환경식품 #제주무안밀양 #양배추 #잇템 #꿀템",
+      "image_url": "https://thumbnail.coupangcdn.com/thumbnails/remote/292x292ex/image/vendor_inventory/8a34/741a87cec98a43927698a385ebe91516bdeca50eae559a07f35c80fba258.jpg",
+      "detail_images": [
+        "//thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/8a34/741a87cec98a43927698a385ebe91516bdeca50eae559a07f35c80fba258.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
     {
       "product": {
         "name": "소미썸 수분초 수분 사각패드 60매 3개 60매입",
@@ -34,6 +53,25 @@
     },
     {
       "product": {
+        "name": "Ambition 여성 50-80kg 편한 순면 팬티 세트",
+        "price": "11,250원",
+        "original_price": "",
+        "discount_rate": 71,
+        "image_url": "https://thumbnail.coupangcdn.com/thumbnails/remote/292x292ex/image/vendor_inventory/20f3/786a60a81ed13d01b146cc13dbd658d7c0010e1bf87b5b38b771a5169bd2.png",
+        "product_url": "https://www.coupang.com/vp/products/9495188260?vendorItemId=95613331155&sourceType=HOME_GW_PROMOTION&searchId=feed-90348f334eda454fa3dfef911948226a-3.33.107:gw_promotion",
+        "badge": "특가진행중",
+        "scraped_at": "2026-06-29T19:17:18.202592"
+      },
+      "post_text": "내가 요즘 가장 자주 입는 거 중 하나가 된 건, 생각지도 못했던 곳에서 나왔어\n일상 속에서 편안함을 주는 게 최고인 거 같더라고.\n그것은 바로 편안한 속옷, 특히 순면 팬티야.\n여러 가지 색상과 디자인으로 나왔는데, 내가 가장 좋아하는 것은 50-80kg용 팬티 세트더라.\n이거 진짜 편하고 좋더라고.\n리뷰 보니까 다른 사람들도 하나같이 왜 이제 샀냐고 하더라\n✔ 아침에 출근할 때 입기 좋은 속옷,✔ 운동할 때 입기 좋은 속옷\n\n#추천템 #꿀템 #잇템 #아이디어상품 #편안한속옷",
+      "image_url": "https://thumbnail.coupangcdn.com/thumbnails/remote/292x292ex/image/vendor_inventory/20f3/786a60a81ed13d01b146cc13dbd658d7c0010e1bf87b5b38b771a5169bd2.png",
+      "detail_images": [
+        "//thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/20f3/786a60a81ed13d01b146cc13dbd658d7c0010e1bf87b5b38b771a5169bd2.png"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
         "name": "코멧 홈 욕실 변기솔 + 바닥솔 세트 5개",
         "price": "23,290원",
         "original_price": "",
@@ -58,6 +96,25 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_5997584/59975842568.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_5997584/59975842568.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "라프레슈 카이막 200g 천상의 맛 수제 디저트 터키 튀르키예, 1개",
+        "price": "19,900원",
+        "original_price": "",
+        "discount_rate": 16,
+        "image_url": "https://thumbnail.coupangcdn.com/thumbnails/remote/292x292ex/image/vendor_inventory/f99f/ad6544b4cc079d9ef56a4b7449d7c3cbaa738c4bc16e3c7cca456746e62b.png",
+        "product_url": "https://www.coupang.com/vp/products/8597899327?vendorItemId=92196080156&sourceType=HOME_GW_PROMOTION&searchId=feed-90348f334eda454fa3dfef911948226a-3.33.107:gw_promotion",
+        "badge": "특가진행중",
+        "scraped_at": "2026-06-29T19:17:18.251879"
+      },
+      "post_text": "디저트 맛집 가서 수작을 본 적 있는 사람, 그맛을 집에서 낼 수 있으면 어떨까?\n그렇다고 집에서 디저트 만들기 시작하다 보면, 재료 준비부터 소요되는 시간이 상당해 더 부담스럽더라고\n근데 최근에 천사의 맛이라는 수제 디저트를 알게 됐어, 터키에서 바로 날아오는 거라고 하더라고\n이거 리뷰 보니까 사람들은 왜 이제야 알았냐고 하더라, 너무 맛있대\n✔ 내 경우에는 그냥 티타임에 먹기 좋은 크기와 양이라, 친구 방문했을 때 내준다고 좋더라고\n✔ 또 가끔 디저트 맛집 가서도 수작을 본 적 있는데, 이건 집에서 바로 먹을 수 있단 점이 매력임\n\n#꿀템 #아이디어상품 #디저트 #수제디저트 #추천템",
+      "image_url": "https://thumbnail.coupangcdn.com/thumbnails/remote/292x292ex/image/vendor_inventory/f99f/ad6544b4cc079d9ef56a4b7449d7c3cbaa738c4bc16e3c7cca456746e62b.png",
+      "detail_images": [
+        "//thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/f99f/ad6544b4cc079d9ef56a4b7449d7c3cbaa738c4bc16e3c7cca456746e62b.png"
       ],
       "product_code": "",
       "status": "pending"

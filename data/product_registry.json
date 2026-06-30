@@ -1,5 +1,5 @@
 {
-  "next_code": 46,
+  "next_code": 47,
   "blocked_item_ids": [],
   "products": {
     "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=8849967732&ctag=8849967732&lpt": {
@@ -450,6 +450,16 @@
       "registered_at": "2026-06-30T11:11:24.300337+09:00",
       "posted": true,
       "short_name": "전동 그라인더"
+    },
+    "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9618588529&ctag=9618588529&lpt": {
+      "code": "046",
+      "name": "소미썸 수분초 수분 사각패드 60매 4개 60매입",
+      "url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9618588529&ctag=9618588529&lptag=I28721320596&itemId=28721320596&vendorItemId=95661791516&spec=10305199",
+      "image_url": "https://shopping-phinf.pstatic.net/main_6062808/60628085026.jpg",
+      "category": "생활",
+      "registered_at": "2026-06-30T20:51:52.040401+09:00",
+      "posted": true,
+      "short_name": "수분 사각패"
     }
   }
 }

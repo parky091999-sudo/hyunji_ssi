@@ -1,6 +1,6 @@
 {
   "for_date": "2026-07-03",
-  "generated_at": "2026-07-02T04:12:50.527294+09:00",
+  "generated_at": "2026-07-02T06:49:23.935013+09:00",
   "candidates": [
     {
       "product": {
@@ -142,6 +142,36 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_5865056/58650568815.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_5865056/58650568815.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "비스카 미니 세탁기 3kg",
+        "price": "69,800원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_6002783/60027832876.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=4313751653&ctag=4313751653&lptag=l51305220221&itemId=5225320101&vendorItemId=70524811557&spec=10305197",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "세탁/건조기",
+        "category_hint": "생활",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-07-01T21:49:00.167782",
+        "youtube_source": {
+          "title": "자취생 필수템! 속옷·양말 전용 미니세탁기",
+          "video_id": "hE2wztImTqs",
+          "views": 1672,
+          "keyword": "자취 필수템 추천"
+        }
+      },
+      "post_text": "빨랫감 얼마 없는데 큰 세탁기 돌리기 애매해서 그냥 손빨래하다가 후회한 적 다들 있지? 😅\n특히 속옷이나 양말, 수건 같은 건 매일 나오는데, 그렇다고 큰 세탁기에 같이 넣기도 찝찝하고 따로 모으자니 냄새나고 그랬음.\n근데 이거 진짜 물건이더라. 딱 3kg 용량이라 속옷이랑 양말 몇 켤레 넣어서 매일 돌리기 좋게 나옴. 게다가 일반 세탁기처럼 마구 돌리는 게 아니라 살살 섬세하게 빨아줘서 옷감 상할 걱정 안 해도 되더라고.\n써본 사람들 후기 보니까 다들 '진작 살 걸' 하면서 만족해하는 거 같더라.\n✔ 이거 진짜 속옷이나 운동복 같이 매일 소량으로 나오는 빨랫감 전용으로 쓰면 삶의 질 확 올라가는 거 알아?\n✔ 세탁실 공간",
+      "image_url": "https://shopping-phinf.pstatic.net/main_6002783/60027832876.jpg",
+      "detail_images": [
+        "https://shopping-phinf.pstatic.net/main_6002783/60027832876.jpg"
       ],
       "product_code": "",
       "status": "pending"

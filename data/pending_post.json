@@ -1,6 +1,6 @@
 {
   "for_date": "2026-07-03",
-  "generated_at": "2026-07-02T03:29:54.836990+09:00",
+  "generated_at": "2026-07-02T04:12:50.527294+09:00",
   "candidates": [
     {
       "product": {
@@ -112,6 +112,36 @@
       "image_url": "https://shopping-phinf.pstatic.net/main_6051136/60511361788.jpg",
       "detail_images": [
         "https://shopping-phinf.pstatic.net/main_6051136/60511361788.jpg"
+      ],
+      "product_code": "",
+      "status": "pending"
+    },
+    {
+      "product": {
+        "name": "대용량 에어후라이기 에어프라이어 군밤 고구마 삼겹살 계란 프라이기 가정용튀김기",
+        "price": "81,800원",
+        "original_price": "",
+        "discount_rate": 0,
+        "image_url": "https://shopping-phinf.pstatic.net/main_5865056/58650568815.jpg",
+        "product_url": "https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=2196441499&ctag=2196441499&lptag=I3737410536&itemId=3737410536&vendorItemId=71722593516&spec=10305199",
+        "badge": "쿠팡",
+        "brand": "",
+        "category": "에어프라이어",
+        "category_hint": "생활",
+        "mall_name": "쿠팡",
+        "source": "naver_shopping",
+        "scraped_at": "2026-07-01T19:11:10.850586",
+        "youtube_source": {
+          "title": "다이소 사장님, 보고 계신가요? 제발 이거 만들어주세요!! 😭🙏 #다이소",
+          "video_id": "UPIj7OI-thE",
+          "views": 17580,
+          "keyword": "신박한 주방용품"
+        }
+      },
+      "post_text": "혼자서도 맛있는 식사를 즐기고 싶은데, 요리할 때마다 기름으로 인해 스트레스 받는 사람 많잖아? 🤯\n그럴 때마다 후라이팬을 사용해서 여러 번에 나눠서 조리해야 하는 번거로움이 있어\n그런데 요즘은 그냥 한 번에 넣으면 끝나는 거 알아?\n리뷰 보니까 대용량이라서 삼겥살도 계란도 고구마도 군밤도 다 넣어서 조리할 수 있더라고\n✔ 아침에 계란 프라이하고, 점심에 삼겹살 구워 먹고, 저녁에 고구마 구워 먹기 좋고\n✔ 야채도 많이 넣어서 구워 먹으면 맛있어\n\n#자취템 #살림템 #생활꿀템 #살림꿀템 #필수템",
+      "image_url": "https://shopping-phinf.pstatic.net/main_5865056/58650568815.jpg",
+      "detail_images": [
+        "https://shopping-phinf.pstatic.net/main_5865056/58650568815.jpg"
       ],
       "product_code": "",
       "status": "pending"
